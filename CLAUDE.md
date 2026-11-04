@@ -16,6 +16,11 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - About: big photo set (about-hero.jpg); portrait IMG_5331.jpg still missing.
 - Years set to 2026 for new projects are guesses unless River said otherwise.
 
+## To do next session (River's list, 2026-11-04)
+1. Smooth the transition between the homepage and the portfolio page: take out the grey screen that shows during the switch.
+2. Smooth photo changes on the project pages: make the slideshow photos slide sideways (swipe) instead of switching instantly.
+3. Fix the Commissions page (ask River what's wrong with it first).
+
 ## How things are set up
 - Shared code lives in `assets/` (site.js holds the menu and contact details for every page; projects.js builds the project pages; ripple.js is the background effect).
 - Each page keeps its editable settings in a `PAGE` block (and project pages a `PROJECTS` list) at the top of its script.
