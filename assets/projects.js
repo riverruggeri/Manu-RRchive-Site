@@ -149,33 +149,55 @@
   document.addEventListener("keydown", e => { if (e.key === "Escape" && panel.classList.contains("open")) closePanel(); });
 
   /* ---------- Scroll warp ----------
-     While scrolling, photos tilt and bend with the scroll speed,
-     then ease back flat when scrolling stops. */
+     A flat corner stretch tied to where the photo is on screen.
+     Coming up from the bottom, the top-left corner is pulled up and
+     out, and eases back as the photo comes fully into view. Leaving
+     at the top, the bottom-right corner is pulled down and out. */
   const warp = PAGE.scrollWarp ?? 1;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !warp || !frames.length) return;
-  let lastY = scrollY, lastT = performance.now(), v = 0, shown = 0;
-  function tick(t) {
-    const dt = Math.max(1, t - lastT);
-    const raw = (scrollY - lastY) / dt;          // pixels per millisecond
-    lastY = scrollY; lastT = t;
-    v += (raw - v) * 0.2;                        // smooth the speed
-    shown += (v - shown) * 0.12;                 // ease the warp in and out
-    if (Math.abs(shown) < 0.0005) shown = 0;
-    const k = Math.max(-1.6, Math.min(1.6, shown)) * warp;
+
+  const STRETCH_X = 0.05;   // how far the corner pulls sideways, as a share of the photo's width
+  const STRETCH_Y = 0.14;   // how far it pulls up or down, as a share of the photo's height
+  const ease = t => t * t * (3 - 2 * t);
+
+  // CSS transform that moves the photo's four corners to new spots.
+  function cornerPin(w, h, tl, tr, br, bl) {
+    const [x0, y0] = tl, [x1, y1] = tr, [x2, y2] = br, [x3, y3] = bl;
+    const dx1 = x1 - x2, dx2 = x3 - x2, dx3 = x0 - x1 + x2 - x3;
+    const dy1 = y1 - y2, dy2 = y3 - y2, dy3 = y0 - y1 + y2 - y3;
+    const den = dx1 * dy2 - dx2 * dy1;
+    const g = (dx3 * dy2 - dx2 * dy3) / den;
+    const k = (dx1 * dy3 - dx3 * dy1) / den;
+    const a = x1 - x0 + g * x1, b = x3 - x0 + k * x3, c = x0;
+    const d = y1 - y0 + g * y1, e = y3 - y0 + k * y3, f = y0;
+    return `matrix3d(${a / w},${d / w},0,${g / w},${b / h},${e / h},0,${k / h},0,0,1,0,${c},${f},0,1)`;
+  }
+
+  frames.forEach(f => { f.style.transformOrigin = "0 0"; });
+  let queued = false;
+  function update() {
+    queued = false;
     const vh = innerHeight;
     for (const f of frames) {
-      const r = f.getBoundingClientRect();
-      if (r.bottom < -100 || r.top > vh + 100) continue;
-      // Photos above and below the middle of the screen tilt in opposite directions.
-      const pos = ((r.top + r.height / 2) / vh - 0.5) * 2;
-      const rotX = -k * 9;
-      const skew = k * 2.2 * (pos >= 0 ? 1 : -1) * Math.min(1, Math.abs(pos) + 0.3);
-      const rot = k * 1.4 * pos;
-      const sy = 1 + Math.abs(k) * 0.06;
-      f.style.transform = shown === 0 ? "" :
-        `perspective(900px) rotateX(${rotX}deg) skewY(${skew}deg) rotate(${rot}deg) scaleY(${sy})`;
+      // Measure the untransformed box (the slideshow row around the photo).
+      const box = f.parentElement.getBoundingClientRect();
+      const w = f.offsetWidth, h = f.offsetHeight;
+      if (!w || !h || box.bottom < -50 || box.top > vh + 50) continue;
+      const top = box.top + (box.height - h) / 2, bottom = top + h;
+      const enter = ease(Math.min(1, Math.max(0, (bottom - vh) / h)));   // 1 = just peeking in at the bottom
+      const leave = ease(Math.min(1, Math.max(0, -top / h)));            // 1 = almost gone at the top
+      if (enter === 0 && leave === 0) { f.style.transform = ""; continue; }
+      const sx = w * STRETCH_X * warp, sy = h * STRETCH_Y * warp;
+      f.style.transform = cornerPin(w, h,
+        [-sx * enter, -sy * enter],
+        [w, 0],
+        [w + sx * leave, h + sy * leave],
+        [0, h]);
     }
-    requestAnimationFrame(tick);
   }
-  requestAnimationFrame(tick);
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+  addEventListener("scroll", queue, { passive: true });
+  addEventListener("resize", queue);
+  frames.forEach(f => f.addEventListener("load", queue, true));
+  queue();
 })();
