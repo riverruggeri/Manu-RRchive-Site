@@ -1,14 +1,1 @@
-Put these photos in this folder (same names as in Cargo). The page shows a box
-named after each one until it's added.
-
-Photo-May-19-2025--1-55-36-PM.jpg
-Photo-May-19-2025--1-56-16-PM.jpg
-Photo-May-19-2025--1-55-48-PM.jpg
-Photo-Oct-29-2026--9-45-40-PM.jpg
-Photo-Feb-11-2025--9-39-52-AM.jpg
-Photo-Feb-11-2025--9-40-36-AM.jpg
-Photo-Feb-11-2025--9-43-07-AM.jpg
-Photo-Oct-29-2026--9-45-39-PM-2.jpg
-Photo-Oct-29-2026--9-45-39-PM-1.jpg
-Photo-Oct-29-2026--9-45-39-PM.jpg
-Photo-Feb-07-2025--10-13-40-AM.jpg
+Put photos for new Experimental Fashion projects here and list them in fashion-works.html.
