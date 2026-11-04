@@ -222,18 +222,18 @@ const SITE = {
   // Desktop icons. "icon" is either a built-in drawing
   // ("pdf", "folder", "disc") or an image file like "images/photo-icon.png".
   icons: [
-    { label: "Conceptual Art", icon: "pdf",    link: "conceptual-art.html" },
-    { label: "Fashion Works",  icon: "folder", link: "fashion-works.html" },
-    { label: "Photography",    icon: "disc",   link: "photography.html" }
+    { label: "Conceptual Art", icon: "pdf",    link: "conceptual-art.html", ready: false },
+    { label: "Fashion Works",  icon: "folder", link: "fashion-works.html",  ready: false },
+    { label: "Photography",    icon: "disc",   link: "photography.html",    ready: true }
   ],
 
-  // Menu (three dots, top right)
+  // Menu (three dots, top right). "ready: false" shows a note instead of a broken link.
   menu: [
-    { label: "Fashion Works",    link: "fashion-works.html" },
-    { label: "Conceptual Art",   link: "conceptual-art.html" },
-    { label: "Photography",      link: "photography.html" },
-    { label: "Commissions",      link: "commissions.html" },
-    { label: "About Me / Contact", link: "about.html" }
+    { label: "Fashion Works",      link: "fashion-works.html",  ready: false },
+    { label: "Conceptual Art",     link: "conceptual-art.html", ready: false },
+    { label: "Photography",        link: "photography.html",    ready: true },
+    { label: "Commissions",        link: "commissions.html",    ready: false },
+    { label: "About Me / Contact", link: "about.html",          ready: false }
   ]
 };
 
@@ -259,6 +259,7 @@ SITE.icons.forEach(item => {
   const a = document.createElement("a");
   a.className = "icon";
   a.href = item.link;
+  if (!item.ready) a.dataset.soon = "1";
   const art = ICONS[item.icon]
     ? ICONS[item.icon]
     : `<img src="${item.icon}" alt="">`;
@@ -271,6 +272,7 @@ const menuBtn = document.getElementById("menuBtn");
 SITE.menu.forEach(item => {
   const a = document.createElement("a");
   a.href = item.link;
+  if (!item.ready) a.dataset.soon = "1";
   a.textContent = item.label;
   menu.appendChild(a);
 });
@@ -289,11 +291,11 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") { menu.hidden = true; menuBtn.setAttribute("aria-expanded", "false"); }
 });
 
-// The other pages aren't built yet: show a note instead of a broken link.
+// Pages not built yet: show a note instead of a broken link.
 const toast = document.getElementById("toast");
 let toastTimer;
 document.addEventListener("click", e => {
-  const a = e.target.closest("a");
+  const a = e.target.closest("a[data-soon]");
   if (!a) return;
   e.preventDefault();
   toast.textContent = `${a.textContent.trim()} page is coming next`;
