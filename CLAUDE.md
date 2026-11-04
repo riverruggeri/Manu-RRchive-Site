@@ -1,6 +1,6 @@
 # Manu / R aRchive site
 
-River's website for the clothing brand Manu (house name) and R aRchive (reworked, used-material pieces). Being rebuilt from a Cargo site into plain HTML/CSS/JS that River owns.
+River's website for the clothing brand Manu (house name) and RRchive, written with the first R flipped (reworked, used-material pieces). Being rebuilt from a Cargo site into plain HTML/CSS/JS that River owns.
 
 ## Direction
 - The site is brand-first: `index.html` is the Manu / R aRchive homepage, with the portfolio as a secondary section.

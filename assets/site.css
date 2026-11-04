@@ -58,7 +58,7 @@ a { color: inherit; }
   filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.45));
   transition: opacity 0.15s;
 }
-.home-logo:hover img { opacity: 0.75; }
+a.home-logo:hover img { opacity: 0.75; }
 
 /* Menu: three dots, top right */
 .menu-btn {
