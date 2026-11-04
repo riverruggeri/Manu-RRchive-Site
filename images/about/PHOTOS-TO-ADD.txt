@@ -1,6 +1,6 @@
-Put these photos in this folder (same names as in Cargo):
+Still to add in this folder (same name as in Cargo):
 
-Barbieri_Mateo_Mama-170.jpg   (big photo on the left)
-IMG_5331.jpg                  (portrait)
+IMG_5331.jpg   (portrait)
 
-If a different photo was used in Cargo, change the file names at the top of about.html.
+If a different photo was used in Cargo, change the file name at the top of about.html.
+The big photo on the left is about-hero.jpg (already added).
