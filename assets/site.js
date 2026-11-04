@@ -6,6 +6,10 @@
 window.SITE = {
   name: "Manu Clothing",
 
+  // Logo in the top-left corner of every page (except the homepage).
+  // Clicking it goes back to the homepage.
+  logo: "images/rrchive-logo.png",
+
   contact: {
     email: "riverruggeri@gmail.com",
     phone: "+1 (541)-674-9866",
@@ -83,8 +87,16 @@ window.SITE = {
     window.showToast(`${(a.dataset.label || a.textContent).trim()} is coming soon`);
   });
 
+  // Home logo, top left
+  const home = document.createElement("a");
+  home.className = "home-logo";
+  home.href = "index.html";
+  home.setAttribute("aria-label", "R aRchive, back to home");
+  home.innerHTML = `<img src="${S.logo}" alt="">`;
+
   function mount() {
     if (!document.body.hasAttribute("data-no-menu")) document.body.append(btn, menu);
+    if (here !== "index.html" && S.logo) document.body.append(home);
     document.body.append(toast);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);
