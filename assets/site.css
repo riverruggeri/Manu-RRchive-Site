@@ -1,5 +1,16 @@
 /* Shared look for every page: colors, type, menu, notes. */
 [hidden] { display: none !important; }
+
+/* Page changes: dark ground between pages so nothing flashes white,
+   each page fades in on arrival and out before leaving. */
+html { background: #111111; }
+body { animation: page-in 0.55s ease both; }
+html.leaving body { opacity: 0; transition: opacity 0.32s ease; }
+@keyframes page-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+  html.leaving body { transition: none; }
+}
 :root {
   --ink: #ffffff;
   --ink-soft: rgba(255, 255, 255, 0.7);

@@ -13,12 +13,15 @@
    ========================================================= */
 window.startRipple = function (opts) {
   const canvas = opts.canvas;
+  canvas.style.opacity = "0";
+  canvas.style.transition = "opacity 0.7s ease";
   const fallback = opts.fallback;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const gl = canvas.getContext("webgl2", { antialias: false, premultipliedAlpha: false });
 
   function useFallback() {
     canvas.hidden = true;
+    fallback.style.animation = "page-in 0.7s ease both";
     fallback.hidden = false;
     fallback.style.backgroundImage = `url("${opts.image}")`;
   }
@@ -173,6 +176,7 @@ window.startRipple = function (opts) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     ready = true;
+    requestAnimationFrame(() => requestAnimationFrame(() => { canvas.style.opacity = "1"; }));
   };
   img.onerror = useFallback;
   img.src = opts.image;

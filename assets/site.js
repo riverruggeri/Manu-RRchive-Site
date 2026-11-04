@@ -107,6 +107,22 @@ window.SITE = {
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);
   else mount();
 
+  // Smooth page changes: fade the page out before following a link
+  // to another page on the site (the next page fades itself in).
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.addEventListener("click", e => {
+    if (e.defaultPrevented || reduceMotion || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest("a[href]");
+    if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+    const url = new URL(a.href, location.href);
+    if (url.origin !== location.origin || (url.pathname === location.pathname && url.hash)) return;
+    e.preventDefault();
+    document.documentElement.classList.add("leaving");
+    setTimeout(() => { location.href = url.href; }, 320);
+  });
+  // Coming back with the browser's back button: show the page again.
+  addEventListener("pageshow", () => document.documentElement.classList.remove("leaving"));
+
   // Live clock for any element with data-clock
   function tick() {
     const t = new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
