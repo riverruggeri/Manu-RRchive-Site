@@ -55,6 +55,41 @@
     const count = el.querySelector(".count");
     frames.push(frame);
     let at = 0;
+    let busy = null;   // the slide animation in progress, if any
+    let goal = 0;      // the photo being slid to (runs ahead of "at" during a slide)
+    let token = 0;     // makes sure only the latest slide finishes
+
+    // Slide the current photo out to one side and the next one in from the
+    // other (dir 1 = next, -1 = previous). The next photo is loaded first so
+    // the frame never goes empty.
+    function slideTo(n, dir) {
+      if (!photos.length || photos.length < 2) return;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const old = frame.querySelector("img");
+      if (reduce || !old || !old.animate) { show(n); return; }
+      if (busy) busy.finish();
+      const nextAt = (n + photos.length) % photos.length;
+      goal = nextAt;
+      const mine = ++token;
+      const probe = new Image();
+      probe.src = src(photos[nextAt]);
+      const ready = probe.decode ? probe.decode().catch(() => {}) : Promise.resolve();
+      const out = old.animate(
+        [{ transform: "translateX(0)", opacity: 1 }, { transform: `translateX(${-dir * 18}%)`, opacity: 0 }],
+        { duration: 240, easing: "cubic-bezier(0.4, 0, 1, 1)", fill: "forwards" });
+      busy = out;
+      Promise.all([out.finished.catch(() => {}), ready]).then(() => {
+        if (mine !== token) return;
+        show(nextAt);
+        const img = frame.querySelector("img");
+        if (img && img.animate) {
+          busy = img.animate(
+            [{ transform: `translateX(${dir * 18}%)`, opacity: 0 }, { transform: "translateX(0)", opacity: 1 }],
+            { duration: 380, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" });
+          busy.finished.catch(() => {}).then(() => { busy = null; });
+        } else busy = null;
+      });
+    }
 
     function show(n) {
       if (!photos.length) {
@@ -63,7 +98,7 @@
         count.textContent = "";
         return;
       }
-      at = (n + photos.length) % photos.length;
+      at = goal = (n + photos.length) % photos.length;
       const name = photos[at];
       const img = new Image();
       img.alt = `${p.title || p.medium || "Project"}, photo ${at + 1}`;
@@ -87,10 +122,22 @@
       count.textContent = `${pad(at + 1)} / ${pad(photos.length)}`;
     }
     show(0);
-    frame.addEventListener("click", () => show(at + 1));
-    el.querySelector(".prev")?.addEventListener("click", () => show(at - 1));
-    el.querySelector(".next")?.addEventListener("click", () => show(at + 1));
-    p._show = show;
+    // Tap/click the photo or use the arrows; on phones, swipe left or right.
+    let swiped = false;
+    frame.addEventListener("click", () => { if (swiped) { swiped = false; return; } slideTo(goal + 1, 1); });
+    el.querySelector(".prev")?.addEventListener("click", () => slideTo(goal - 1, -1));
+    el.querySelector(".next")?.addEventListener("click", () => slideTo(goal + 1, 1));
+    let sx = 0, sy = 0;
+    frame.addEventListener("touchstart", e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    frame.addEventListener("touchend", e => {
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        swiped = true;
+        slideTo(goal + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+    // Thumbnails in the "More" panel jump to a photo, sliding in the right direction.
+    p._show = n => { if (n !== goal) slideTo(n, n > goal ? 1 : -1); };
   });
 
   /* ---------- "More" panel ---------- */

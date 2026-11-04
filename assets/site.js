@@ -110,8 +110,11 @@ window.SITE = {
   // Smooth page changes: fade the page out before following a link
   // to another page on the site (the next page fades itself in).
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Browsers with built-in page cross-fades handle the change themselves.
+  const nativeFade = "onpagereveal" in window;
+  if (nativeFade) document.documentElement.classList.add("vt");
   document.addEventListener("click", e => {
-    if (e.defaultPrevented || reduceMotion || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (e.defaultPrevented || reduceMotion || nativeFade || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const a = e.target.closest("a[href]");
     if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
     const url = new URL(a.href, location.href);

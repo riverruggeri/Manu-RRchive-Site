@@ -7,9 +7,24 @@ html { background: #111111; }
 body { animation: page-in 0.55s ease both; }
 html.leaving body { opacity: 0; transition: opacity 0.32s ease; }
 @keyframes page-in { from { opacity: 0; } }
+
+/* Pages with the full-screen photo (home and portfolio): the photo stays
+   put and only the text and icons fade, so going between them has no
+   dark or grey gap. */
+body.photo-page { animation: none; }
+body.photo-page > :not(canvas):not(#fallback):not(.shade) { animation: page-in 0.55s ease both; }
+html.leaving body.photo-page { opacity: 1; }
+html.leaving body.photo-page > :not(canvas):not(#fallback):not(.shade) { opacity: 0; transition: opacity 0.3s ease; }
+
+/* Browsers that can cross-fade between pages on their own (Chrome, Edge,
+   Safari) do that instead, so one page melts into the next. */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.5s; }
+html.vt body, html.vt body.photo-page > * { animation: none; }
+
 @media (prefers-reduced-motion: reduce) {
-  body { animation: none; }
-  html.leaving body { transition: none; }
+  body, body.photo-page > * { animation: none !important; }
+  html.leaving body, html.leaving body.photo-page > * { transition: none; }
 }
 :root {
   --ink: #ffffff;

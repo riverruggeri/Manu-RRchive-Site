@@ -17,8 +17,8 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - Years set to 2026 for new projects are guesses unless River said otherwise.
 
 ## To do next session (River's list, 2026-11-04)
-1. Smooth the transition between the homepage and the portfolio page: take out the grey screen that shows during the switch.
-2. Smooth photo changes on the project pages: make the slideshow photos slide sideways (swipe) instead of switching instantly.
+1. DONE: Home/Portfolio switch keeps the photo on screen (no grey gap); browsers with built-in page cross-fades use them.
+2. DONE: slideshow photos slide sideways; swipe on phones.
 3. Fix the Commissions page (ask River what's wrong with it first).
 
 ## How things are set up

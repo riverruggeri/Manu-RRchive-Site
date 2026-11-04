@@ -14,16 +14,17 @@
 window.startRipple = function (opts) {
   const canvas = opts.canvas;
   canvas.style.opacity = "0";
-  canvas.style.transition = "opacity 0.7s ease";
+  canvas.style.transition = "opacity 0.4s ease";
   const fallback = opts.fallback;
+  // Show the still photo straight away, so there's never an empty screen
+  // while the ripple effect starts up on top of it.
+  fallback.hidden = false;
+  fallback.style.backgroundImage = `url("${opts.image}")`;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const gl = canvas.getContext("webgl2", { antialias: false, premultipliedAlpha: false });
 
   function useFallback() {
     canvas.hidden = true;
-    fallback.style.animation = "page-in 0.7s ease both";
-    fallback.hidden = false;
-    fallback.style.backgroundImage = `url("${opts.image}")`;
   }
   if (!gl || reduceMotion) { useFallback(); return; }
   const R = opts.ripple;

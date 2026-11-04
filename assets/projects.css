@@ -51,7 +51,7 @@ body { background: var(--bg); }
 .more:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .show { position: relative; width: 100%; display: flex; justify-content: center; }
-.frame { position: relative; cursor: pointer; will-change: transform; max-width: 100%; }
+.frame { position: relative; cursor: pointer; will-change: transform; max-width: 100%; touch-action: pan-y; }
 .frame img {
   display: block;
   max-width: min(680px, calc(100vw - 32px));
