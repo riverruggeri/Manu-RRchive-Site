@@ -53,6 +53,20 @@
   .info a { text-decoration: none; }
   .info a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
+  /* Computers: everything fits on one screen, no scrolling */
+  @media (min-width: 901px) {
+    body { overflow: hidden; }
+    .about { height: 100vh; height: 100dvh; min-height: 0; padding-block: 0; }
+    .hero img, .hero .photo-missing { height: 100vh; height: 100dvh; }
+    .side { padding-top: clamp(56px, 11vh, 116px); gap: clamp(18px, 4.5vh, 56px); padding-bottom: 52px; }
+    .portrait { aspect-ratio: auto; height: min(34vh, 100%); max-height: 300px; }
+    .intro { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr); }
+    .bio { font-size: clamp(11px, 1.45vh, 13px); }
+    .info { margin-top: clamp(-30px, -2.5vh, -10px); }
+    .info h2 { margin-bottom: clamp(8px, 1.8vh, 18px); }
+    .info .services ul { gap: clamp(6px, 1.6vh, 16px); }
+  }
+
   @media (max-width: 900px) {
     .about { grid-template-columns: 1fr; gap: 0; }
     .hero { margin-left: 0; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); }
