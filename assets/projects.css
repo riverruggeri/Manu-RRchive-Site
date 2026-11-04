@@ -28,7 +28,8 @@ body { background: var(--bg); }
 }
 
 .projects { display: flex; flex-direction: column; gap: clamp(70px, 9vw, 140px); margin-top: clamp(40px, 6vw, 90px); }
-.project { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.project { display: flex; flex-direction: column; align-items: center; gap: 56px; }
+.info, .count { position: relative; z-index: 1; }
 .info {
   width: 100%;
   display: grid;
@@ -51,12 +52,12 @@ body { background: var(--bg); }
 .frame { position: relative; cursor: pointer; will-change: transform; max-width: 100%; }
 .frame img {
   display: block;
-  max-width: min(100%, 680px);
+  max-width: min(680px, calc(100vw - 32px));
   max-height: 78vh;
   width: auto; height: auto;
   user-select: none; -webkit-user-drag: none;
 }
-.frame.portrait img { max-width: min(100%, 440px); }
+.frame.portrait img { max-width: min(440px, calc(100vw - 32px)); }
 .frame .photo-missing { width: min(86vw, 560px); aspect-ratio: 4 / 3; max-width: 100%; }
 .frame.portrait .photo-missing { width: min(70vw, 400px); aspect-ratio: 3 / 4; }
 .standin-note {

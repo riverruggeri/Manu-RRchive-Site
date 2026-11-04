@@ -186,14 +186,22 @@
       // 0 when the photo's middle is at the middle of the screen, 1 when it is just
       // peeking in at the bottom (enter) or almost gone at the top (leave).
       const mid = box.top + box.height / 2, reach = vh / 2 + h / 2;
+      const top = box.top + (box.height - h) / 2, bottom = top + h;
       const enter = ease(Math.min(1, Math.max(0, (mid - vh / 2) / reach)));
       const leave = ease(Math.min(1, Math.max(0, (vh / 2 - mid) / reach)));
       if (enter === 0 && leave === 0) { f.style.transform = ""; continue; }
-      const sx = w * STRETCH_X * warp, sy = h * STRETCH_Y * warp;
+      // Never stretch past the space around the photo, so it can't cover the
+      // project name above it or the photo counter below it.
+      const proj = f.closest(".project");
+      const infoBottom = proj.querySelector(".info").getBoundingClientRect().bottom;
+      const countTop = proj.querySelector(".count").getBoundingClientRect().top;
+      const roomAbove = Math.max(0, top - infoBottom - 6), roomBelow = Math.max(0, countTop - bottom - 4);
+      const sx = w * STRETCH_X * warp;
+      const syUp = Math.min(h * STRETCH_Y * warp, roomAbove), syDown = Math.min(h * STRETCH_Y * warp, roomBelow);
       f.style.transform = cornerPin(w, h,
-        [-sx * enter, -sy * enter],
+        [-sx * enter, -syUp * enter],
         [w, 0],
-        [w + sx * leave, h + sy * leave],
+        [w + sx * leave, h + syDown * leave],
         [0, h]);
     }
   }
