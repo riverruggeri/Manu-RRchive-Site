@@ -179,6 +179,7 @@
   frames.forEach(f => { f.style.transformOrigin = "0 0"; });
   let queued = false;
   const OTHER_CORNER = 0.55;   // how far the second corner on the same side sticks out, compared with the first
+  const PORTRAIT_WARP = 0.6;  // tall photos stretch this much compared with wide ones (1 = the same)
   const MIN_GAP = 64;          // the closest a photo counter may get to the next project's name, in pixels
 
   function update() {
@@ -197,7 +198,7 @@
       const mid = box.top + box.height / 2, reach = vh / 2 + h / 2;
       const enter = h ? ease(Math.min(1, Math.max(0, (mid - vh / 2) / reach))) : 0;
       const leave = h ? ease(Math.min(1, Math.max(0, (vh / 2 - mid) / reach))) : 0;
-      const sy = h * STRETCH_Y * warp;
+      const sy = h * STRETCH_Y * warp * (h > w ? PORTRAIT_WARP : 1);
       return {
         f, info, count, w, h, enter, leave,
         up: sy * enter, down: sy * leave,
