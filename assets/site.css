@@ -1,0 +1,135 @@
+/* Shared look for every page: colors, type, menu, notes. */
+[hidden] { display: none !important; }
+:root {
+  --ink: #ffffff;
+  --ink-soft: rgba(255, 255, 255, 0.7);
+  --line: rgba(255, 255, 255, 0.18);
+  --shadow: rgba(0, 0, 0, 0.5);
+  --panel: rgba(20, 20, 20, 0.94);
+  --font-ui: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* Bottom corners: clock on the left, name on the right */
+.corner {
+  position: fixed;
+  font-size: 15px;
+  text-shadow: 0 1px 3px var(--shadow);
+  font-variant-numeric: tabular-nums;
+  z-index: 3;
+}
+.corner.left {
+  left: max(28px, calc(env(safe-area-inset-left, 0px) + 16px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+}
+.corner.right {
+  right: max(14px, calc(env(safe-area-inset-right, 0px) + 12px));
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+/* Menu: three dots, top right */
+.menu-btn {
+  position: fixed;
+  top: calc(22px + env(safe-area-inset-top, 0px));
+  right: max(22px, calc(env(safe-area-inset-right, 0px) + 16px));
+  display: flex;
+  gap: 6px;
+  padding: 10px 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  z-index: 20;
+  border-radius: 6px;
+}
+.menu-btn span {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 1px 4px var(--shadow);
+}
+.menu {
+  position: fixed;
+  top: calc(62px + env(safe-area-inset-top, 0px));
+  right: max(16px, calc(env(safe-area-inset-right, 0px) + 12px));
+  min-width: 210px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 6px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+}
+.menu a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 15px;
+  padding: 9px 12px;
+  border-radius: 4px;
+}
+.menu a:hover, .menu a:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
+.menu a[aria-current="page"] { color: var(--ink-soft); }
+.menu a[aria-current="page"]::before { content: "■ "; font-size: 10px; vertical-align: 2px; }
+
+/* Small note at the bottom of the screen */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 9px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  z-index: 30;
+  white-space: nowrap;
+}
+
+/* Square bullet used next to years and section labels */
+.sq { display: inline-flex; align-items: center; gap: 9px; }
+.sq::before { content: ""; width: 9px; height: 9px; background: currentColor; flex: none; }
+
+/* Box shown where a photo still needs to be added */
+.photo-missing {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: #2f2f2f;
+  color: var(--ink-soft);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
+/* On long, scrolling pages the corner labels would cover text on phones */
+@media (max-width: 700px) {
+  body.long .corner { display: none; }
+}
+
+@media (max-width: 520px) {
+  .corner { font-size: 13px; }
+  .corner.right { font-size: 14px; }
+}

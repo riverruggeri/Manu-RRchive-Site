@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manu Conceptual Art</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/projects.css">
+</head>
+<body class="long">
+<div class="page"></div>
+
+<script src="assets/site.js"></script>
+<script>
+/* =========================================================
+   PAGE SETTINGS
+   ========================================================= */
+window.PAGE = {
+  title: "Conceptual Art",
+  photoFolder: "images/conceptual-art/",   // where this page's photos live
+  scrollWarp: 1,   // how much photos bend while scrolling (0 = off, 1 = normal, 2 = strong)
+  emptyText: "New conceptual work is on the way."   // shown while there are no projects
+};
+
+/* =========================================================
+   PROJECTS — one block per project, shown top to bottom.
+
+   TO ADD A NEW PROJECT: copy this template, paste it where you
+   want it in the list below, and fill it in.
+
+   {
+     year: "2026",
+     title: "Project Name",           // leave "" if it has no title
+     medium: "Conceptual Art",
+     photos: ["photo-1.jpg", "photo-2.jpg"],   // files in images/conceptual-art/
+     details: ["2026", "Conceptual Art"],   // lines shown under "Details"
+     overview: `Write about the project here.
+
+     A blank line starts a new paragraph.`
+   },
+   ========================================================= */
+window.PROJECTS = [
+  // No projects yet. Copy the template above to add the first one.
+];
+</script>
+<script src="assets/projects.js"></script>
+</body>
+</html>

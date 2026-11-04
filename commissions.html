@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manu Commissions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* Layout: dark sheet on black, text column on the left, photos of past work on the right, form below */
+  :root {
+    --page: #0c0c0c;
+    --sheet: #222222;
+    --field: #2c2c2c;
+    --field-line: rgba(255, 255, 255, 0.22);
+    --ok: #9fe0a8;
+    --warn: #ffb4a3;
+  }
+  body { background: var(--page); }
+  .sheet {
+    max-width: 1280px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--sheet);
+    box-sizing: border-box;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: clamp(70px, 9vw, 110px) 120px;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 590px) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 90px);
+    padding-inline: clamp(0px, 3vw, 30px);
+  }
+  .copy { min-width: 0; }
+  h1 {
+    margin: 0 0 22px;
+    font-weight: 800;
+    font-size: clamp(44px, 6vw, 72px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .lead { margin: 0 0 14px; font-size: 16px; line-height: 1.4; max-width: 60ch; }
+  section { border-top: 1px solid var(--line); margin-top: 34px; padding-top: 30px; }
+  h2 { margin: 0 0 22px; font-size: 15px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; }
+  .services { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 16px; }
+  .services .from { color: var(--ink-soft); }
+  .how { margin: 0; font-size: 16px; line-height: 1.4; max-width: 62ch; }
+
+  .start {
+    display: inline-block;
+    margin-top: 40px;
+    background: #ffffff;
+    color: #111111;
+    border: 0;
+    border-radius: 4px;
+    padding: 12px 14px 11px;
+    font: inherit;
+    font-weight: 800;
+    font-size: clamp(20px, 2.4vw, 28px);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  }
+  .start:hover { background: #e9e9e9; }
+
+  /* Photos of past work */
+  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-content: start; }
+  .gallery img { width: 100%; height: auto; display: block; }
+  .gallery img:first-child { grid-column: span 2; }
+
+  /* Form */
+  form { display: grid; gap: 16px; margin-top: 8px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label { display: grid; gap: 6px; font-size: 13px; }
+  label .hint { color: var(--ink-soft); font-size: 12px; }
+  input, select, textarea {
+    font: inherit; font-size: 15px;
+    color: var(--ink);
+    background: var(--field);
+    border: 1px solid var(--field-line);
+    border-radius: 4px;
+    padding: 10px 11px;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+  textarea { min-height: 130px; resize: vertical; line-height: 1.4; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--ink); outline-offset: 1px; border-color: transparent; }
+  .send {
+    justify-self: start;
+    background: #ffffff; color: #111111; border: 0; border-radius: 4px;
+    padding: 11px 18px; font: inherit; font-weight: 600; font-size: 15px; cursor: pointer;
+  }
+  .send:disabled { opacity: 0.6; cursor: default; }
+  .status { margin: 0; font-size: 14px; line-height: 1.45; }
+  .status.ok { color: var(--ok); }
+  .status.warn { color: var(--warn); }
+  .direct { font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
+  .direct strong { color: var(--ink); font-weight: 600; user-select: all; }
+  .copy-btn {
+    background: none; border: 1px solid var(--field-line); color: var(--ink);
+    font: inherit; font-size: 12px; padding: 3px 8px; border-radius: 3px; cursor: pointer; margin-left: 6px;
+  }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .gallery { order: -1; }
+  }
+  @media (max-width: 560px) {
+    .row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body class="long">
+
+<div class="sheet">
+  <div class="layout">
+    <div class="copy">
+      <h1>COMMISSIONS</h1>
+      <p class="lead" id="tagline"></p>
+      <p class="lead" id="intro"></p>
+
+      <section>
+        <h2>What I take on</h2>
+        <ul class="services" id="services"></ul>
+      </section>
+
+      <section>
+        <h2>How it works</h2>
+        <p class="how" id="how"></p>
+      </section>
+
+      <a class="start" href="#start">START A COMMISSION</a>
+
+      <section id="start">
+        <h2>Start a commission</h2>
+        <form id="form" novalidate>
+          <div class="row">
+            <label for="f-name">Name<input id="f-name" name="name" autocomplete="name" required></label>
+            <label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+          </div>
+          <label for="f-service">What kind of piece?<select id="f-service" name="service"></select></label>
+          <label for="f-idea">Your idea
+            <span class="hint">What you'd like made or changed, the look you're after, and any garments you already have.</span>
+            <textarea id="f-idea" name="idea" required></textarea>
+          </label>
+          <label for="f-refs">References
+            <span class="hint">Links to photos, Pinterest boards or Instagram posts.</span>
+            <input id="f-refs" name="references">
+          </label>
+          <div class="row">
+            <label for="f-size">Size or measurements<input id="f-size" name="size"></label>
+            <label for="f-budget">Budget<input id="f-budget" name="budget" inputmode="decimal"></label>
+          </div>
+          <div class="row">
+            <label for="f-when">Needed by<input id="f-when" name="needed_by" type="date"></label>
+            <label for="f-where">Shipping or local pickup?
+              <select id="f-where" name="delivery">
+                <option>Ship it to me</option>
+                <option>Local pickup</option>
+                <option>Not sure yet</option>
+              </select>
+            </label>
+          </div>
+          <button class="send" type="submit" id="send">Send request</button>
+          <p class="status" id="status" role="status"></p>
+        </form>
+        <p class="direct">Prefer email? Write to <strong id="email"></strong><button class="copy-btn" type="button" id="copyEmail">Copy</button></p>
+      </section>
+    </div>
+
+    <div class="gallery" id="gallery" aria-label="Past commissions"></div>
+  </div>
+</div>
+
+<div class="corner left" data-clock aria-label="Current time"></div>
+<a class="corner right" href="index.html">Manu Clothing</a>
+
+<script src="assets/site.js"></script>
+<script>
+/* =========================================================
+   PAGE SETTINGS
+   ========================================================= */
+const PAGE = {
+  tagline: "Custom garments, made from what already exists.",
+  intro: "I reconstruct, distress, and rework used or discarded garments into one-of-a-kind pieces, built around you.",
+
+  services: [
+    { name: "Repair / Reimagine Garments", from: "$50" },
+    { name: "Custom Garment Commissions",  from: "$100" },
+    { name: "Custom Textile Commissions",  from: "$65" }
+  ],
+
+  how: "Email me your idea and references. We settle the details, I send a quote, and a 50% deposit starts the work. Your finished piece ships worldwide (local pickup welcome), with shipping quoted separately. The deposit is non-refundable once materials are bought or work has begun, and the balance is due before shipping.",
+
+  // Photos of past work, shown beside the text. Files go in images/commissions/.
+  // Photos that haven't been added yet are simply skipped.
+  photos: [
+    "images/commissions/FINALtif-1-copy.jpg",
+    "images/commissions/Photo-Feb-07-2025--9-47-58-AM.jpg",
+    "images/commissions/Photo-Feb-11-2025--9-43-07-AM.jpg",
+    "images/commissions/Photo-Feb-07-2025--9-43-19-AM.jpg",
+    "images/commissions/Photo-Feb-07-2025--9-32-40-AM.jpg"
+  ],
+
+  // Where form requests go. Leave "" to have the form open the
+  // visitor's email app with everything filled in. To get requests
+  // straight to your inbox instead, make a free form at formspree.io
+  // and paste its address here, e.g. "https://formspree.io/f/abcd1234".
+  formEndpoint: ""
+};
+
+/* ---------- Fill in the page ---------- */
+document.getElementById("tagline").textContent = PAGE.tagline;
+document.getElementById("intro").textContent = PAGE.intro;
+document.getElementById("how").textContent = PAGE.how;
+document.getElementById("services").innerHTML = PAGE.services
+  .map(s => `<li>${esc(s.name)}<span class="from">, from ${esc(s.from)}</span></li>`).join("");
+document.getElementById("f-service").innerHTML = PAGE.services
+  .map(s => `<option>${esc(s.name)}</option>`).join("") + "<option>Something else</option>";
+
+const email = SITE.contact.email;
+document.getElementById("email").textContent = email;
+document.getElementById("copyEmail").addEventListener("click", async e => {
+  try { await navigator.clipboard.writeText(email); showToast("Email address copied"); }
+  catch { const r = document.createRange(); r.selectNodeContents(document.getElementById("email")); getSelection().removeAllRanges(); getSelection().addRange(r); }
+});
+
+const gallery = document.getElementById("gallery");
+PAGE.photos.forEach(src => {
+  const img = new Image();
+  img.alt = "Past commission";
+  img.loading = "lazy";
+  img.onerror = () => img.remove();
+  img.src = src;
+  gallery.appendChild(img);
+});
+
+/* ---------- Form ---------- */
+const form = document.getElementById("form");
+const status = document.getElementById("status");
+const send = document.getElementById("send");
+const fieldNames = {
+  name: "Name", email: "Email", service: "Piece", idea: "Idea", references: "References",
+  size: "Size or measurements", budget: "Budget", needed_by: "Needed by", delivery: "Delivery"
+};
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  status.className = "status";
+  const data = Object.fromEntries(new FormData(form));
+  const missing = [];
+  if (!data.name.trim()) missing.push("your name");
+  if (!/^\S+@\S+\.\S+$/.test(data.email.trim())) missing.push("an email address I can reply to");
+  if (!data.idea.trim()) missing.push("a short description of your idea");
+  if (missing.length) {
+    status.classList.add("warn");
+    status.textContent = "Please add " + missing.join(", ") + ".";
+    return;
+  }
+
+  if (!PAGE.formEndpoint) {
+    // No form service yet: open the visitor's email app with the request written out.
+    const body = Object.entries(data).filter(([, v]) => String(v).trim())
+      .map(([k, v]) => `${fieldNames[k] || k}: ${v}`).join("\n");
+    const subject = `Commission request: ${data.service}`;
+    location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    status.textContent = "Your email app should open with the request filled in. If it doesn't, email " + email + " directly.";
+    return;
+  }
+
+  send.disabled = true;
+  send.textContent = "Sending…";
+  try {
+    const res = await fetch(PAGE.formEndpoint, {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, _subject: `Commission request: ${data.service}` })
+    });
+    if (!res.ok) throw new Error(res.status);
+    form.reset();
+    status.classList.add("ok");
+    status.textContent = "Request sent. I'll reply by email.";
+  } catch {
+    status.classList.add("warn");
+    status.textContent = "The request didn't go through. Please try again, or email " + email + " directly.";
+  } finally {
+    send.disabled = false;
+    send.textContent = "Send request";
+  }
+});
+</script>
+</body>
+</html>

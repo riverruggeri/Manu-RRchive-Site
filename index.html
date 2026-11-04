@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manu Clothing</title>
+<meta name="description" content="Manu Clothing and R aRchive: one-of-one garments reworked from used and discarded clothing by River Ruggeri.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* Layout: full-bleed rippling photo; brand name, line and main links stacked at the lower left */
+  :root { --fallback-bg: #1b1d17; }
+  html, body { height: 100%; }
+  body { overflow: hidden; background: var(--fallback-bg); }
+
+  #stage, #fallback { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #fallback { background: var(--fallback-bg) center / cover no-repeat; }
+  .shade {
+    position: fixed; inset: 0; pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 45%, rgba(0, 0, 0, 0) 70%);
+  }
+
+  .brand {
+    position: fixed;
+    left: 0; right: 0;
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding-left: max(28px, calc(env(safe-area-inset-left, 0px) + 16px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex; flex-direction: column; align-items: flex-start; gap: 18px;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+  }
+  .wordmark {
+    margin: 0;
+    font-weight: 800;
+    font-size: clamp(84px, 21vw, 340px);
+    line-height: 0.78;
+    letter-spacing: -0.055em;
+    margin-left: -0.04em;
+  }
+  .line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; font-size: clamp(16px, 1.6vw, 20px); }
+  .line strong { font-weight: 800; letter-spacing: -0.01em; }
+  .line span { color: rgba(255, 255, 255, 0.85); }
+
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .links a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 9px 13px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    color: var(--ink);
+    background: rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    text-shadow: none;
+  }
+  .links a.main { background: #ffffff; color: #111111; border-color: #ffffff; }
+  .links a:hover { background: rgba(255, 255, 255, 0.18); }
+  .links a.main:hover { background: #e9e9e9; }
+  .links a .soon { font-weight: 500; opacity: 0.7; font-size: 12px; margin-left: 4px; }
+
+  @media (max-width: 520px) {
+    .brand { bottom: calc(52px + env(safe-area-inset-bottom, 0px)); }
+    .links a { font-size: 14px; padding: 8px 11px 7px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stage" aria-hidden="true"></canvas>
+<div id="fallback" hidden></div>
+<div class="shade" aria-hidden="true"></div>
+
+<main class="brand">
+  <h1 class="wordmark" id="wordmark"></h1>
+  <p class="line"><strong id="lineName"></strong><span id="lineText"></span></p>
+  <nav class="links" id="links" aria-label="Main"></nav>
+</main>
+
+<div class="corner left" data-clock aria-label="Current time"></div>
+<a class="corner right" id="insta" target="_blank" rel="noopener"></a>
+
+<script src="assets/site.js"></script>
+<script src="assets/ripple.js"></script>
+<script>
+/* =========================================================
+   PAGE SETTINGS
+   ========================================================= */
+const PAGE = {
+  wordmark: "MANU",
+  lineName: "R aRchive",
+  lineText: "One-of-one garments, reworked from what already exists.",
+
+  // Main links. "soon: true" marks something not open yet.
+  links: [
+    { label: "Shop",        link: "shop.html",        soon: true },
+    { label: "Start a commission", link: "commissions.html", main: true },
+    { label: "Portfolio",   link: "portfolio.html" },
+    { label: "About",       link: "about.html" }
+  ],
+
+  // Background photo and ripple. Same settings as the portfolio page.
+  background: "images/home-bg.jpg",
+  ripple: {
+    distortionX: 2,
+    distortionY: 2,
+    scale: 4.3,
+    speed: 4,
+    direction: 270,
+    mouseInteraction: true,
+    mouseSensitivity: 50
+  }
+};
+
+/* ---------- Fill in the page ---------- */
+document.getElementById("wordmark").textContent = PAGE.wordmark;
+document.getElementById("lineName").textContent = PAGE.lineName;
+document.getElementById("lineText").textContent = PAGE.lineText;
+document.getElementById("links").innerHTML = PAGE.links.map(l =>
+  `<a href="${esc(l.link)}"${l.main ? ' class="main"' : ""}${l.soon ? ` data-soon="1" data-label="${esc(l.label)}"` : ""}>${esc(l.label)}${l.soon ? '<span class="soon">soon</span>' : ""}</a>`).join("");
+const insta = document.getElementById("insta");
+insta.href = `https://www.instagram.com/${SITE.contact.instagram}/`;
+insta.textContent = "@" + SITE.contact.instagram;
+
+startRipple({
+  canvas: document.getElementById("stage"),
+  fallback: document.getElementById("fallback"),
+  image: PAGE.background,
+  ripple: PAGE.ripple
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+Put these photos in this folder (same names as in Cargo). The page shows a box
+named after each one until it's added.
+
+.
+  // Photos that haven't been added yet are simply skipped.
+  photos: [
+    
+FINALtif-1-copy.jpg
+Photo-Feb-07-2025--9-47-58-AM.jpg
+Photo-Feb-11-2025--9-43-07-AM.jpg
+Photo-Feb-07-2025--9-43-19-AM.jpg
+Photo-Feb-07-2025--9-32-40-AM.jpg

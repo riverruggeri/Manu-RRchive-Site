@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>About River Ruggeri</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* Layout: tall photo on the left; portrait, bio, contact and services on the right */
+  :root { --page: #111111; }
+  body { background: var(--page); }
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    gap: clamp(28px, 8vw, 160px);
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0 90px;
+  }
+  .hero { margin-left: clamp(0px, 8vw, 135px); min-width: 0; }
+  .hero img, .hero .photo-missing {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    display: block;
+    position: sticky;
+    top: 0;
+  }
+  .side { padding-top: clamp(70px, 9vw, 116px); padding-right: clamp(0px, 4vw, 56px); min-width: 0; display: flex; flex-direction: column; gap: 56px; }
+  .intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 38px); align-items: start; }
+  .portrait { position: relative; aspect-ratio: 1 / 0.98; }
+  .portrait img, .portrait .photo-missing { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .portrait .name {
+    position: absolute; right: 10px; bottom: 12px;
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-weight: 800; font-size: clamp(16px, 1.6vw, 22px); letter-spacing: 0.01em;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  }
+  .bio { margin: 0; font-size: 13px; line-height: 1.35; }
+  .bio p { margin: 0 0 0.9em; }
+  .marks { display: flex; justify-content: space-between; }
+  .marks span { width: 10px; height: 10px; background: var(--ink); opacity: 0.85; }
+  .info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; margin-top: -30px; }
+  .info h2 { margin: 0 0 18px; font-size: 16px; font-weight: 600; }
+  .info ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; font-size: 16px; }
+  .info .services ul { gap: 16px; font-weight: 600; }
+  .info a { text-decoration: none; }
+  .info a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 900px) {
+    .about { grid-template-columns: 1fr; gap: 0; }
+    .hero { margin-left: 0; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); }
+    .hero img, .hero .photo-missing { position: static; height: 70vh; }
+    .side { padding-top: 40px; padding-right: 0; }
+  }
+  @media (max-width: 560px) {
+    .intro, .info { grid-template-columns: 1fr; }
+    .info { margin-top: 0; }
+  }
+</style>
+</head>
+<body class="long">
+
+<main class="about">
+  <div class="hero" id="hero"></div>
+  <div class="side">
+    <div class="intro">
+      <div class="portrait" id="portrait"></div>
+      <div class="bio" id="bio"></div>
+    </div>
+    <div class="marks" aria-hidden="true"><span></span><span></span></div>
+    <div class="info">
+      <div>
+        <h2>Contact</h2>
+        <ul id="contact"></ul>
+      </div>
+      <div class="services">
+        <h2>Services</h2>
+        <ul id="services"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="corner left" data-clock aria-label="Current time"></div>
+<a class="corner right" href="index.html">Manu Clothing</a>
+
+<script src="assets/site.js"></script>
+<script>
+/* =========================================================
+   PAGE SETTINGS
+   Contact details (email, phone, Instagram) live in
+   assets/site.js so every page uses the same ones.
+   ========================================================= */
+const PAGE = {
+  name: "River Ruggeri",
+
+  // Big photo on the left, and the portrait. Files go in images/about/.
+  // Until they're added, the big photo uses the homepage photo.
+  heroPhoto: "images/about/Barbieri_Mateo_Mama-170.jpg",
+  heroStandIn: "images/home-bg.jpg",
+  portraitPhoto: "images/about/IMG_5331.jpg",
+  showNameOnPortrait: true,   // the vertical name over the portrait
+
+  bio: `I’m an artist based in Florida whose work focuses on fashion, textiles, and photography. A large part of my process involves transforming used or discarded garments into new pieces through reconstruction, distressing, fabric manipulation, and experimentation with texture and material.
+
+I’m interested in the history that clothing carries and how garments can be given a second life while becoming something entirely different. My work often explores themes of identity, materialism, and modern culture, while still trying to hold onto a sense of individuality and human connection.
+
+Photography extends this to the atmosphere, the emotion, and the feelings surrounding it. Overall, I aim to create work that feels raw, intentional, and honest rather than overly polished or perfect.`,
+
+  services: ["Custom Garment Commissions", "Custom Textile Commissions", "Repair / Reimagine Garments"]
+};
+
+/* ---------- Fill in the page ---------- */
+function photo(srcList, alt, missingText) {
+  const img = new Image();
+  img.alt = alt;
+  let i = 0;
+  img.onerror = () => {
+    i++;
+    if (srcList[i]) { img.src = srcList[i]; return; }
+    const box = document.createElement("div");
+    box.className = "photo-missing";
+    box.textContent = missingText;
+    img.replaceWith(box);
+  };
+  img.src = srcList[0];
+  return img;
+}
+document.getElementById("hero").appendChild(
+  photo([PAGE.heroPhoto, PAGE.heroStandIn].filter(Boolean), "River Ruggeri wearing a reworked denim piece", "Photo to add: " + PAGE.heroPhoto.split("/").pop()));
+const portrait = document.getElementById("portrait");
+portrait.appendChild(photo([PAGE.portraitPhoto], "Portrait of " + PAGE.name, "Portrait to add: " + PAGE.portraitPhoto.split("/").pop()));
+if (PAGE.showNameOnPortrait) portrait.insertAdjacentHTML("beforeend", `<span class="name">${esc(PAGE.name.toUpperCase())}</span>`);
+
+document.getElementById("bio").innerHTML = PAGE.bio.split(/\n\s*\n/).map(p => `<p>${esc(p.trim())}</p>`).join("");
+
+const c = SITE.contact;
+document.getElementById("contact").innerHTML = [
+  c.phone && `<li><a href="tel:${esc(c.phone.replace(/[^\d+]/g, ""))}">${esc(c.phone)}</a></li>`,
+  c.email && `<li><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></li>`,
+  c.instagram && `<li><a href="https://www.instagram.com/${esc(c.instagram)}/" target="_blank" rel="noopener">@${esc(c.instagram)}</a></li>`
+].filter(Boolean).join("");
+document.getElementById("services").innerHTML = PAGE.services
+  .map(s => `<li><a href="commissions.html">${esc(s)}</a></li>`).join("");
+</script>
+</body>
+</html>
