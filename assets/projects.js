@@ -151,13 +151,13 @@
   /* ---------- Scroll warp ----------
      A flat corner stretch tied to where the photo is on screen.
      Coming up from the bottom, the top-left corner is pulled up and
-     out, and eases back as the photo comes fully into view. Leaving
+     out, and eases back until the photo is centered on screen. Leaving
      at the top, the bottom-right corner is pulled down and out. */
   const warp = PAGE.scrollWarp ?? 1;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !warp || !frames.length) return;
 
-  const STRETCH_X = 0.05;   // how far the corner pulls sideways, as a share of the photo's width
-  const STRETCH_Y = 0.14;   // how far it pulls up or down, as a share of the photo's height
+  const STRETCH_X = 0.065;   // how far the corner pulls sideways, as a share of the photo's width
+  const STRETCH_Y = 0.18;   // how far it pulls up or down, as a share of the photo's height
   const ease = t => t * t * (3 - 2 * t);
 
   // CSS transform that moves the photo's four corners to new spots.
@@ -183,9 +183,11 @@
       const box = f.parentElement.getBoundingClientRect();
       const w = f.offsetWidth, h = f.offsetHeight;
       if (!w || !h || box.bottom < -50 || box.top > vh + 50) continue;
-      const top = box.top + (box.height - h) / 2, bottom = top + h;
-      const enter = ease(Math.min(1, Math.max(0, (bottom - vh) / h)));   // 1 = just peeking in at the bottom
-      const leave = ease(Math.min(1, Math.max(0, -top / h)));            // 1 = almost gone at the top
+      // 0 when the photo's middle is at the middle of the screen, 1 when it is just
+      // peeking in at the bottom (enter) or almost gone at the top (leave).
+      const mid = box.top + box.height / 2, reach = vh / 2 + h / 2;
+      const enter = ease(Math.min(1, Math.max(0, (mid - vh / 2) / reach)));
+      const leave = ease(Math.min(1, Math.max(0, (vh / 2 - mid) / reach)));
       if (enter === 0 && leave === 0) { f.style.transform = ""; continue; }
       const sx = w * STRETCH_X * warp, sy = h * STRETCH_Y * warp;
       f.style.transform = cornerPin(w, h,
