@@ -178,35 +178,62 @@
 
   frames.forEach(f => { f.style.transformOrigin = "0 0"; });
   let queued = false;
+  const OTHER_CORNER = 0.55;   // how far the second corner on the same side sticks out, compared with the first
+  const MIN_GAP = 64;          // the closest a photo counter may get to the next project's name, in pixels
+
   function update() {
     queued = false;
     const vh = innerHeight;
-    for (const f of frames) {
+    // Pass 1: work out how far each photo would stretch.
+    const items = frames.map(f => {
+      const proj = f.closest(".project");
+      const info = proj.querySelector(".info"), count = proj.querySelector(".count");
       // Measure the untransformed box (the slideshow row around the photo).
       const box = f.parentElement.getBoundingClientRect();
       const w = f.offsetWidth, h = f.offsetHeight;
-      if (!w || !h || box.bottom < -50 || box.top > vh + 50) continue;
+      const gap = parseFloat(getComputedStyle(proj).rowGap) || 0;
       // 0 when the photo's middle is at the middle of the screen, 1 when it is just
       // peeking in at the bottom (enter) or almost gone at the top (leave).
       const mid = box.top + box.height / 2, reach = vh / 2 + h / 2;
-      const top = box.top + (box.height - h) / 2, bottom = top + h;
-      const enter = ease(Math.min(1, Math.max(0, (mid - vh / 2) / reach)));
-      const leave = ease(Math.min(1, Math.max(0, (vh / 2 - mid) / reach)));
-      const proj = f.closest(".project");
-      const info = proj.querySelector(".info"), count = proj.querySelector(".count");
-      if (enter === 0 && leave === 0) {
+      const enter = h ? ease(Math.min(1, Math.max(0, (mid - vh / 2) / reach))) : 0;
+      const leave = h ? ease(Math.min(1, Math.max(0, (vh / 2 - mid) / reach))) : 0;
+      const sy = h * STRETCH_Y * warp;
+      return {
+        f, info, count, w, h, enter, leave,
+        up: sy * enter, down: sy * leave,
+        infoTop: box.top - gap - info.offsetHeight,
+        countBottom: box.bottom + gap + count.offsetHeight
+      };
+    });
+    // Pass 2: where a counter sliding down meets the next name sliding up,
+    // shrink both moves (and the stretch with them) to keep a clear gap.
+    for (let i = 0; i + 1 < items.length; i++) {
+      const a = items[i], b = items[i + 1];
+      const room = (b.infoTop - a.countBottom) - MIN_GAP;
+      const want = a.down + b.up;
+      if (want > room) {
+        const k = room > 0 && want > 0 ? room / want : 0;
+        a.down *= k; b.up *= k;
+      }
+    }
+    // Pass 3: apply.
+    for (const it of items) {
+      const { f, info, count, w, h, enter, leave } = it;
+      if (!w || !h || (it.up < 0.5 && it.down < 0.5)) {
         f.style.transform = info.style.transform = count.style.transform = "";
         continue;
       }
-      const sx = w * STRETCH_X * warp, sy = h * STRETCH_Y * warp;
+      const sx = w * STRETCH_X * warp;
+      // Coming in: both left corners stick out (the top one more), the top-left also pulls up.
+      // Going out: the mirror, on the right side.
       f.style.transform = cornerPin(w, h,
-        [-sx * enter, -sy * enter],
-        [w, 0],
-        [w + sx * leave, h + sy * leave],
-        [0, h]);
+        [-sx * enter, -it.up],
+        [w + sx * leave * OTHER_CORNER, 0],
+        [w + sx * leave, h + it.down],
+        [-sx * enter * OTHER_CORNER, h]);
       // Keep the name and counter just clear of the stretched corners.
-      info.style.transform = enter ? `translateY(${(-sy * enter).toFixed(1)}px)` : "";
-      count.style.transform = leave ? `translateY(${(sy * leave).toFixed(1)}px)` : "";
+      info.style.transform = it.up >= 0.5 ? `translateY(${(-it.up).toFixed(1)}px)` : "";
+      count.style.transform = it.down >= 0.5 ? `translateY(${it.down.toFixed(1)}px)` : "";
     }
   }
   function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
