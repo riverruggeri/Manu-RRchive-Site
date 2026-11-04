@@ -152,12 +152,15 @@
      A flat corner stretch tied to where the photo is on screen.
      Coming up from the bottom, the top-left corner is pulled up and
      out, and eases back until the photo is centered on screen. Leaving
-     at the top, the bottom-right corner is pulled down and out. */
+     at the top, the bottom-right corner is pulled down and out.
+     The project name moves up out of the way of the stretched corner
+     and slides back down to the photo as it straightens (the photo
+     counter does the same below). */
   const warp = PAGE.scrollWarp ?? 1;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !warp || !frames.length) return;
 
-  const STRETCH_X = 0.065;   // how far the corner pulls sideways, as a share of the photo's width
-  const STRETCH_Y = 0.18;   // how far it pulls up or down, as a share of the photo's height
+  const STRETCH_X = 0.08;   // how far the corner pulls sideways, as a share of the photo's width
+  const STRETCH_Y = 0.24;   // how far it pulls up or down, as a share of the photo's height
   const ease = t => t * t * (3 - 2 * t);
 
   // CSS transform that moves the photo's four corners to new spots.
@@ -189,20 +192,21 @@
       const top = box.top + (box.height - h) / 2, bottom = top + h;
       const enter = ease(Math.min(1, Math.max(0, (mid - vh / 2) / reach)));
       const leave = ease(Math.min(1, Math.max(0, (vh / 2 - mid) / reach)));
-      if (enter === 0 && leave === 0) { f.style.transform = ""; continue; }
-      // Never stretch past the space around the photo, so it can't cover the
-      // project name above it or the photo counter below it.
       const proj = f.closest(".project");
-      const infoBottom = proj.querySelector(".info").getBoundingClientRect().bottom;
-      const countTop = proj.querySelector(".count").getBoundingClientRect().top;
-      const roomAbove = Math.max(0, top - infoBottom - 6), roomBelow = Math.max(0, countTop - bottom - 4);
-      const sx = w * STRETCH_X * warp;
-      const syUp = Math.min(h * STRETCH_Y * warp, roomAbove), syDown = Math.min(h * STRETCH_Y * warp, roomBelow);
+      const info = proj.querySelector(".info"), count = proj.querySelector(".count");
+      if (enter === 0 && leave === 0) {
+        f.style.transform = info.style.transform = count.style.transform = "";
+        continue;
+      }
+      const sx = w * STRETCH_X * warp, sy = h * STRETCH_Y * warp;
       f.style.transform = cornerPin(w, h,
-        [-sx * enter, -syUp * enter],
+        [-sx * enter, -sy * enter],
         [w, 0],
-        [w + sx * leave, h + syDown * leave],
+        [w + sx * leave, h + sy * leave],
         [0, h]);
+      // Keep the name and counter just clear of the stretched corners.
+      info.style.transform = enter ? `translateY(${(-sy * enter).toFixed(1)}px)` : "";
+      count.style.transform = leave ? `translateY(${(sy * leave).toFixed(1)}px)` : "";
     }
   }
   function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }

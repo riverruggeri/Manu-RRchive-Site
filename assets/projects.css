@@ -27,8 +27,10 @@ body { background: var(--bg); }
   overflow-wrap: anywhere;
 }
 
-.projects { display: flex; flex-direction: column; gap: clamp(70px, 9vw, 140px); margin-top: clamp(40px, 6vw, 90px); }
-.project { display: flex; flex-direction: column; align-items: center; gap: 56px; }
+/* Extra space above the first project so it can scroll up from the bottom of the screen like the rest */
+.projects { display: flex; flex-direction: column; gap: clamp(150px, 20vh, 240px); margin-top: 48vh; }
+.project { display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.info, .count { will-change: transform; }
 .info, .count { position: relative; z-index: 1; }
 .info {
   width: 100%;
