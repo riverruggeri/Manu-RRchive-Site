@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Start a Commission</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* Layout: same dark sheet as Commissions; one narrow column with the request form */
+  :root {
+    --page: #0c0c0c;
+    --sheet: #222222;
+    --field: #2c2c2c;
+    --field-line: rgba(255, 255, 255, 0.22);
+    --ok: #9fe0a8;
+    --warn: #ffb4a3;
+  }
+  body { background: var(--page); }
+  .sheet {
+    max-width: 1280px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--sheet);
+    box-sizing: border-box;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: clamp(80px, 10vw, 110px) 90px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .back { display: inline-block; font-size: 14px; color: var(--ink-soft); text-decoration: none; margin-bottom: 22px; }
+  .back:hover { color: var(--ink); }
+  h1 {
+    margin: 0 0 12px;
+    font-weight: 800;
+    font-size: clamp(38px, 5vw, 60px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .lead { margin: 0 0 28px; font-size: 16px; line-height: 1.4; color: var(--ink-soft); max-width: 56ch; }
+
+  form { display: grid; gap: 16px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label { display: grid; gap: 6px; font-size: 13px; }
+  label .hint { color: var(--ink-soft); font-size: 12px; }
+  input, select, textarea {
+    font: inherit; font-size: 15px;
+    color: var(--ink);
+    background: var(--field);
+    border: 1px solid var(--field-line);
+    border-radius: 4px;
+    padding: 10px 11px;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+  textarea { min-height: 130px; resize: vertical; line-height: 1.4; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--ink); outline-offset: 1px; border-color: transparent; }
+  .send {
+    justify-self: start;
+    background: #ffffff; color: #111111; border: 0; border-radius: 4px;
+    padding: 12px 18px; font: inherit; font-weight: 800; font-size: 16px; cursor: pointer;
+  }
+  .send:hover { background: #e9e9e9; }
+  .send:disabled { opacity: 0.6; cursor: default; }
+  .status { margin: 0; font-size: 14px; line-height: 1.45; }
+  .status.ok { color: var(--ok); }
+  .status.warn { color: var(--warn); }
+  .direct { margin-top: 26px; font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
+  .direct strong { color: var(--ink); font-weight: 600; user-select: all; }
+  .copy-btn {
+    background: none; border: 1px solid var(--field-line); color: var(--ink);
+    font: inherit; font-size: 12px; padding: 3px 8px; border-radius: 3px; cursor: pointer; margin-left: 6px;
+  }
+  @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="long">
+
+<div class="sheet">
+  <div class="wrap">
+    <a class="back" href="commissions.html">← Commissions</a>
+    <h1>START A COMMISSION</h1>
+    <p class="lead">Tell me about the piece you have in mind. I'll reply by email to settle the details and send a quote.</p>
+        <form id="form" novalidate>
+          <div class="row">
+            <label for="f-name">Name<input id="f-name" name="name" autocomplete="name" required></label>
+            <label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+          </div>
+          <label for="f-service">What kind of piece?<select id="f-service" name="service"></select></label>
+          <label for="f-idea">Your idea
+            <span class="hint">What you'd like made or changed, the look you're after, and any garments you already have.</span>
+            <textarea id="f-idea" name="idea" required></textarea>
+          </label>
+          <label for="f-refs">References
+            <span class="hint">Links to photos, Pinterest boards or Instagram posts.</span>
+            <input id="f-refs" name="references">
+          </label>
+          <div class="row">
+            <label for="f-size">Size or measurements<input id="f-size" name="size"></label>
+            <label for="f-budget">Budget<input id="f-budget" name="budget" inputmode="decimal"></label>
+          </div>
+          <div class="row">
+            <label for="f-when">Needed by<input id="f-when" name="needed_by" type="date"></label>
+            <label for="f-where">Shipping or local pickup?
+              <select id="f-where" name="delivery">
+                <option>Ship it to me</option>
+                <option>Local pickup</option>
+                <option>Not sure yet</option>
+              </select>
+            </label>
+          </div>
+          <button class="send" type="submit" id="send">Send request</button>
+          <p class="status" id="status" role="status"></p>
+        </form>
+        <p class="direct">Prefer email? Write to <strong id="email"></strong><button class="copy-btn" type="button" id="copyEmail">Copy</button></p>
+  </div>
+</div>
+
+<div class="corner left" data-clock aria-label="Current time"></div>
+<a class="corner right" href="index.html">Manu Clothing</a>
+
+<script src="assets/site.js"></script>
+<script>
+/* =========================================================
+   PAGE SETTINGS
+   ========================================================= */
+const PAGE = {
+  // Choices in "What kind of piece?" (keep these the same as the
+  // services on commissions.html).
+  services: ["Repair / Reimagine Garments", "Custom Garment Commissions", "Custom Textile Commissions"],
+
+  // Where requests go. Leave "" to have the form open the visitor's
+  // email app with everything filled in. To get requests straight to
+  // your inbox instead, make a free form at formspree.io and paste its
+  // address here, e.g. "https://formspree.io/f/abcd1234".
+  formEndpoint: ""
+};
+
+document.getElementById("f-service").innerHTML = PAGE.services
+  .map(s => `<option>${esc(s)}</option>`).join("") + "<option>Something else</option>";
+
+// Coming from a "Start a commission" link that names a service picks it.
+const pick = new URLSearchParams(location.search).get("service");
+if (pick) [...document.getElementById("f-service").options].forEach(o => { if (o.text === pick) o.selected = true; });
+
+const email = SITE.contact.email;
+document.getElementById("email").textContent = email;
+document.getElementById("copyEmail").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(email); showToast("Email address copied"); }
+  catch { const r = document.createRange(); r.selectNodeContents(document.getElementById("email")); getSelection().removeAllRanges(); getSelection().addRange(r); }
+});
+
+/* ---------- Form ---------- */
+const form = document.getElementById("form");
+const status = document.getElementById("status");
+const send = document.getElementById("send");
+const fieldNames = {
+  name: "Name", email: "Email", service: "Piece", idea: "Idea", references: "References",
+  size: "Size or measurements", budget: "Budget", needed_by: "Needed by", delivery: "Delivery"
+};
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  status.className = "status";
+  const data = Object.fromEntries(new FormData(form));
+  const missing = [];
+  if (!data.name.trim()) missing.push("your name");
+  if (!/^\S+@\S+\.\S+$/.test(data.email.trim())) missing.push("an email address I can reply to");
+  if (!data.idea.trim()) missing.push("a short description of your idea");
+  if (missing.length) {
+    status.classList.add("warn");
+    status.textContent = "Please add " + missing.join(", ") + ".";
+    return;
+  }
+
+  if (!PAGE.formEndpoint) {
+    // No form service yet: open the visitor's email app with the request written out.
+    const body = Object.entries(data).filter(([, v]) => String(v).trim())
+      .map(([k, v]) => `${fieldNames[k] || k}: ${v}`).join("\n");
+    const subject = `Commission request: ${data.service}`;
+    location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    status.textContent = "Your email app should open with the request filled in. If it doesn't, email " + email + " directly.";
+    return;
+  }
+
+  send.disabled = true;
+  send.textContent = "Sending…";
+  try {
+    const res = await fetch(PAGE.formEndpoint, {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, _subject: `Commission request: ${data.service}` })
+    });
+    if (!res.ok) throw new Error(res.status);
+    form.reset();
+    status.classList.add("ok");
+    status.textContent = "Request sent. I'll reply by email.";
+  } catch {
+    status.classList.add("warn");
+    status.textContent = "The request didn't go through. Please try again, or email " + email + " directly.";
+  } finally {
+    send.disabled = false;
+    send.textContent = "Send request";
+  }
+});
+</script>
+</body>
+</html>

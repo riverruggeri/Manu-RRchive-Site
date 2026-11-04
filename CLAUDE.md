@@ -5,7 +5,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 ## Direction
 - The site is brand-first: `index.html` is the Manu / ЯRchive homepage (no menu dots there, logo top-left just for looks), with the portfolio as a secondary section.
 - `portfolio.html` is the old Cargo desktop-style homepage, now the portfolio page.
-- Built: Photography, Experimental Fashion (`fashion-works.html`) and Conceptual Art project pages, Commissions (form uses mailto until a Formspree endpoint is set), About/Contact (fits one screen on computers).
+- Built: Photography, Experimental Fashion (`fashion-works.html`) and Conceptual Art project pages, Commissions (info page) + Start a Commission (form page; uses mailto until a Formspree endpoint is set), About/Contact (fits one screen on computers).
 - Planned: a store (Stripe Checkout planned); "Shop" is marked coming soon. River also wants a custom-domain email later (Cloudflare domain + Email Routing + Gmail "send as" was suggested) and the site needs hosting/a domain.
 - Text was copied from River's Cargo editor; photos are being supplied by River directly and saved under images/<page>/.
 
@@ -19,7 +19,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 ## To do next session (River's list, 2026-11-04)
 1. DONE: Home/Portfolio switch keeps the photo on screen (no grey gap); browsers with built-in page cross-fades use them.
 2. DONE: slideshow photos slide sideways; swipe on phones.
-3. Fix the Commissions page (ask River what's wrong with it first).
+3. DONE: Commissions is one screen (no scroll) ending in START A COMMISSION, which goes to start-commission.html (the form). Right side: tall example slideshow, slides every 3s, arrows, swipe. Examples are stand-ins from fashion-works until River sends commission photos.
 
 ## How things are set up
 - Shared code lives in `assets/` (site.js holds the menu and contact details for every page; projects.js builds the project pages; ripple.js is the background effect).

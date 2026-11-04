@@ -10,110 +10,105 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <style>
-  /* Layout: dark sheet on black, text column on the left, photos of past work on the right, form below */
+  /* Layout: one screen, no scrolling. Text column on the left ending in the
+     Start a Commission button; a tall slideshow of example pieces on the right. */
   :root {
     --page: #0c0c0c;
     --sheet: #222222;
-    --field: #2c2c2c;
-    --field-line: rgba(255, 255, 255, 0.22);
-    --ok: #9fe0a8;
-    --warn: #ffb4a3;
   }
   body { background: var(--page); }
   .sheet {
     max-width: 1280px;
     margin: 0 auto;
-    min-height: 100vh;
     background: var(--sheet);
     box-sizing: border-box;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: clamp(70px, 9vw, 110px) 120px;
+    padding-block: 90px 60px;
   }
   .layout {
     display: grid;
-    grid-template-columns: minmax(0, 590px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
     gap: clamp(32px, 6vw, 90px);
     padding-inline: clamp(0px, 3vw, 30px);
+    align-items: center;
   }
-  .copy { min-width: 0; }
+  .copy { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
   h1 {
-    margin: 0 0 22px;
+    margin: 0 0 18px;
     font-weight: 800;
-    font-size: clamp(44px, 6vw, 72px);
+    font-size: clamp(40px, 5.4vw, 68px);
     line-height: 0.95;
     letter-spacing: -0.03em;
   }
-  .lead { margin: 0 0 14px; font-size: 16px; line-height: 1.4; max-width: 60ch; }
-  section { border-top: 1px solid var(--line); margin-top: 34px; padding-top: 30px; }
-  h2 { margin: 0 0 22px; font-size: 15px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; }
+  .lead { margin: 0 0 10px; font-size: 16px; line-height: 1.4; max-width: 60ch; }
+  section { border-top: 1px solid var(--line); margin-top: 24px; padding-top: 22px; align-self: stretch; }
+  h2 { margin: 0 0 16px; font-size: 15px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; }
   .services { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 16px; }
   .services .from { color: var(--ink-soft); }
-  .how { margin: 0; font-size: 16px; line-height: 1.4; max-width: 62ch; }
+  .how { margin: 0; font-size: 15px; line-height: 1.42; max-width: 62ch; }
 
   .start {
     display: inline-block;
-    margin-top: 40px;
+    margin-top: 32px;
     background: #ffffff;
     color: #111111;
-    border: 0;
     border-radius: 4px;
     padding: 12px 14px 11px;
-    font: inherit;
     font-weight: 800;
     font-size: clamp(20px, 2.4vw, 28px);
     letter-spacing: -0.02em;
     text-decoration: none;
-    cursor: pointer;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    transition: background 0.15s, transform 0.15s;
   }
-  .start:hover { background: #e9e9e9; }
+  .start:hover { background: #e9e9e9; transform: translateY(-1px); }
 
-  /* Photos of past work */
-  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-content: start; }
-  .gallery img { width: 100%; height: auto; display: block; }
-  .gallery img:first-child { grid-column: span 2; }
+  /* Slideshow of example pieces */
+  .examples { justify-self: center; position: relative; width: 100%; max-width: 420px; }
+  .window {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    max-width: 100%;
+    overflow: hidden;
+    background: #161616;
+  }
+  .track { display: flex; height: 100%; transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1); }
+  .track img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; }
+  .ex-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--ink); cursor: pointer;
+    display: grid; place-items: center;
+    font: inherit; font-size: 16px; line-height: 1;
+    z-index: 2;
+  }
+  .ex-arrow.prev { left: 10px; }
+  .ex-arrow.next { right: 10px; }
+  .ex-arrow:hover { background: rgba(0, 0, 0, 0.55); }
+  .ex-count { margin-top: 10px; font-size: 11px; color: var(--ink-soft); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; text-align: center; }
 
-  /* Form */
-  form { display: grid; gap: 16px; margin-top: 8px; }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  label { display: grid; gap: 6px; font-size: 13px; }
-  label .hint { color: var(--ink-soft); font-size: 12px; }
-  input, select, textarea {
-    font: inherit; font-size: 15px;
-    color: var(--ink);
-    background: var(--field);
-    border: 1px solid var(--field-line);
-    border-radius: 4px;
-    padding: 10px 11px;
-    width: 100%;
-    box-sizing: border-box;
-    min-width: 0;
+  /* Computers: everything fits on one screen */
+  @media (min-width: 861px) {
+    html, body { height: 100%; }
+    body { overflow: hidden; }
+    .sheet { height: 100vh; height: 100dvh; display: flex; align-items: center; padding-block: 64px 48px; }
+    .layout { width: 100%; }
+    .examples { max-width: min(420px, calc((100dvh - 150px) * 0.75)); }
   }
-  textarea { min-height: 130px; resize: vertical; line-height: 1.4; }
-  input:focus, select:focus, textarea:focus { outline: 2px solid var(--ink); outline-offset: 1px; border-color: transparent; }
-  .send {
-    justify-self: start;
-    background: #ffffff; color: #111111; border: 0; border-radius: 4px;
-    padding: 11px 18px; font: inherit; font-weight: 600; font-size: 15px; cursor: pointer;
+  /* Shorter screens: tighten the text so it still fits */
+  @media (min-width: 861px) and (max-height: 760px) {
+    h1 { font-size: clamp(36px, 4.6vw, 54px); margin-bottom: 12px; }
+    .lead, .services, .how { font-size: 14px; }
+    section { margin-top: 16px; padding-top: 14px; }
+    h2 { margin-bottom: 10px; }
+    .start { margin-top: 20px; font-size: 22px; }
   }
-  .send:disabled { opacity: 0.6; cursor: default; }
-  .status { margin: 0; font-size: 14px; line-height: 1.45; }
-  .status.ok { color: var(--ok); }
-  .status.warn { color: var(--warn); }
-  .direct { font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
-  .direct strong { color: var(--ink); font-weight: 600; user-select: all; }
-  .copy-btn {
-    background: none; border: 1px solid var(--field-line); color: var(--ink);
-    font: inherit; font-size: 12px; padding: 3px 8px; border-radius: 3px; cursor: pointer; margin-left: 6px;
-  }
-
   @media (max-width: 860px) {
     .layout { grid-template-columns: 1fr; }
-    .gallery { order: -1; }
-  }
-  @media (max-width: 560px) {
-    .row { grid-template-columns: 1fr; }
+    .examples { order: -1; max-width: 360px; }
   }
 </style>
 </head>
@@ -136,46 +131,17 @@
         <p class="how" id="how"></p>
       </section>
 
-      <a class="start" href="#start">START A COMMISSION</a>
-
-      <section id="start">
-        <h2>Start a commission</h2>
-        <form id="form" novalidate>
-          <div class="row">
-            <label for="f-name">Name<input id="f-name" name="name" autocomplete="name" required></label>
-            <label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
-          </div>
-          <label for="f-service">What kind of piece?<select id="f-service" name="service"></select></label>
-          <label for="f-idea">Your idea
-            <span class="hint">What you'd like made or changed, the look you're after, and any garments you already have.</span>
-            <textarea id="f-idea" name="idea" required></textarea>
-          </label>
-          <label for="f-refs">References
-            <span class="hint">Links to photos, Pinterest boards or Instagram posts.</span>
-            <input id="f-refs" name="references">
-          </label>
-          <div class="row">
-            <label for="f-size">Size or measurements<input id="f-size" name="size"></label>
-            <label for="f-budget">Budget<input id="f-budget" name="budget" inputmode="decimal"></label>
-          </div>
-          <div class="row">
-            <label for="f-when">Needed by<input id="f-when" name="needed_by" type="date"></label>
-            <label for="f-where">Shipping or local pickup?
-              <select id="f-where" name="delivery">
-                <option>Ship it to me</option>
-                <option>Local pickup</option>
-                <option>Not sure yet</option>
-              </select>
-            </label>
-          </div>
-          <button class="send" type="submit" id="send">Send request</button>
-          <p class="status" id="status" role="status"></p>
-        </form>
-        <p class="direct">Prefer email? Write to <strong id="email"></strong><button class="copy-btn" type="button" id="copyEmail">Copy</button></p>
-      </section>
+      <a class="start" href="start-commission.html">START A COMMISSION</a>
     </div>
 
-    <div class="gallery" id="gallery" aria-label="Past commissions"></div>
+    <div class="examples" aria-label="Example pieces" aria-roledescription="slideshow">
+      <div class="window">
+        <div class="track" id="track"></div>
+        <button class="ex-arrow prev" id="prev" aria-label="Previous example">‹</button>
+        <button class="ex-arrow next" id="next" aria-label="Next example">›</button>
+      </div>
+      <div class="ex-count" id="exCount"></div>
+    </div>
   </div>
 </div>
 
@@ -199,21 +165,18 @@ const PAGE = {
 
   how: "Email me your idea and references. We settle the details, I send a quote, and a 50% deposit starts the work. Your finished piece ships worldwide (local pickup welcome), with shipping quoted separately. The deposit is non-refundable once materials are bought or work has begun, and the balance is due before shipping.",
 
-  // Photos of past work, shown beside the text. Files go in images/commissions/.
-  // Photos that haven't been added yet are simply skipped.
-  photos: [
-    "images/commissions/FINALtif-1-copy.jpg",
-    "images/commissions/Photo-Feb-07-2025--9-47-58-AM.jpg",
-    "images/commissions/Photo-Feb-11-2025--9-43-07-AM.jpg",
-    "images/commissions/Photo-Feb-07-2025--9-43-19-AM.jpg",
-    "images/commissions/Photo-Feb-07-2025--9-32-40-AM.jpg"
+  // Example pieces in the slideshow on the right. Tall (portrait) photos
+  // look best; wide ones get cropped to fit. To use your own, put them in
+  // images/commissions/ and list them here, e.g. "images/commissions/coat.jpg".
+  examples: [
+    "images/fashion-works/denim-patchwork-vest-02.jpg",
+    "images/fashion-works/reworked-denim-phase-01-01.jpg",
+    "images/fashion-works/distressed-denim-jeans-02.jpg",
+    "images/fashion-works/reworked-denim-04.jpg",
+    "images/fashion-works/denim-patchwork-vest-04.jpg",
+    "images/fashion-works/reworked-denim-02.jpg"
   ],
-
-  // Where form requests go. Leave "" to have the form open the
-  // visitor's email app with everything filled in. To get requests
-  // straight to your inbox instead, make a free form at formspree.io
-  // and paste its address here, e.g. "https://formspree.io/f/abcd1234".
-  formEndpoint: ""
+  secondsPerSlide: 3
 };
 
 /* ---------- Fill in the page ---------- */
@@ -222,79 +185,71 @@ document.getElementById("intro").textContent = PAGE.intro;
 document.getElementById("how").textContent = PAGE.how;
 document.getElementById("services").innerHTML = PAGE.services
   .map(s => `<li>${esc(s.name)}<span class="from">, from ${esc(s.from)}</span></li>`).join("");
-document.getElementById("f-service").innerHTML = PAGE.services
-  .map(s => `<option>${esc(s.name)}</option>`).join("") + "<option>Something else</option>";
 
-const email = SITE.contact.email;
-document.getElementById("email").textContent = email;
-document.getElementById("copyEmail").addEventListener("click", async e => {
-  try { await navigator.clipboard.writeText(email); showToast("Email address copied"); }
-  catch { const r = document.createRange(); r.selectNodeContents(document.getElementById("email")); getSelection().removeAllRanges(); getSelection().addRange(r); }
-});
+/* ---------- Example slideshow ----------
+   Slides sideways on its own every few seconds, with arrows and phone
+   swipes. It pauses while the mouse is over it and restarts the timer
+   after you use the arrows. */
+(function () {
+  const track = document.getElementById("track");
+  const count = document.getElementById("exCount");
+  const list = PAGE.examples.slice();
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!list.length) { document.querySelector(".examples").hidden = true; return; }
 
-const gallery = document.getElementById("gallery");
-PAGE.photos.forEach(src => {
-  const img = new Image();
-  img.alt = "Past commission";
-  img.loading = "lazy";
-  img.onerror = () => img.remove();
-  img.src = src;
-  gallery.appendChild(img);
-});
+  // A copy of the first photo goes at the end so the loop slides forward
+  // smoothly instead of rewinding.
+  [...list, list[0]].forEach((src, i) => {
+    const img = new Image();
+    img.src = src;
+    img.alt = i < list.length ? `Example piece ${i + 1}` : "";
+    img.draggable = false;
+    img.onerror = () => { img.style.visibility = "hidden"; };
+    track.appendChild(img);
+  });
 
-/* ---------- Form ---------- */
-const form = document.getElementById("form");
-const status = document.getElementById("status");
-const send = document.getElementById("send");
-const fieldNames = {
-  name: "Name", email: "Email", service: "Piece", idea: "Idea", references: "References",
-  size: "Size or measurements", budget: "Budget", needed_by: "Needed by", delivery: "Delivery"
-};
+  const pad = n => String(n).padStart(2, "0");
+  let at = 0, timer = null, hovering = false;
 
-form.addEventListener("submit", async e => {
-  e.preventDefault();
-  status.className = "status";
-  const data = Object.fromEntries(new FormData(form));
-  const missing = [];
-  if (!data.name.trim()) missing.push("your name");
-  if (!/^\S+@\S+\.\S+$/.test(data.email.trim())) missing.push("an email address I can reply to");
-  if (!data.idea.trim()) missing.push("a short description of your idea");
-  if (missing.length) {
-    status.classList.add("warn");
-    status.textContent = "Please add " + missing.join(", ") + ".";
-    return;
+  function go(n, animate = true) {
+    track.style.transition = animate && !reduce ? "" : "none";
+    at = n;
+    track.style.transform = `translateX(${-at * 100}%)`;
+    count.textContent = `${pad((at % list.length) + 1)} / ${pad(list.length)}`;
+  }
+  track.addEventListener("transitionend", () => {
+    if (at >= list.length) { go(0, false); void track.offsetWidth; }
+  });
+  function next() {
+    if (at >= list.length) { go(0, false); void track.offsetWidth; }
+    go(at + 1);
+  }
+  function prev() {
+    if (at <= 0) { go(list.length, false); void track.offsetWidth; }
+    go(at - 1);
+  }
+  function restart() {
+    clearInterval(timer);
+    if (list.length > 1 && !hovering && !reduce) timer = setInterval(next, PAGE.secondsPerSlide * 1000);
   }
 
-  if (!PAGE.formEndpoint) {
-    // No form service yet: open the visitor's email app with the request written out.
-    const body = Object.entries(data).filter(([, v]) => String(v).trim())
-      .map(([k, v]) => `${fieldNames[k] || k}: ${v}`).join("\n");
-    const subject = `Commission request: ${data.service}`;
-    location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    status.textContent = "Your email app should open with the request filled in. If it doesn't, email " + email + " directly.";
-    return;
-  }
+  document.getElementById("next").addEventListener("click", () => { next(); restart(); });
+  document.getElementById("prev").addEventListener("click", () => { prev(); restart(); });
+  const box = document.querySelector(".examples");
+  box.addEventListener("mouseenter", () => { hovering = true; restart(); });
+  box.addEventListener("mouseleave", () => { hovering = false; restart(); });
+  let sx = 0;
+  box.addEventListener("touchstart", e => { sx = e.touches[0].clientX; }, { passive: true });
+  box.addEventListener("touchend", e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); restart(); }
+  }, { passive: true });
+  document.addEventListener("visibilitychange", () => { document.hidden ? clearInterval(timer) : restart(); });
 
-  send.disabled = true;
-  send.textContent = "Sending…";
-  try {
-    const res = await fetch(PAGE.formEndpoint, {
-      method: "POST",
-      headers: { "Accept": "application/json", "Content-Type": "application/json" },
-      body: JSON.stringify({ ...data, _subject: `Commission request: ${data.service}` })
-    });
-    if (!res.ok) throw new Error(res.status);
-    form.reset();
-    status.classList.add("ok");
-    status.textContent = "Request sent. I'll reply by email.";
-  } catch {
-    status.classList.add("warn");
-    status.textContent = "The request didn't go through. Please try again, or email " + email + " directly.";
-  } finally {
-    send.disabled = false;
-    send.textContent = "Send request";
-  }
-});
+  go(0, false);
+  if (list.length < 2) document.querySelectorAll(".ex-arrow").forEach(b => b.hidden = true);
+  restart();
+})();
 </script>
 </body>
 </html>

@@ -20,6 +20,8 @@ window.startRipple = function (opts) {
   // while the ripple effect starts up on top of it.
   fallback.hidden = false;
   fallback.style.backgroundImage = `url("${opts.image}")`;
+  // Keep the still photo underneath the moving one, not on top of it.
+  if (fallback.parentNode === canvas.parentNode) canvas.parentNode.insertBefore(fallback, canvas);
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const gl = canvas.getContext("webgl2", { antialias: false, premultipliedAlpha: false });
 
