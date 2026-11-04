@@ -1,9 +1,1 @@
-Put these photos in this folder (same names as in Cargo). The page shows a box
-named after each one until it's added.
-
-Barbieri_Mateo_Mama-162.jpg
-Barbieri_Mateo_Mama-165.jpg
-Barbieri_Mateo_Mama-167.jpg
-Barbieri_Mateo_Mama-168.jpg
-Barbieri_Mateo_Mama-169.jpg
-Barbieri_Mateo_Mama-170.jpg
+All Photography projects have their photos. Add new ones here and list them in photography.html.
