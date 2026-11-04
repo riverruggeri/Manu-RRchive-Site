@@ -1,15 +1,6 @@
 Put these photos in this folder (same names as in Cargo). The page shows a box
 named after each one until it's added.
 
-IMG_9591.JPG
-IMG_9587.JPG
-IMG_9586.JPG
-IMG_9613.JPG
-IMG_9558.JPG
-IMG_9546.JPG
-IMG_9597.JPG
-IMG_9537.JPG
-IMG_9583.JPG
 FINALtif-1-copy.jpg
 DSCF3635-2.jpg
 Barbieri_Mateo_Mama-162.jpg
