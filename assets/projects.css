@@ -81,6 +81,7 @@ body { background: var(--bg); }
 .arrow.prev { left: 0; }
 .arrow.next { right: 0; }
 .show:hover .arrow, .arrow:focus-visible { opacity: 1; }
+@media (hover: none) { .arrow { opacity: 1; } }
 .count { font-size: 11px; color: var(--ink-soft); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; min-height: 1em; }
 
 .empty-page {

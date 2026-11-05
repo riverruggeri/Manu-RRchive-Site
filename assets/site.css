@@ -1,6 +1,11 @@
 /* Shared look for every page: colors, type, menu, notes. */
 [hidden] { display: none !important; }
 
+/* iPhone/iPad (Safari): no grey flash when tapping links, no text resizing
+   when the phone is turned, and full-screen photo pages don't bounce. */
+html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body.photo-page, html:has(body.photo-page) { overscroll-behavior: none; }
+
 /* Page changes: dark ground between pages so nothing flashes white,
    each page fades in on arrival and out before leaving. */
 html { background: #111111; }

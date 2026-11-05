@@ -25,6 +25,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - Phones: long pages get a fading bar behind the logo/menu dots (colour from each page's --bar); corner clock/name hidden on long pages.
 - Homepage on phones uses images/about/about-hero.jpg (PAGE.mobileBackground); buttons in a 2x2 grid.
 - About bio is larger on phones.
+- iOS: River is on iOS 18.5 (Safari). Added home-screen icon (apple-touch-icon.png, favicon.png) and web-app tags on every page; no tap flash; no bounce on photo pages; form fields 16px so Safari doesn't zoom; commissions slideshow only pauses on hover with a real mouse; project arrows always shown on touch screens. WebKit isn't available in the workspace to test, so check on River's phone.
 - Still open: River hasn't picked a new background colour for the project pages (options shown: current grey, near-black (recommended), warm dark brown, off-white).
 
 ## How things are set up
