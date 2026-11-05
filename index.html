@@ -66,7 +66,8 @@
 
   @media (max-width: 520px) {
     .brand { bottom: calc(52px + env(safe-area-inset-bottom, 0px)); }
-    .links a { font-size: 14px; padding: 8px 11px 7px; }
+    .links { display: grid; grid-template-columns: 1fr 1fr; width: 100%; max-width: 340px; }
+    .links a { font-size: 14px; padding: 10px 11px 9px; text-align: center; }
   }
 </style>
 </head>
@@ -106,6 +107,8 @@ const PAGE = {
 
   // Background photo and ripple. Same settings as the portfolio page.
   background: "images/home-bg.jpg",
+  // Photo used instead on phones (a tall photo fits the screen best).
+  mobileBackground: "images/about/about-hero.jpg",
   ripple: {
     distortionX: 2,
     distortionY: 2,
@@ -132,7 +135,7 @@ insta.textContent = "@" + SITE.contact.instagram;
 startRipple({
   canvas: document.getElementById("stage"),
   fallback: document.getElementById("fallback"),
-  image: PAGE.background,
+  image: (window.matchMedia("(max-width: 700px)").matches && PAGE.mobileBackground) || PAGE.background,
   ripple: PAGE.ripple
 });
 </script>

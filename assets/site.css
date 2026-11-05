@@ -171,6 +171,17 @@ a.home-logo:hover img { opacity: 0.75; }
 /* On long, scrolling pages the corner labels would cover text on phones */
 @media (max-width: 700px) {
   body.long .corner { display: none; }
+  /* Phones: a bar behind the logo and menu dots (in the page's own colour,
+     fading out at the bottom) so text scrolling underneath never clashes. */
+  body.long::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: calc(76px + env(safe-area-inset-top, 0px));
+    background: linear-gradient(var(--bar, #111111) 62%, transparent);
+    z-index: 15;
+    pointer-events: none;
+  }
 }
 
 @media (max-width: 520px) {

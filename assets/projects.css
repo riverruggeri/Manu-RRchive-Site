@@ -5,6 +5,7 @@
   --bg: #565656;
   --panel-solid: #161616;
   --empty: #2f2f2f;
+  --bar: var(--bg);
 }
 body { background: var(--bg); }
 

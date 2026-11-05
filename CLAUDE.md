@@ -21,6 +21,12 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 2. DONE: slideshow photos slide sideways; swipe on phones.
 3. DONE: Commissions is one screen (no scroll) ending in START A COMMISSION, which goes to start-commission.html (the form). Right side: tall example slideshow, slides every 3s, arrows, swipe. Examples are stand-ins from fashion-works until River sends commission photos.
 
+## Mobile version (started 2026-11-04 evening)
+- Phones: long pages get a fading bar behind the logo/menu dots (colour from each page's --bar); corner clock/name hidden on long pages.
+- Homepage on phones uses images/about/about-hero.jpg (PAGE.mobileBackground); buttons in a 2x2 grid.
+- About bio is larger on phones.
+- Still open: River hasn't picked a new background colour for the project pages (options shown: current grey, near-black (recommended), warm dark brown, off-white).
+
 ## How things are set up
 - Shared code lives in `assets/` (site.js holds the menu and contact details for every page; projects.js builds the project pages; ripple.js is the background effect).
 - Each page keeps its editable settings in a `PAGE` block (and project pages a `PROJECTS` list) at the top of its script.
