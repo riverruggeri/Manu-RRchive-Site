@@ -205,7 +205,7 @@ window.SITE = {
     const word = document.createElement("a");
     word.className = "manu-word";
     word.href = S.manu.home;
-    word.textContent = "MANU";
+    word.textContent = "Manu";
     word.setAttribute("aria-label", "Manu, home");
     extras.push(word);
   }
