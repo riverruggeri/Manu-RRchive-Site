@@ -4,26 +4,40 @@
    page updates.
    ========================================================= */
 window.SITE = {
-  // The site has two parts:
-  //   MANU    - River as an artist: home, portfolio, photography, about
-  //   ЯRCHIVE - the clothing label: catalog, archive of sold pieces, commissions
-  // A future label (jewelry, say) would be a new part like ЯRchive.
+  // The site has parts:
+  //   MANU     - River as an artist: home, portfolio, about
+  //   labels   - each medium with its own name, header and commissions:
+  //              ЯRchive (clothing) and ЯRgraphy (photography).
+  // A future label (jewelry, say) is one more entry in "labels" and one more
+  // doorway on the Manu homepage. A leading "Я" is drawn as a flipped R.
   manu: { name: "Manu", home: "index.html" },
-  rrchive: {
-    name: "ЯRchive",
-    logo: "images/rrchive-logo.png",   // top left on ЯRchive pages
-    home: "shop.html",                 // ЯRchive's home screen (the Current Catalog)
-    // The logo opens the Archive from the home screen, and goes back to
-    // the home screen from every other ЯRchive page.
-    logoLinkFromHome: "archive.html",
-    pages: ["shop.html", "product.html", "archive.html", "commissions.html", "start-commission.html"],
-    // Tabs along the top of every ЯRchive page
-    tabs: [
-      { label: "Current Catalog",      link: "shop.html", also: ["product.html"] },
-      { label: "Archive",              link: "archive.html" },
-      { label: "Commissions",          link: "commissions.html", also: ["start-commission.html"] },
-      { label: "Experimental Fashion", link: "fashion-works.html", away: true }
-    ]
+  labels: {
+    rrchive: {
+      name: "ЯRchive",
+      logo: "images/rrchive-logo.png",   // image logo; leave out to draw the name as text
+      home: "shop.html",                 // the label's home screen
+      // From the home screen the logo opens this; from every other page of
+      // the label it goes back to the home screen.
+      logoLinkFromHome: "archive.html",
+      pages: ["shop.html", "product.html", "archive.html", "commissions.html", "start-commission.html"],
+      tabs: [
+        { label: "Current Catalog",      link: "shop.html", also: ["product.html"] },
+        { label: "Archive",              link: "archive.html" },
+        { label: "Commissions",          link: "commissions.html", also: ["start-commission.html"] },
+        { label: "Experimental Fashion", link: "fashion-works.html", away: true }
+      ]
+    },
+    rrgraphy: {
+      name: "ЯRgraphy",
+      home: "rrgraphy.html",
+      logoLinkFromHome: "photography.html",
+      pages: ["rrgraphy.html", "photography.html", "photo-commissions.html", "start-commission.html?type=photo"],
+      tabs: [
+        { label: "Home",        link: "rrgraphy.html" },
+        { label: "Photography", link: "photography.html" },
+        { label: "Commissions", link: "photo-commissions.html", also: ["start-commission.html?type=photo"] }
+      ]
+    }
   },
 
   contact: {
@@ -42,12 +56,15 @@ window.SITE = {
       { label: "Archive",         link: "archive.html" },
       { label: "Commissions",     link: "commissions.html", also: ["start-commission.html"] }
     ]},
+    { label: "ЯRgraphy", items: [
+      { label: "Home",        link: "rrgraphy.html" },
+      { label: "Photography", link: "photography.html" },
+      { label: "Commissions", link: "photo-commissions.html", also: ["start-commission.html?type=photo"] }
+    ]},
     { label: "Portfolio", items: [
-      { label: "Overview",                link: "portfolio.html" },
-      { label: "Experimental Fashion",    link: "fashion-works.html" },
-      { label: "Conceptual Art",          link: "conceptual-art.html" },
-      { label: "Photography",             link: "photography.html" },
-      { label: "Photography Commissions", link: "photo-commissions.html", also: ["start-commission.html?type=photo"] }
+      { label: "Overview",             link: "portfolio.html" },
+      { label: "Experimental Fashion", link: "fashion-works.html" },
+      { label: "Conceptual Art",       link: "conceptual-art.html" }
     ]},
     { label: "About / Contact", link: "about.html" }
   ]
@@ -56,6 +73,7 @@ window.SITE = {
 /* ---------- Shared behaviour (no need to edit below) ---------- */
 (function () {
   const S = window.SITE;
+  window.esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   // Toast: a small note at the bottom of the screen.
   const toast = document.createElement("div");
@@ -86,8 +104,11 @@ window.SITE = {
   // The form page belongs to ЯRchive for clothing and to Manu for photography.
   const photoForm = page === "start-commission.html" && /type=photo/.test(location.search);
   const here = photoForm ? "start-commission.html?type=photo" : page;
-  const section = (!photoForm && S.rrchive.pages.includes(page)) ? "rrchive" : "manu";
+  const section = Object.keys(S.labels).find(k => S.labels[k].pages.includes(here)) || "manu";
+  const L = S.labels[section];   // the label this page belongs to, if any
   document.documentElement.dataset.section = section;
+  // Draw a leading "Я" as a flipped R, the way the brand writes it.
+  window.brandHTML = s => esc(s).replace(/Я/g, '<span class="flip-r">R</span>');
   const isHere = item => item.link === here || (item.also || []).includes(here);
   function link(item, parent) {
     const a = document.createElement("a");
@@ -105,7 +126,7 @@ window.SITE = {
     const toggle = document.createElement("button");
     toggle.type = "button";
     toggle.className = "menu-group";
-    toggle.textContent = item.label;
+    toggle.innerHTML = `<span>${brandHTML(item.label)}</span>`;
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-controls", "menu-sub-" + i);
     const sub = document.createElement("div");
@@ -140,28 +161,34 @@ window.SITE = {
     window.showToast(`${(a.dataset.label || a.textContent).trim()} is coming soon`);
   });
 
-  // Top-left name. ЯRchive pages: the ЯRchive logo, which opens the Archive,
-  // plus a MANU link top right back to the main site. Manu pages: MANU,
-  // which goes home (hidden on the homepage, which has its own big MANU).
+  // Top of the page. Label pages (ЯRchive, ЯRgraphy): the label's name top
+  // left (from its home screen it opens logoLinkFromHome, elsewhere it goes
+  // to the home screen), MANU top right next to the dots, and the label's
+  // tabs. Manu pages: MANU top left, which goes home (hidden on the homepage,
+  // which has its own big MANU).
   const extras = [];
-  if (section === "rrchive") {
+  if (L) {
     const logo = document.createElement("a");
     logo.className = "home-logo";
-    const onRrHome = page === S.rrchive.home;
-    logo.href = onRrHome ? S.rrchive.logoLinkFromHome : S.rrchive.home;
-    logo.setAttribute("aria-label", onRrHome ? "ЯRchive: the Archive of past pieces" : "ЯRchive home");
-    logo.innerHTML = `<span class="logo-mark" aria-hidden="true"></span>`;
-    logo.style.setProperty("--logo", `url("${new URL(S.rrchive.logo, location.href).href}")`);
+    const onHome = here === L.home;
+    logo.href = onHome ? L.logoLinkFromHome : L.home;
+    logo.setAttribute("aria-label", L.name + (onHome ? "" : ", home"));
+    if (L.logo) {
+      logo.innerHTML = `<span class="logo-mark" aria-hidden="true"></span>`;
+      logo.style.setProperty("--logo", `url("${new URL(L.logo, location.href).href}")`);
+    } else {
+      logo.classList.add("text-logo");
+      logo.innerHTML = `<span aria-hidden="true">${brandHTML(L.name)}</span>`;
+    }
     const manu = document.createElement("a");
     manu.className = "to-manu";
     manu.href = S.manu.home;
     manu.textContent = "MANU";
     manu.setAttribute("aria-label", "Back to Manu");
-    // Tabs for the ЯRchive pages
     const tabs = document.createElement("nav");
     tabs.className = "rr-tabs";
-    tabs.setAttribute("aria-label", "ЯRchive");
-    S.rrchive.tabs.forEach(t => {
+    tabs.setAttribute("aria-label", L.name);
+    L.tabs.forEach(t => {
       const a = document.createElement("a");
       a.href = t.link;
       a.textContent = t.label + (t.away ? " ↗" : "");
@@ -181,8 +208,8 @@ window.SITE = {
   // Bottom-right corner label: the name of the part of the site you're in.
   function cornerName() {
     document.querySelectorAll("[data-section-name]").forEach(a => {
-      a.textContent = section === "rrchive" ? S.rrchive.name : S.manu.name;
-      a.href = section === "rrchive" ? S.rrchive.home : S.manu.home;
+      a.innerHTML = brandHTML(L ? L.name : S.manu.name);
+      a.href = L ? L.home : S.manu.home;
     });
   }
 
@@ -224,5 +251,4 @@ window.SITE = {
   tick();
 
   // Small helpers shared by pages
-  window.esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 })();

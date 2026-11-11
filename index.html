@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111002652">
+<link rel="stylesheet" href="assets/site.css?v=20261111004111">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -93,8 +93,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261111002652"></script>
-<script src="assets/ripple.js?v=20261111002652"></script>
+<script src="assets/site.js?v=20261111004111"></script>
+<script src="assets/ripple.js?v=20261111004111"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -109,7 +109,7 @@ const PAGE = {
   links: [
     { label: "ЯRchive",     link: "shop.html", main: true },
     { label: "Portfolio",   link: "portfolio.html" },
-    { label: "Photography", link: "photography.html" },
+    { label: "ЯRgraphy",    link: "rrgraphy.html" },
     { label: "About",       link: "about.html" }
   ],
 
@@ -140,7 +140,7 @@ if (PAGE.lineName) {
 } else lineName.remove();
 document.getElementById("lineText").textContent = PAGE.lineText;
 document.getElementById("links").innerHTML = PAGE.links.map(l =>
-  `<a href="${esc(l.link)}"${l.main ? ' class="main"' : ""}${l.soon ? ` data-soon="1" data-label="${esc(l.label)}"` : ""}>${esc(l.label)}${l.soon ? '<span class="soon">soon</span>' : ""}</a>`).join("");
+  `<a href="${esc(l.link)}"${l.main ? ' class="main"' : ""}${l.soon ? ` data-soon="1" data-label="${esc(l.label)}"` : ""}>${brandHTML(l.label)}${l.soon ? '<span class="soon">soon</span>' : ""}</a>`).join("");
 const insta = document.getElementById("insta");
 insta.href = `https://www.instagram.com/${SITE.contact.instagram}/`;
 insta.textContent = "@" + SITE.contact.instagram;

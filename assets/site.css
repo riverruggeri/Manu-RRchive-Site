@@ -121,6 +121,21 @@ body.light .photo-missing { background: var(--cream-deep); }
 }
 a.home-logo:hover .logo-mark { opacity: 0.75; }
 
+/* A leading "Я" in the brand names, drawn as a flipped R */
+.flip-r { display: inline-block; transform: scaleX(-1); }
+
+/* Label name drawn as text (labels without an image logo, e.g. ЯRgraphy) */
+.home-logo.text-logo {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(25px, 2.6vw, 34px);
+  letter-spacing: -0.015em;
+  line-height: 0.85;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+}
+a.home-logo.text-logo:hover { opacity: 0.75; }
+
 /* MANU name, top left on the artist pages */
 .manu-word {
   position: fixed;
