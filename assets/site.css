@@ -331,10 +331,10 @@ body.light .manu-word, body.shop .manu-word, .page ~ .manu-word { text-shadow: n
    four colours here to recolour the whole label.
    ========================================================= */
 html[data-section="rrgraphy"] {
-  --graphy-bg: #565656;     /* page background (the site's old grey) */
-  --graphy-deep: #444542;   /* panels, form boxes, empty photo boxes */
-  --moss: #b5c98a;          /* light green: tab underline, flipped R, links */
-  --moss-deep: #4d6a3c;     /* dark green: main buttons */
+  --graphy-bg: #4c4c4c;     /* page background (the site's old grey) */
+  --graphy-deep: #3c3d3a;   /* panels, form boxes, empty photo boxes */
+  --moss: #9fb579;          /* light green: tab underline, flipped R, links */
+  --moss-deep: #34492a;     /* dark green: main buttons */
   --page: var(--graphy-bg);
   --sheet: var(--graphy-bg);
   --bg: var(--graphy-bg);

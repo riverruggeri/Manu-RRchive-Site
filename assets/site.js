@@ -110,7 +110,7 @@ window.SITE = {
   // ЯRgraphy pages are dark grey: tint the phone's browser bar to match.
   if (section === "rrgraphy") {
     const tc = document.querySelector('meta[name="theme-color"]');
-    if (tc) tc.content = "#565656";
+    if (tc) tc.content = "#4c4c4c";
   }
   // Draw a leading "Я" as a flipped R, the way the brand writes it.
   window.brandHTML = s => esc(s).replace(/Я/g, '<span class="flip-r">R</span>');
