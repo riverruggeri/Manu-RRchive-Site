@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111023940">
+<link rel="stylesheet" href="assets/site.css?v=20261111024354">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -26,7 +26,7 @@
   /* Photos of a label that slide by while its name is hovered */
   .label-show {
     position: fixed; inset: 0; overflow: hidden; pointer-events: none;
-    opacity: 0; transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1);   /* soft fade in and out */
+    opacity: 0; transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);   /* soft fade in and out */
     background: #111111;
   }
   .label-show.on { opacity: 1; }
@@ -111,8 +111,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261111023940"></script>
-<script src="assets/ripple.js?v=20261111023940"></script>
+<script src="assets/site.js?v=20261111024354"></script>
+<script src="assets/ripple.js?v=20261111024354"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -174,7 +174,7 @@ if (PAGE.hoverPhotos) {
     // before the second fades in, instead of an instant switch.
     if (showEl.classList.contains("on") && current !== l) {
       showEl.classList.remove("on");
-      swap = setTimeout(start, 450);
+      swap = setTimeout(start, 900);
     } else start();
   }
   function close() { clearInterval(timer); clearTimeout(swap); showEl.classList.remove("on"); }
