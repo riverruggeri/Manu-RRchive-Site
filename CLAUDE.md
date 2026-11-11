@@ -30,7 +30,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - Portfolio Fashion Works icon is River's sewing machine drawing (images/icon-fashion-works.png), shown at full original resolution, twice the normal icon width ("size: 2"), no outline/glow (River asked to remove it). "size" widens the icon box rather than zooming, which kept it sharp.
 - About bio is larger on phones.
 - iOS: River is on iOS 18.5 (Safari). Added home-screen icon (apple-touch-icon.png, favicon.png) and web-app tags on every page; no tap flash; no bounce on photo pages; form fields 16px so Safari doesn't zoom; commissions slideshow only pauses on hover with a real mouse; project arrows always shown on touch screens. WebKit isn't available in the workspace to test, so check on River's phone.
-- On trial: every white on the dark/photo pages is cream (--cream in assets/site.css; set it to #ffffff to go back). The logo is drawn through a CSS mask in the page text colour (cream on dark pages, dark on cream pages).
+- On trial: every white on the dark/photo pages is cream #e8e0d2, between the shop stone and a warmer cream (--cream in assets/site.css; set it to #ffffff to go back). The logo is drawn through a CSS mask in the page text colour (cream on dark pages, dark on cream pages).
 - Commissions and Start a Commission are cream too (body class "light" in site.css gives any page the cream look).
 - Project pages are now cream (#e7e5e0, same as the shop) with dark text, on trial at River's request; old grey values are commented in assets/projects.css.
 
