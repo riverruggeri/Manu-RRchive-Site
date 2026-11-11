@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111033127">
+<link rel="stylesheet" href="assets/site.css?v=20261111033424">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -123,8 +123,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261111033127"></script>
-<script src="assets/ripple.js?v=20261111033127"></script>
+<script src="assets/site.js?v=20261111033424"></script>
+<script src="assets/ripple.js?v=20261111033424"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -211,7 +211,10 @@ if (PAGE.hoverPhotos) {
     front = null;
   }
 
-  if (matchMedia("(hover: hover)").matches) {
+  // "?phone" in the address makes a computer act like a phone (for the
+  // iPhone preview): press and hold with the mouse instead of hovering.
+  const phoneTest = /[?&]phone\b/.test(location.search);
+  if (matchMedia("(hover: hover)").matches && !phoneTest) {
     links.forEach(a => a.addEventListener("mouseenter", () => open(PAGE.labels[a.dataset.i], true)));
     // A short pause before fading back to the homepage, so passing
     // between the two names never shows it.
@@ -257,6 +260,18 @@ if (PAGE.hoverPhotos) {
         if (held) { close(); nav.classList.remove("cycling"); links.forEach(x => x.classList.remove("on")); held = false; }
       });
       a.addEventListener("contextmenu", e => e.preventDefault());
+      if (phoneTest) {
+        // Mouse stand-in for a finger: hold the button down on a name.
+        a.addEventListener("mousedown", e => {
+          e.preventDefault(); held = false; moved = false;
+          clearTimeout(holdTimer);
+          holdTimer = setTimeout(() => { held = true; open(l, true); }, 350);
+        });
+        const up = () => { clearTimeout(holdTimer); if (held) { close(); setTimeout(() => { held = false; }, 0); } };
+        a.addEventListener("mouseup", up);
+        a.addEventListener("mouseleave", up);
+        a.addEventListener("click", e => { if (held) e.preventDefault(); });
+      }
     });
   }
 }
