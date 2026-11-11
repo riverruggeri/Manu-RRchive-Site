@@ -19,7 +19,13 @@ window.startRipple = function (opts) {
   // Pick the photo whose shape fits the window best: the wide photo for
   // wide windows, the tall one (if given) for tall or narrow windows, so
   // the photo is never cropped much.
-  const pickImage = () => (opts.tallImage && innerWidth / innerHeight < 1) ? opts.tallImage : opts.image;
+  // A page can show a different photo for a while (canvas.setRippleImage),
+  // e.g. while hovering a label on the homepage; null goes back to normal.
+  let override = null;
+  const pickImage = () => {
+    const o = override || opts;
+    return (o.tallImage && innerWidth / innerHeight < 1) ? o.tallImage : o.image;
+  };
   let current = pickImage();
   // Show the still photo straight away, so there's never an empty screen
   // while the ripple effect starts up on top of it.
@@ -176,6 +182,7 @@ window.startRipple = function (opts) {
   const img = new Image();
   img.onload = () => {
     imgW = img.naturalWidth; imgH = img.naturalHeight;
+    fallback.style.backgroundImage = `url("${img.src}")`;
     gl.bindTexture(gl.TEXTURE_2D, imageTex);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
@@ -210,6 +217,18 @@ window.startRipple = function (opts) {
       img.src = current;   // the texture updates when it loads
     }, 200);
   });
+
+  // Let the page swap the photo (fades out, changes, fades back in).
+  let swapFade;
+  canvas.setRippleImage = pics => {
+    override = pics || null;
+    const next = pickImage();
+    if (next === current) return;
+    current = next;
+    canvas.style.opacity = "0";
+    clearTimeout(swapFade);
+    swapFade = setTimeout(() => { img.src = current; }, 280);
+  };
 
   // Pointer tracking (mouse and touch)
   const mouse = { x: 0.5, y: 0.5 }, last = { x: 0.5, y: 0.5 }, vel = { x: 0, y: 0 };
