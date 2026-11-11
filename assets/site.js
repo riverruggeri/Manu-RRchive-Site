@@ -16,17 +16,21 @@ window.SITE = {
     instagram: "rr.archive.rr"
   },
 
-  // Menu (three dots, top right). "ready: false" shows a
-  // "coming soon" note instead of a broken link.
+  // Menu (three dots, top right). An item with "items" opens
+  // into a dropdown. "ready: false" shows a "coming soon" note
+  // instead of a broken link.
   menu: [
-    { label: "Home",               link: "index.html",          ready: true },
-    { label: "Shop",               link: "shop.html",           ready: false },
-    { label: "Commissions",        link: "commissions.html",    ready: true },
-    { label: "Portfolio",          link: "portfolio.html",      ready: true },
-    { label: "Fashion Works",      link: "fashion-works.html",  ready: true },
-    { label: "Conceptual Art",     link: "conceptual-art.html", ready: true },
-    { label: "Photography",        link: "photography.html",    ready: true },
-    { label: "About / Contact",    link: "about.html",          ready: true }
+    { label: "Home", link: "index.html" },
+    { label: "Shop", items: [
+      { label: "Start A Commission", link: "commissions.html", also: ["start-commission.html"] },
+      { label: "Current Catalog",    link: "shop.html",        also: ["product.html"] }
+    ]},
+    { label: "Portfolio", items: [
+      { label: "Fashion Works",  link: "fashion-works.html" },
+      { label: "Conceptual Art", link: "conceptual-art.html" },
+      { label: "Photography",    link: "photography.html" }
+    ]},
+    { label: "About / Contact", link: "about.html" }
   ]
 };
 
@@ -60,13 +64,38 @@ window.SITE = {
   btn.setAttribute("aria-controls", "site-menu");
 
   const here = location.pathname.split("/").pop() || "index.html";
-  S.menu.forEach(item => {
+  const isHere = item => item.link === here || (item.also || []).includes(here);
+  function link(item, parent) {
     const a = document.createElement("a");
     a.href = item.link;
     a.textContent = item.label;
-    if (item.link === here) a.setAttribute("aria-current", "page");
-    if (!item.ready) a.dataset.soon = "1";
-    menu.appendChild(a);
+    if (isHere(item)) a.setAttribute("aria-current", "page");
+    if (item.ready === false) a.dataset.soon = "1";
+    parent.appendChild(a);
+  }
+  S.menu.forEach((item, i) => {
+    if (!item.items) { link(item, menu); return; }
+    // Dropdown: a button that opens the links under it. The one holding
+    // the current page starts open.
+    const open = item.items.some(isHere);
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "menu-group";
+    toggle.textContent = item.label;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-controls", "menu-sub-" + i);
+    const sub = document.createElement("div");
+    sub.className = "menu-sub";
+    sub.id = "menu-sub-" + i;
+    sub.hidden = !open;
+    item.items.forEach(child => link(child, sub));
+    toggle.addEventListener("click", e => {
+      e.stopPropagation();
+      const now = sub.hidden;
+      sub.hidden = !now;
+      toggle.setAttribute("aria-expanded", String(now));
+    });
+    menu.append(toggle, sub);
   });
 
   function setOpen(open) {

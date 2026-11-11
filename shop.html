@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Current Catalog</title>
+<meta name="description" content="One-of-one pieces by Manu / ЯRchive, reworked from what already exists.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-title" content="ЯRchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#e7e5e0">
+<link rel="stylesheet" href="assets/shop.css">
+</head>
+<body class="shop long">
+
+<main class="shop-page">
+  <header class="catalog-head">
+    <h1>Current<br>Catalog</h1>
+    <p class="note label soft" id="note"></p>
+  </header>
+  <div class="grid" id="available"></div>
+  <div id="soldWrap" hidden>
+    <h2 class="section-title label">Sold</h2>
+    <div class="grid" id="sold"></div>
+  </div>
+</main>
+
+<script src="assets/site.js"></script>
+<script src="assets/catalog.js"></script>
+<script>
+const PAGE = {
+  note: "One-of-one pieces, reworked from what already exists. Each piece is made once; when it sells, it's gone.",
+  emptyText: "Nothing in the catalog right now. New pieces are on the way."
+};
+
+const statusText = { available: "1 of 1", reserved: "Reserved", sold: "Sold" };
+const priceOf = p => p.status === "sold" ? "Sold" : (p.price || "Price on request");
+const img = name => "images/shop/" + name;
+
+const avail = CATALOG.filter(p => p.status !== "sold");
+const sold = CATALOG.filter(p => p.status === "sold");
+document.getElementById("note").textContent =
+  `${avail.length} ${avail.length === 1 ? "piece" : "pieces"} available. ${PAGE.note}`;
+
+function card(p) {
+  const [a, b] = p.photos || [];
+  return `<a class="piece${p.status === "sold" ? " sold" : ""}" href="product.html?piece=${encodeURIComponent(p.id)}">
+    <div class="pic">
+      ${a ? `<img class="main" src="${esc(img(a))}" alt="${esc(p.name)}" loading="lazy">` : ""}
+      ${b ? `<img class="alt" src="${esc(img(b))}" alt="" loading="lazy">` : ""}
+    </div>
+    <div class="meta label">
+      <span class="name">${esc(p.name)}</span>
+      <span class="soft">${esc(priceOf(p))}</span>
+      <span class="tag soft">${esc(statusText[p.status] || "")}</span>
+    </div>
+  </a>`;
+}
+document.getElementById("available").innerHTML = avail.length
+  ? avail.map(card).join("")
+  : `<p class="empty-catalog label soft">${esc(PAGE.emptyText)}</p>`;
+if (sold.length) {
+  document.getElementById("sold").innerHTML = sold.map(card).join("");
+  document.getElementById("soldWrap").hidden = false;
+}
+</script>
+</body>
+</html>

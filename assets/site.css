@@ -138,6 +138,24 @@ a.home-logo:hover img { opacity: 0.75; }
 }
 .menu a:hover, .menu a:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
 .menu a[aria-current="page"] { color: var(--ink-soft); }
+
+/* Dropdowns in the menu (Shop, Portfolio) */
+.menu-group {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  background: none; border: 0; text-align: left; cursor: pointer;
+  color: var(--ink); font: inherit; font-size: 15px;
+  padding: 9px 12px; border-radius: 4px;
+}
+.menu-group::after {
+  content: ""; width: 6px; height: 6px;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.2s ease;
+}
+.menu-group[aria-expanded="true"]::after { transform: rotate(225deg) translate(-1px, -1px); }
+.menu-group:hover, .menu-group:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
+.menu-sub { display: flex; flex-direction: column; margin: 0 0 4px 12px; padding-left: 8px; border-left: 1px solid var(--line); }
+.menu-sub a { font-size: 14px; padding: 7px 10px; }
 .menu a[aria-current="page"]::before { content: "■ "; font-size: 10px; vertical-align: 2px; }
 
 /* Small note at the bottom of the screen */

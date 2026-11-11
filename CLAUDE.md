@@ -6,7 +6,9 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - The site is brand-first: `index.html` is the Manu / ЯRchive homepage (no menu dots there, logo top-left just for looks), with the portfolio as a secondary section.
 - `portfolio.html` is the old Cargo desktop-style homepage, now the portfolio page.
 - Built: Photography, Experimental Fashion (`fashion-works.html`) and Conceptual Art project pages, Commissions (info page) + Start a Commission (form page; uses mailto until a Formspree endpoint is set), About/Contact (fits one screen on computers).
-- Planned: a store (Stripe Checkout planned); "Shop" is marked coming soon. River also wants a custom-domain email later (Cloudflare domain + Email Routing + Gmail "send as" was suggested) and the site needs hosting/a domain.
+- Shop: `shop.html` (Current Catalog, one-of-one pieces) and `product.html?piece=<id>`, both built from `assets/catalog.js`; light stone "showroom" look inspired by Rick Owens. Products are cutouts (background removed with an ISNet ONNX model run locally) in images/shop/. The 4 current pieces are placeholders from Experimental Fashion with no prices ("Price on request"); the button emails River until a Stripe payment link is put in `buyLink`. Sold pieces move to a "Sold" section.
+- Menu: Shop and Portfolio are dropdowns (Shop: Start A Commission -> commissions.html, Current Catalog -> shop.html; Portfolio: Fashion Works, Conceptual Art, Photography). portfolio.html is no longer in the menu; it is reached from the homepage button.
+- Live site: https://riverruggeri.github.io/Manu-RRchive-Site/ (GitHub Pages from main; repo is public). Every push goes live. River also wants a custom-domain email later (Cloudflare domain + Email Routing + Gmail "send as" was suggested) and the site needs hosting/a domain.
 - Text was copied from River's Cargo editor; photos are being supplied by River directly and saved under images/<page>/.
 
 ## Content status (end of 2026-11-04 session)

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Current Catalog</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-title" content="ЯRchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#e7e5e0">
+<link rel="stylesheet" href="assets/shop.css">
+</head>
+<body class="shop long">
+
+<main class="shop-page" id="page"></main>
+
+<script src="assets/site.js"></script>
+<script src="assets/catalog.js"></script>
+<script>
+/* =========================================================
+   PAGE SETTINGS
+   Shipping text shown on every piece. The pieces themselves
+   are listed in assets/catalog.js.
+   ========================================================= */
+const PAGE = {
+  shipping: "Ships worldwide, with shipping quoted separately. Local pickup welcome. Every piece is one of one, so all sales are final.",
+  care: "Cold wash inside out, or spot clean. Hang dry. Distressing will keep developing with wear."
+};
+
+const id = new URLSearchParams(location.search).get("piece");
+const p = CATALOG.find(x => x.id === id);
+const page = document.getElementById("page");
+const img = name => "images/shop/" + name;
+
+if (!p) {
+  page.innerHTML = `<p class="empty-catalog label soft">This piece isn't in the catalog anymore. <a href="shop.html">See the Current Catalog</a></p>`;
+} else {
+  document.title = p.name + " | Current Catalog";
+  const sold = p.status === "sold", reserved = p.status === "reserved";
+  const price = sold ? "Sold" : (p.price || "Price on request");
+  const email = SITE.contact.email;
+  const subject = `${p.price ? "Purchase" : "Price inquiry"}: ${p.name} (1 of 1)`;
+  const mail = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Hi, I'm interested in "${p.name}" from the Current Catalog.\n\n${location.href}`)}`;
+  const list = a => (a || []).map(x => `<li>${esc(x)}</li>`).join("");
+  const paras = (p.description || "").split(/\n\s*\n/).map(s => s.trim()).filter(Boolean).map(s => `<p>${esc(s)}</p>`).join("");
+
+  let button;
+  if (sold) button = `<span class="buy" aria-disabled="true">Sold</span>`;
+  else if (reserved) button = `<span class="buy" aria-disabled="true">Reserved</span>`;
+  else if (p.buyLink) button = `<a class="buy" href="${esc(p.buyLink)}">Purchase</a>`;
+  else button = `<a class="buy" href="${esc(mail)}">${p.price ? "Purchase by email" : "Ask for price"}</a>`;
+
+  page.innerHTML = `
+    <div class="product">
+      <div>
+        <div class="gallery" id="gallery">
+          ${(p.photos || []).map((n, i) => `<figure><img src="${esc(img(n))}" alt="${esc(p.name)}, view ${i + 1}" ${i ? 'loading="lazy"' : ""}></figure>`).join("")}
+        </div>
+        <div class="dots" id="dots">${(p.photos || []).map((_, i) => `<span${i ? "" : ' class="on"'}></span>`).join("")}</div>
+      </div>
+      <aside class="info">
+        <a class="back label" href="shop.html">← Current Catalog</a>
+        <h1>${esc(p.name)}</h1>
+        <div class="price-row label"><span class="price">${esc(price)}</span><span class="soft">${sold ? "" : "1 of 1"}</span></div>
+        ${p.size ? `<div class="label">Size <span class="soft">${esc(p.size)}</span></div>` : ""}
+        <div class="desc">${paras}</div>
+        ${button}
+        ${sold ? "" : `<p class="ask soft">${p.buyLink ? "Questions about fit? " : "This opens your email with the piece filled in. Or write to "}<strong id="email">${esc(email)}</strong><button class="copy-btn" type="button" id="copy">Copy</button></p>`}
+        <div>
+          ${p.details && p.details.length ? `<details open><summary class="label">Details</summary><ul>${list(p.details)}</ul></details>` : ""}
+          <details><summary class="label">Measurements</summary>${p.measurements && p.measurements.length ? `<ul>${list(p.measurements)}</ul>` : `<p class="soft">Measurements on request. Email me and I'll send them.</p>`}</details>
+          <details><summary class="label">Care</summary><p>${esc(PAGE.care)}</p></details>
+          <details><summary class="label">Shipping</summary><p>${esc(PAGE.shipping)}</p></details>
+        </div>
+      </aside>
+    </div>`;
+
+  document.getElementById("copy")?.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(email); showToast("Email address copied"); }
+    catch { const r = document.createRange(); r.selectNodeContents(document.getElementById("email")); getSelection().removeAllRanges(); getSelection().addRange(r); }
+  });
+
+  // Phones: dots under the swipeable photos follow along.
+  const g = document.getElementById("gallery"), dots = [...document.querySelectorAll("#dots span")];
+  g.addEventListener("scroll", () => {
+    const i = Math.round(g.scrollLeft / g.clientWidth);
+    dots.forEach((d, n) => d.classList.toggle("on", n === i));
+  }, { passive: true });
+}
+</script>
+</body>
+</html>

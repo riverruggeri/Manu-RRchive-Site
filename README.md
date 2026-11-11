@@ -8,6 +8,8 @@ Website for Manu Clothing and R aRchive by River Ruggeri, built with Claude.
 - `photography.html`, `fashion-works.html`, `conceptual-art.html`: project pages (slideshows that bend while scrolling, "More" panel)
 - `commissions.html`: commission info, prices and example slideshow
 - `start-commission.html`: the commission request form
+- `shop.html`: Current Catalog (one-of-one pieces for sale)
+- `product.html`: one piece (opened from the catalog)
 - `about.html`: bio, contact and services
 
 ## Changing things
@@ -17,6 +19,7 @@ Every page has a settings block near the top of its script, so you rarely need t
 - **Background photos and ripple**: the `background:` and `ripple:` settings in `index.html` and `portfolio.html`. The ripple settings use the same names as Cargo's Ripple backdrop.
 - **Commission prices, text and example photos**: top of `commissions.html` (`examples:` list).
 - **Bio and About photos**: top of `about.html`.
+- **Shop pieces** (add, price, mark sold): `assets/catalog.js`. Product photos go in `images/shop/`.
 
 ## Adding photos
 Each folder in `images/` has a `PHOTOS-TO-ADD.txt` listing the files that page expects, named the same as in Cargo. Drop the photos in and they appear. Until then the page shows a box with the file name.
