@@ -16,10 +16,15 @@ window.startRipple = function (opts) {
   canvas.style.opacity = "0";
   canvas.style.transition = "opacity 0.4s ease";
   const fallback = opts.fallback;
+  // Pick the photo whose shape fits the window best: the wide photo for
+  // wide windows, the tall one (if given) for tall or narrow windows, so
+  // the photo is never cropped much.
+  const pickImage = () => (opts.tallImage && innerWidth / innerHeight < 1) ? opts.tallImage : opts.image;
+  let current = pickImage();
   // Show the still photo straight away, so there's never an empty screen
   // while the ripple effect starts up on top of it.
   fallback.hidden = false;
-  fallback.style.backgroundImage = `url("${opts.image}")`;
+  fallback.style.backgroundImage = `url("${current}")`;
   fallback.style.filter = `brightness(${opts.ripple.brightness || 1})`;
   // Keep the still photo underneath the moving one, not on top of it.
   if (fallback.parentNode === canvas.parentNode) canvas.parentNode.insertBefore(fallback, canvas);
@@ -184,7 +189,7 @@ window.startRipple = function (opts) {
     requestAnimationFrame(() => requestAnimationFrame(() => { canvas.style.opacity = "1"; }));
   };
   img.onerror = useFallback;
-  img.src = opts.image;
+  img.src = current;
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -193,6 +198,18 @@ window.startRipple = function (opts) {
   }
   resize();
   addEventListener("resize", resize);
+  // Swap photos when the window changes shape (e.g. a resized browser).
+  let swapTimer;
+  addEventListener("resize", () => {
+    clearTimeout(swapTimer);
+    swapTimer = setTimeout(() => {
+      const next = pickImage();
+      if (next === current) return;
+      current = next;
+      fallback.style.backgroundImage = `url("${current}")`;
+      img.src = current;   // the texture updates when it loads
+    }, 200);
+  });
 
   // Pointer tracking (mouse and touch)
   const mouse = { x: 0.5, y: 0.5 }, last = { x: 0.5, y: 0.5 }, vel = { x: 0, y: 0 };

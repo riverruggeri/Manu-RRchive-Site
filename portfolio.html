@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261110223045">
+<link rel="stylesheet" href="assets/site.css?v=20261110232034">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -78,8 +78,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" href="index.html">Manu Clothing</a>
 
-<script src="assets/site.js?v=20261110223045"></script>
-<script src="assets/ripple.js?v=20261110223045"></script>
+<script src="assets/site.js?v=20261110232034"></script>
+<script src="assets/ripple.js?v=20261110232034"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -88,7 +88,7 @@ const PAGE = {
   // Background photo. To swap it, put the new image in the
   // "images" folder and change this file name.
   background: "images/home-bg.jpg",
-  // Photo used instead on phones (a tall photo fits the screen best).
+  // Photo used instead on phones and any tall or narrow window.
   mobileBackground: "images/about/about-hero.jpg",
 
   // Ripple effect. Same controls as Cargo's "Ripple" backdrop.
@@ -150,7 +150,8 @@ PAGE.icons.forEach(item => {
 startRipple({
   canvas: document.getElementById("stage"),
   fallback: document.getElementById("fallback"),
-  image: (window.matchMedia("(max-width: 700px)").matches && PAGE.mobileBackground) || PAGE.background,
+  image: PAGE.background,
+  tallImage: PAGE.mobileBackground,
   ripple: PAGE.ripple
 });
 </script>

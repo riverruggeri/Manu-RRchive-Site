@@ -26,7 +26,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 ## Mobile version (started 2026-11-04 evening)
 - Phones: long pages get a fading bar behind the logo/menu dots (colour from each page's --bar); corner clock/name hidden on long pages.
 - Ripple settings also have brightness (1.15 = 15% brighter), phoneStrength (2.2x stronger ripple on touch screens) and phoneAutoMotion (an invisible "finger" wanders over the photo on phones; a real touch takes over).
-- Homepage and Portfolio on phones use images/about/about-hero.jpg (PAGE.mobileBackground); homepage buttons in a 2x2 grid.
+- Homepage and Portfolio pick the background by window shape: wide windows get home-bg.jpg, tall/narrow windows (phones, narrow browser windows, the Claude preview panel) get images/about/about-hero.jpg (PAGE.mobileBackground, passed as tallImage); swaps live on resize; homepage buttons in a 2x2 grid.
 - Portfolio Fashion Works icon is River's sewing machine drawing (images/icon-fashion-works.png), shown at full original resolution, twice the normal icon width ("size: 2"), no outline/glow (River asked to remove it). "size" widens the icon box rather than zooming, which kept it sharp.
 - About bio is larger on phones.
 - iOS: River is on iOS 18.5 (Safari). Added home-screen icon (apple-touch-icon.png, favicon.png) and web-app tags on every page; no tap flash; no bounce on photo pages; form fields 16px so Safari doesn't zoom; commissions slideshow only pauses on hover with a real mouse; project arrows always shown on touch screens. WebKit isn't available in the workspace to test, so check on River's phone.
