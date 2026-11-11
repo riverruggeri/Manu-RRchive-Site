@@ -31,7 +31,7 @@ body.shop .menu button:hover, body.shop .menu button:focus-visible { background:
 }
 .hero-track {
   display: flex; height: 100%;
-  transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
 }
 /* Moving on by itself: same speed the whole way. Clicks and swipes keep the ease. */
 .hero-track.auto { transition-timing-function: linear; }
