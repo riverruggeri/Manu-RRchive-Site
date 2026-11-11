@@ -1,13 +1,26 @@
 /* Project pages (Photography, Fashion Works, Conceptual Art).
    Layout: giant title, then one centered project after another:
    info row, slideshow that bends while scrolling, photo counter. */
+/* Colours. Cream (same as the shop) with dark text. To go back to the
+   old grey, swap in the commented values on each line. */
 :root {
-  --bg: #565656;
-  --panel-solid: #161616;
-  --empty: #2f2f2f;
+  --bg: #e7e5e0;                       /* old: #565656 */
+  --ink: #141414;                      /* old: #ffffff */
+  --ink-soft: rgba(20, 20, 20, 0.56);  /* old: rgba(255, 255, 255, 0.7) */
+  --line: rgba(20, 20, 20, 0.16);      /* old: rgba(255, 255, 255, 0.18) */
+  --panel: rgba(240, 238, 234, 0.97);  /* menu; old: rgba(20, 20, 20, 0.94) */
+  --panel-solid: #f2f0ec;              /* "More" panel; old: #161616 */
+  --empty: #d8d5ce;                    /* old: #2f2f2f */
+  --shadow: rgba(0, 0, 0, 0.12);
   --bar: var(--bg);
+  color-scheme: light;
 }
-body { background: var(--bg); }
+html:has(body .page) { background: var(--bg); }
+body { background: var(--bg); color: var(--ink); }
+/* Light pages: dark logo and menu dots */
+.home-logo img { filter: invert(1); }
+.menu-btn span { box-shadow: none; }
+.menu a:hover, .menu a:focus-visible, .menu-group:hover, .menu-group:focus-visible { background: rgba(0, 0, 0, 0.06); }
 
 .page {
   padding-left: max(16px, env(safe-area-inset-left, 0px));
@@ -71,8 +84,8 @@ body { background: var(--bg); }
 .arrow {
   position: absolute; top: 50%; transform: translateY(-50%);
   width: 30px; height: 30px; border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.45);
   color: var(--ink); cursor: pointer;
   display: grid; place-items: center;
   font: inherit; font-size: 14px; line-height: 1;
@@ -111,7 +124,7 @@ body { background: var(--bg); }
 .close { background: none; border: 0; color: var(--ink); cursor: pointer; font: inherit; font-size: 22px; line-height: 1; padding: 4px 6px; }
 .panel-body { overflow-y: auto; padding: 0 14px 28px; display: flex; flex-direction: column; gap: 22px; }
 .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
-.thumbs button { padding: 0; border: 0; background: #222; cursor: pointer; aspect-ratio: 3 / 4; overflow: hidden; color: var(--ink-soft); font: inherit; font-size: 10px; }
+.thumbs button { padding: 0; border: 0; background: var(--empty); cursor: pointer; aspect-ratio: 3 / 4; overflow: hidden; color: var(--ink-soft); font: inherit; font-size: 10px; }
 .thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .text {
   display: grid; grid-template-columns: 9.5em 1fr; gap: 6px 14px;
