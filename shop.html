@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111015921">
+<link rel="stylesheet" href="assets/site.css?v=20261111020113">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -17,11 +17,20 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#e7e5e0">
-<link rel="stylesheet" href="assets/shop.css?v=20261111015921">
+<link rel="stylesheet" href="assets/shop.css?v=20261111020113">
 </head>
-<body class="shop long">
+<body class="shop long over-hero">
 
-<main class="shop-page">
+<!-- Full-screen opening: big ЯRchive logo over a slideshow of the pieces -->
+<section class="hero" id="hero" aria-label="ЯRchive">
+  <div class="hero-track" id="heroTrack"></div>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <a class="hero-logo" id="heroLogo" href="archive.html" aria-label="ЯRchive, see the Archive"><span class="logo-mark" aria-hidden="true"></span></a>
+  <div class="hero-dots" id="heroDots" aria-hidden="true"></div>
+  <a class="hero-down label" href="#catalog">Current Catalog <span aria-hidden="true">↓</span></a>
+</section>
+
+<main class="shop-page" id="catalog">
   <header class="catalog-head">
     <h1>Current<br>Catalog</h1>
     <p class="note label soft" id="note"></p>
@@ -30,10 +39,33 @@
   <p class="to-archive label"><a href="archive.html">See past pieces in the Archive →</a></p>
 </main>
 
-<script src="assets/site.js?v=20261111015921"></script>
-<script src="assets/catalog.js?v=20261111015921"></script>
+<script src="assets/site.js?v=20261111020113"></script>
+<script src="assets/catalog.js?v=20261111020113"></script>
 <script>
 const PAGE = {
+  // Full-screen slideshow at the top. Wide photos are used on wide
+  // screens, tall photos on phones and narrow windows.
+  hero: {
+    seconds: 4.5,   // how long each photo stays
+    wide: [
+      "images/fashion-works/denim-patchwork-vest-01.jpg",
+      "images/fashion-works/distressed-denim-jeans-03.jpg",
+      "images/fashion-works/reworked-denim-phase-01-04.jpg",
+      "images/fashion-works/denim-patchwork-vest-03.jpg",
+      "images/fashion-works/reworked-denim-phase-01-03.jpg",
+      "images/fashion-works/distressed-denim-jeans-01.jpg"
+    ],
+    tall: [
+      "images/fashion-works/reworked-denim-phase-01-01.jpg",
+      "images/fashion-works/distressed-denim-jeans-02.jpg",
+      "images/fashion-works/denim-patchwork-vest-02.jpg",
+      "images/fashion-works/reworked-denim-01.jpg",
+      "images/fashion-works/reworked-denim-phase-01-02.jpg",
+      "images/fashion-works/denim-patchwork-vest-04.jpg",
+      "images/fashion-works/reworked-denim-03.jpg",
+      "images/fashion-works/distressed-denim-jeans-04.jpg"
+    ]
+  },
   // The rows of the shop, top to bottom. Each piece goes in the row
   // named by its "category" in assets/catalog.js. "empty" is shown
   // when a row has nothing in it yet.
@@ -109,6 +141,57 @@ document.querySelectorAll(".rail").forEach((rail, i) => {
   addEventListener("resize", sync);
   sync();
 });
+
+/* ---------- Opening slideshow ---------- */
+(() => {
+  const hero = document.getElementById("hero"), track = document.getElementById("heroTrack");
+  const dotsEl = document.getElementById("heroDots");
+  const logoUrl = new URL("images/rrchive-logo.png", location.href).href;
+  document.getElementById("heroLogo").style.setProperty("--logo", `url("${logoUrl}")`);
+  let list = [], at = 0, timer, shape = "";
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function build() {
+    const next = innerWidth / innerHeight < 1 ? "tall" : "wide";
+    if (next === shape) return;
+    shape = next; list = PAGE.hero[shape]; at = 0;
+    track.innerHTML = list.map((src, i) =>
+      `<img src="${esc(src)}" alt="" ${i ? 'loading="lazy"' : ""} draggable="false">`).join("");
+    dotsEl.innerHTML = list.map(() => "<span></span>").join("");
+    show(0, true);
+  }
+  function show(i, instant) {
+    at = (i + list.length) % list.length;
+    track.style.transition = instant ? "none" : "";
+    track.style.transform = `translateX(${-100 * at}%)`;
+    [...dotsEl.children].forEach((d, k) => d.classList.toggle("on", k === at));
+    restart();
+  }
+  function restart() {
+    clearTimeout(timer);
+    if (!reduce) timer = setTimeout(() => show(at + 1), PAGE.hero.seconds * 1000);
+  }
+  // Swipe on phones
+  let x0 = null;
+  hero.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener("touchend", e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) show(at + (dx < 0 ? 1 : -1));
+  });
+  addEventListener("resize", build);
+  build();
+
+  // While the opening is on screen, the header is drawn in cream over the photos.
+  new IntersectionObserver(([e]) => {
+    document.body.classList.toggle("over-hero", e.intersectionRatio > 0.12);
+  }, { threshold: [0, 0.12, 0.5, 1] }).observe(hero);
+
+  // "Current Catalog ↓": glide down to the clothes
+  document.querySelector(".hero-down").addEventListener("click", e => {
+    e.preventDefault();
+    document.getElementById("catalog").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+  });
+})();
 </script>
 </body>
 </html>
