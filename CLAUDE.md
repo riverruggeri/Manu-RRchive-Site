@@ -9,7 +9,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
   - Label pages: the label name top left (image logo for ЯRchive, text for ЯRgraphy). On the label's home screen it opens logoLinkFromHome; elsewhere it goes to the home screen. "MANU" link top right next to the dots; the label's tabs along the top; corner label = label name.
   - ЯRchive: home shop.html (logo -> archive.html); pages shop, product, archive, commissions, start-commission (clothing); tabs Current Catalog / Archive / Commissions / Experimental Fashion ↗.
   - ЯRgraphy: home rrgraphy.html (intro text, slideshow, big VIEW MY PHOTOGRAPHY button, START A COMMISSION -> photo-commissions.html; logo -> photography.html); pages rrgraphy, photography, photo-commissions, start-commission?type=photo; tabs Home / Photography / Commissions.
-- Manu homepage `index.html`: MANU, "Artist working in fashion, textiles and photography.", doorways ЯRchive / Portfolio / ЯRgraphy / About. ЯRgraphy intro text (style + studio experience in fashion, portrait, object) written 2026-11-11 for commissions; photo services now include Object / Product Photography.
+- Manu homepage `index.html` (River chose "option 2", 2026-11-11): MANU, "Artist working in fashion, textiles and photography.", then the labels as big names with captions (PAGE.labels). Hovering a name fades the ripple background to that label's photo (canvas.setRippleImage in ripple.js); on phones the photos take turns every 4s. Portfolio and About are small links below. Label photos are stand-ins (vest for ЯRchive, Drag Me Down for ЯRgraphy). ЯRgraphy intro text (style + studio experience in fashion, portrait, object) written 2026-11-11 for commissions; photo services now include Object / Product Photography.
 - ЯRchive: `shop.html` Current Catalog (available pieces), `archive.html` Archive (sold pieces, status "sold" in catalog.js; optional soldNote), `product.html?piece=<id>`, `commissions.html` (garment commissions) -> `start-commission.html` form.
 - Experimental Fashion (`fashion-works.html`) stays in Manu's portfolio: pieces not for sale, kept or gifted. ЯRchive links to it (tab, Archive note); it links to ЯRchive (subLink under the title).
 - Each medium has its own commissions: garments under ЯRchive; photography at `photo-commissions.html` -> `start-commission.html?type=photo` (same form, photo fields). Photography page links to it under the title (PAGE.subLink). Photo services/text are placeholders until River confirms them.
@@ -57,5 +57,6 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - Run `sh bump-version.sh` before each commit: it stamps a new ?v= number on the asset links so phones and GitHub Pages caching load the latest files.
 
 ## Working with River
+- River's full name on the site is always "River Manu Ruggeri" (River, 2026-11-11).
 - River's original Cargo site must not be changed; look only.
 - River describes changes in plain words; keep explanations non-technical.

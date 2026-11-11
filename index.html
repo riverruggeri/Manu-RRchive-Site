@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Manu</title>
-<meta name="description" content="Manu: River Ruggeri, an artist working in fashion, textiles and photography. Home of the clothing label ЯRchive.">
+<meta name="description" content="Manu: River Manu Ruggeri, an artist working in fashion, textiles and photography. Home of the clothing label ЯRchive.">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111010929">
+<link rel="stylesheet" href="assets/site.css?v=20261111011051">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -18,140 +18,137 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
 <style>
-  /* Layout: full-bleed rippling photo; brand name, line and main links stacked at the lower left */
   :root { --fallback-bg: #1b1d17; }
   html, body { height: 100%; }
   body { overflow: hidden; background: var(--fallback-bg); }
-
   #stage, #fallback { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
-  #fallback { background: var(--fallback-bg) center / cover no-repeat; }
+  #fallback { background: var(--fallback-bg) center / cover no-repeat; transition: background-image 0.3s; }
   .shade {
     position: fixed; inset: 0; pointer-events: none;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 45%, rgba(0, 0, 0, 0) 70%);
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 78%);
   }
-
   .brand {
-    position: fixed;
-    left: 0; right: 0;
-    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    position: fixed; left: 0; right: 0;
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px));
     padding-left: max(28px, calc(env(safe-area-inset-left, 0px) + 16px));
-    padding-right: max(16px, env(safe-area-inset-right, 0px));
-    display: flex; flex-direction: column; align-items: flex-start; gap: 18px;
-    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+    padding-right: max(28px, calc(env(safe-area-inset-right, 0px) + 16px));
+    display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+    text-shadow: 0 2px 18px rgba(0,0,0,0.35);
   }
   .wordmark {
-    margin: 0;
-    font-weight: 800;
-    font-size: clamp(84px, 21vw, 340px);
-    line-height: 0.78;
-    letter-spacing: -0.055em;
-    margin-left: -0.04em;
+    margin: 0; font-weight: 800;
+    font-size: clamp(64px, 13vw, 210px);
+    line-height: 0.78; letter-spacing: -0.055em; margin-left: -0.04em;
   }
-  .line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; font-size: clamp(16px, 1.6vw, 20px); }
-  .line strong { font-weight: 800; letter-spacing: -0.01em; }
-  .flip { display: inline-block; transform: scaleX(-1); }
-  .line span { color: rgba(231, 229, 224, 0.85); }
+  .line { margin: 0; font-size: clamp(15px, 1.4vw, 18px); color: rgba(231,229,224,0.85); }
 
-  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-  .links a {
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 15px;
-    padding: 9px 13px 8px;
-    border-radius: 4px;
-    border: 1px solid rgba(231, 229, 224, 0.75);
-    color: var(--ink);
-    background: rgba(0, 0, 0, 0.12);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    text-shadow: none;
+  /* The labels: big, each its own thing */
+  .labels {
+    display: flex; flex-wrap: wrap; gap: 10px clamp(28px, 5vw, 80px);
+    margin-top: clamp(14px, 3vh, 34px);
+    padding-top: clamp(14px, 2.4vh, 22px);
+    border-top: 1px solid rgba(231,229,224,0.35);
+    width: 100%;
   }
-  .links a.main { background: var(--cream); color: #111111; border-color: var(--cream); }
-  .links a:hover { background: rgba(231, 229, 224, 0.18); }
-  .links a.main:hover { background: var(--cream-deep); }
-  .links a .soon { font-weight: 500; opacity: 0.7; font-size: 12px; margin-left: 4px; }
+  .label-link {
+    display: flex; flex-direction: column; gap: 6px;
+    text-decoration: none; color: var(--ink);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .label-link .name {
+    font-weight: 800; font-size: clamp(44px, 7.2vw, 118px);
+    line-height: 0.85; letter-spacing: -0.045em;
+    display: inline-flex; align-items: baseline; gap: 0.12em;
+  }
+  .label-link .arrow { font-size: 0.4em; opacity: 0; transform: translateX(-0.3em); transition: opacity 0.25s, transform 0.25s; }
+  .label-link:hover .arrow, .label-link.on .arrow { opacity: 1; transform: none; }
+  .label-link .what { font-size: clamp(13px, 1.1vw, 15px); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(231,229,224,0.78); }
+  .labels:has(.label-link:hover) .label-link:not(:hover),
+  .labels.cycling .label-link:not(.on) { opacity: 0.4; }
 
-  @media (max-width: 520px) {
-    .brand { bottom: calc(52px + env(safe-area-inset-bottom, 0px)); }
-    .links { display: grid; grid-template-columns: 1fr 1fr; width: 100%; max-width: 340px; }
-    .links a { font-size: 14px; padding: 10px 11px 9px; text-align: center; }
+  .small-links { display: flex; gap: 22px; margin-top: 6px; }
+  .small-links a { text-decoration: none; font-weight: 600; font-size: 15px; border-bottom: 1px solid rgba(231,229,224,0.5); padding-bottom: 2px; }
+  .small-links a:hover { border-color: var(--ink); }
+
+  .manu-word { display: none; }
+  @media (max-width: 700px) {
+    .brand { bottom: calc(48px + env(safe-area-inset-bottom, 0px)); gap: 10px; }
+    .labels { flex-direction: column; gap: 18px; }
+    .label-link .name { font-size: clamp(46px, 15vw, 72px); }
+    .label-link .arrow { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body class="photo-page" data-no-menu>
-
 <canvas id="stage" aria-hidden="true"></canvas>
 <div id="fallback" hidden></div>
 <div class="shade" aria-hidden="true"></div>
 
 <main class="brand">
-  <h1 class="wordmark" id="wordmark"></h1>
-  <p class="line"><strong id="lineName"></strong><span id="lineText"></span></p>
-  <nav class="links" id="links" aria-label="Main"></nav>
+  <h1 class="wordmark">MANU</h1>
+  <p class="line">Artist working in fashion, textiles and photography.</p>
+  <nav class="labels" id="labels" aria-label="Labels"></nav>
+  <nav class="small-links" aria-label="More">
+    <a href="portfolio.html">Portfolio</a>
+    <a href="about.html">About</a>
+  </nav>
 </main>
-
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261111010929"></script>
-<script src="assets/ripple.js?v=20261111010929"></script>
+<script src="assets/site.js?v=20261111011051"></script>
+<script src="assets/ripple.js?v=20261111011051"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
+   Each label gets a big name, a short caption and its own photo,
+   which the background fades to while you hover the name (on phones
+   the photos take turns). A new label is one more entry in "labels".
    ========================================================= */
 const PAGE = {
-  wordmark: "MANU",
-  lineName: "",              // optional bold name before the line (e.g. "RRchive")
-  lineText: "Artist working in fashion, textiles and photography.",
-
-  // Doorways from Manu into each part of the work. A new label (jewelry,
-  // say) gets added here. "soon: true" marks something not open yet.
-  links: [
-    { label: "ЯRchive",     link: "shop.html", main: true },
-    { label: "Portfolio",   link: "portfolio.html" },
-    { label: "ЯRgraphy",    link: "rrgraphy.html" },
-    { label: "About",       link: "about.html" }
+  hoverPhotos: true,   // false = names only, no photo change
+  labels: [
+    { name: "ЯRchive",  what: "Clothing · one-of-one pieces", link: "shop.html",
+      image: "images/fashion-works/denim-patchwork-vest-01.jpg", tallImage: "images/fashion-works/reworked-denim-phase-01-01.jpg" },
+    { name: "ЯRgraphy", what: "Photography · commissions open", link: "rrgraphy.html",
+      image: "images/photography/drag-me-down-02.jpg", tallImage: "images/photography/drag-me-down-01.jpg" }
   ],
-
-  // Background photo and ripple. Same settings as the portfolio page.
   background: "images/home-bg.jpg",
-  // Photo used instead on phones and any tall or narrow window.
   mobileBackground: "images/about/about-hero.jpg",
-  ripple: {
-    distortionX: 2,
-    distortionY: 2,
-    scale: 4.3,
-    speed: 4,
-    direction: 270,
-    mouseInteraction: true,
-    mouseSensitivity: 50,
-    brightness: 1.15,      // photo brightness (1 = as shot, 1.15 = 15% brighter)
-    phoneStrength: 2.2,    // how much stronger the ripple is on phones
-    phoneAutoMotion: true  // on phones, the ripple drifts around on its own
-  }
+  ripple: { distortionX: 2, distortionY: 2, scale: 4.3, speed: 4, direction: 270,
+            mouseInteraction: true, mouseSensitivity: 50, brightness: 1.15, phoneStrength: 2.2, phoneAutoMotion: true }
 };
-
-/* ---------- Fill in the page ---------- */
-document.getElementById("wordmark").textContent = PAGE.wordmark;
-const lineName = document.getElementById("lineName");
-if (PAGE.lineName) {
-  lineName.setAttribute("aria-label", PAGE.lineName);
-  lineName.innerHTML = `<span class="flip" aria-hidden="true">${esc(PAGE.lineName[0])}</span><span aria-hidden="true">${esc(PAGE.lineName.slice(1))}</span>`;
-} else lineName.remove();
-document.getElementById("lineText").textContent = PAGE.lineText;
-document.getElementById("links").innerHTML = PAGE.links.map(l =>
-  `<a href="${esc(l.link)}"${l.main ? ' class="main"' : ""}${l.soon ? ` data-soon="1" data-label="${esc(l.label)}"` : ""}>${brandHTML(l.label)}${l.soon ? '<span class="soon">soon</span>' : ""}</a>`).join("");
+const nav = document.getElementById("labels");
+nav.innerHTML = PAGE.labels.map((l, i) =>
+  `<a class="label-link" data-i="${i}" href="${esc(l.link)}"><span class="name"><span>${brandHTML(l.name)}</span><span class="arrow">→</span></span><span class="what">${esc(l.what)}</span></a>`).join("");
 const insta = document.getElementById("insta");
 insta.href = `https://www.instagram.com/${SITE.contact.instagram}/`;
 insta.textContent = "@" + SITE.contact.instagram;
 
-startRipple({
-  canvas: document.getElementById("stage"),
-  fallback: document.getElementById("fallback"),
-  image: PAGE.background,
-  tallImage: PAGE.mobileBackground,
-  ripple: PAGE.ripple
-});
+const canvas = document.getElementById("stage");
+startRipple({ canvas, fallback: document.getElementById("fallback"),
+  image: PAGE.background, tallImage: PAGE.mobileBackground, ripple: PAGE.ripple });
+
+if (PAGE.hoverPhotos) {
+  // Load the label photos ahead so the swap is quick.
+  PAGE.labels.forEach(l => [l.image, l.tallImage].forEach(src => { new Image().src = src; }));
+  const show = l => canvas.setRippleImage && canvas.setRippleImage(l ? { image: l.image, tallImage: l.tallImage } : null);
+  const links = [...nav.querySelectorAll(".label-link")];
+  if (matchMedia("(hover: hover)").matches) {
+    links.forEach(a => a.addEventListener("mouseenter", () => show(PAGE.labels[a.dataset.i])));
+    nav.addEventListener("mouseleave", () => show(null));
+  } else {
+    // Phones: slowly cycle Manu → ЯRchive → ЯRgraphy, highlighting the name.
+    let step = 0;
+    setInterval(() => {
+      step = (step + 1) % (PAGE.labels.length + 1);
+      const l = PAGE.labels[step - 1];
+      nav.classList.toggle("cycling", !!l);
+      links.forEach((a, i) => a.classList.toggle("on", i === step - 1));
+      show(l);
+    }, 4000);
+  }
+}
 </script>
 </body>
 </html>

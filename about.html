@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>About River Ruggeri</title>
+<title>About River Manu Ruggeri</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111010929">
+<link rel="stylesheet" href="assets/site.css?v=20261111011051">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -116,7 +116,7 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" href="index.html" data-section-name>Manu</a>
 
-<script src="assets/site.js?v=20261111010929"></script>
+<script src="assets/site.js?v=20261111011051"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -124,7 +124,7 @@
    assets/site.js so every page uses the same ones.
    ========================================================= */
 const PAGE = {
-  name: "River Ruggeri",
+  name: "River Manu Ruggeri",
 
   // Big photo on the left, and the portrait. Files go in images/about/.
   heroPhoto: "images/about/about-hero.jpg",
@@ -158,7 +158,7 @@ function photo(srcList, alt, missingText) {
   return img;
 }
 document.getElementById("hero").appendChild(
-  photo([PAGE.heroPhoto, PAGE.heroStandIn].filter(Boolean), "River Ruggeri wearing a reworked denim piece", "Photo to add: " + PAGE.heroPhoto.split("/").pop()));
+  photo([PAGE.heroPhoto, PAGE.heroStandIn].filter(Boolean), "River Manu Ruggeri wearing a reworked denim piece", "Photo to add: " + PAGE.heroPhoto.split("/").pop()));
 const portrait = document.getElementById("portrait");
 portrait.appendChild(photo([PAGE.portraitPhoto], "Portrait of " + PAGE.name, "Portrait to add: " + PAGE.portraitPhoto.split("/").pop()));
 if (PAGE.showNameOnPortrait) portrait.insertAdjacentHTML("beforeend", `<span class="name">${esc(PAGE.name.toUpperCase())}</span>`);
