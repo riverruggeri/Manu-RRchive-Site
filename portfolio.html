@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111015315">
+<link rel="stylesheet" href="assets/site.css?v=20261111015803">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -39,7 +39,7 @@
     transform: translateY(-2vh);
   }
   .icon {
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
     width: clamp(92px, 9vw, 128px);
     color: var(--ink); text-decoration: none;
     border-radius: 6px; padding: 6px 4px; outline: none;
@@ -57,13 +57,13 @@
   .icon-art { position: relative; }
   .icon-art img {
     position: absolute; inset: 0;   /* keep the picture inside its box, above the label */
-    filter: drop-shadow(1.5px 0 0 var(--cream)) drop-shadow(-1.5px 0 0 var(--cream))
-            drop-shadow(0 1.5px 0 var(--cream)) drop-shadow(0 -1.5px 0 var(--cream))
+    filter: drop-shadow(0.75px 0 0 var(--cream)) drop-shadow(-0.75px 0 0 var(--cream))
+            drop-shadow(0 0.75px 0 var(--cream)) drop-shadow(0 -0.75px 0 var(--cream))
             drop-shadow(0 8px 14px rgba(0, 0, 0, 0.55));
   }
-  .icon-label { background: rgba(0, 0, 0, 0.35); }
   .icon-label {
-    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
+    font-size: 14px; font-weight: 600; color: var(--cream);
+    letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
     text-shadow: 0 1px 3px var(--shadow), 0 0 10px var(--shadow);
     padding: 1px 4px; border-radius: 3px;
   }
@@ -89,8 +89,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" href="index.html" data-section-name>Manu</a>
 
-<script src="assets/site.js?v=20261111015315"></script>
-<script src="assets/ripple.js?v=20261111015315"></script>
+<script src="assets/site.js?v=20261111015803"></script>
+<script src="assets/ripple.js?v=20261111015803"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -122,9 +122,9 @@ const PAGE = {
   // "outline: true" adds a soft light edge so dark drawings show up.
   icons: [
     // Cutouts from River's own work (River, 2026-11-11)
-    { label: "Conceptual Art", icon: "images/icon-conceptual-art.webp", link: "conceptual-art.html", size: 1.8 },
-    { label: "Fashion Works",  icon: "images/icon-fashion-works.webp",  link: "fashion-works.html",  size: 1.8 },
-    { label: "Photography",    icon: "images/icon-photography.webp",    link: "photography.html",    size: 1.8 }
+    { label: "Conceptual Art", icon: "images/icon-conceptual-art.webp", link: "conceptual-art.html", size: 2.2 },
+    { label: "Fashion Works",  icon: "images/icon-fashion-works.webp",  link: "fashion-works.html",  size: 2.2 },
+    { label: "Photography",    icon: "images/icon-photography.webp",    link: "photography.html",    size: 2.2 }
   ]
 };
 
