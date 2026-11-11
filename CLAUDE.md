@@ -31,7 +31,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - About bio is larger on phones.
 - iOS: River is on iOS 18.5 (Safari). Added home-screen icon (apple-touch-icon.png, favicon.png) and web-app tags on every page; no tap flash; no bounce on photo pages; form fields 16px so Safari doesn't zoom; commissions slideshow only pauses on hover with a real mouse; project arrows always shown on touch screens. WebKit isn't available in the workspace to test, so check on River's phone.
 - ONE CREAM everywhere (River, 2026-11-10): --cream #e7e5e0 (stone off-white; River tried warmer #e8e0d2 and went back) in assets/site.css is used for every former white (text, logo, dots, buttons, icons, home-screen icon) AND the backgrounds of the shop, project and commission pages. Shades --cream-light / --cream-deep / --cream-panel are mixed from it, so changing --cream recolours the whole site. Never introduce a separate white or stone colour. The logo is drawn through a CSS mask in the page text colour (cream on dark pages, dark on cream pages).
-- Commissions and Start a Commission are cream too (body class "light" in site.css gives any page the cream look).
+- About is cream too (photo moved right so the logo and clock sit on cream). Commissions and Start a Commission are cream too (body class "light" in site.css gives any page the cream look).
 - Project pages use the site cream with dark text; old grey values are commented in assets/projects.css.
 
 ## How things are set up

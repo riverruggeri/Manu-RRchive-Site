@@ -74,6 +74,7 @@ body.light .menu-btn span { box-shadow: none; }
 body.light .menu a:hover, body.light .menu a:focus-visible,
 body.light .menu-group:hover, body.light .menu-group:focus-visible { background: rgba(0, 0, 0, 0.06); }
 body.light .corner { text-shadow: none; }
+body.light .photo-missing { background: var(--cream-deep); }
 
 /* Bottom corners: clock on the left, name on the right */
 .corner {
