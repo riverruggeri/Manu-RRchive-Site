@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111020809">
+<link rel="stylesheet" href="assets/site.css?v=20261111021659">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -17,7 +17,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#e7e5e0">
-<link rel="stylesheet" href="assets/shop.css?v=20261111020809">
+<link rel="stylesheet" href="assets/shop.css?v=20261111021659">
 </head>
 <body class="shop long over-hero">
 
@@ -39,33 +39,14 @@
   <p class="to-archive label"><a href="archive.html">See past pieces in the Archive →</a></p>
 </main>
 
-<script src="assets/site.js?v=20261111020809"></script>
-<script src="assets/catalog.js?v=20261111020809"></script>
+<script src="assets/site.js?v=20261111021659"></script>
+<script src="assets/catalog.js?v=20261111021659"></script>
 <script>
 const PAGE = {
-  // Full-screen slideshow at the top. Wide photos are used on wide
-  // screens, tall photos on phones and narrow windows.
-  hero: {
-    seconds: 4.5,   // how long each photo stays
-    wide: [
-      "images/fashion-works/denim-patchwork-vest-01.jpg",
-      "images/fashion-works/distressed-denim-jeans-03.jpg",
-      "images/fashion-works/reworked-denim-phase-01-04.jpg",
-      "images/fashion-works/denim-patchwork-vest-03.jpg",
-      "images/fashion-works/reworked-denim-phase-01-03.jpg",
-      "images/fashion-works/distressed-denim-jeans-01.jpg"
-    ],
-    tall: [
-      "images/fashion-works/reworked-denim-phase-01-01.jpg",
-      "images/fashion-works/distressed-denim-jeans-02.jpg",
-      "images/fashion-works/denim-patchwork-vest-02.jpg",
-      "images/fashion-works/reworked-denim-01.jpg",
-      "images/fashion-works/reworked-denim-phase-01-02.jpg",
-      "images/fashion-works/denim-patchwork-vest-04.jpg",
-      "images/fashion-works/reworked-denim-03.jpg",
-      "images/fashion-works/distressed-denim-jeans-04.jpg"
-    ]
-  },
+  // Full-screen slideshow at the top. The photos are listed in
+  // assets/site.js (labels → rrchive → slides), shared with the Manu
+  // homepage so the slideshow opens on the photo you saw there.
+  hero: { seconds: 4.5 },   // how long each photo stays
   // The rows of the shop, top to bottom. Each piece goes in the row
   // named by its "category" in assets/catalog.js. "empty" is shown
   // when a row has nothing in it yet.
@@ -148,27 +129,25 @@ document.querySelectorAll(".rail").forEach((rail, i) => {
   const dotsEl = document.getElementById("heroDots");
   const logoUrl = new URL("images/rrchive-logo.png", location.href).href;
   document.getElementById("heroLogo").style.setProperty("--logo", `url("${logoUrl}")`);
-  let list = [], at = 0, timer, shape = "";
+  const SLIDES = SITE.labels.rrchive.slides;
+  let slider = null, timer, shape = "";
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   function build() {
-    const next = innerWidth / innerHeight < 1 ? "tall" : "wide";
+    const next = slideShape();
     if (next === shape) return;
-    shape = next; list = PAGE.hero[shape]; at = 0;
-    track.innerHTML = list.map((src, i) =>
-      `<img src="${esc(src)}" alt="" ${i ? 'loading="lazy"' : ""} draggable="false">`).join("");
+    shape = next;
+    const list = SLIDES[shape];
     dotsEl.innerHTML = list.map(() => "<span></span>").join("");
-    show(0, true);
-  }
-  function show(i, instant) {
-    at = (i + list.length) % list.length;
-    track.style.transition = instant ? "none" : "";
-    track.style.transform = `translateX(${-100 * at}%)`;
-    [...dotsEl.children].forEach((d, k) => d.classList.toggle("on", k === at));
-    restart();
+    slider = makeSlider(track, list, slidePlace.get("rrchive", shape), i => {
+      slidePlace.set("rrchive", shape, i);
+      [...dotsEl.children].forEach((d, k) => d.classList.toggle("on", k === i));
+      restart();
+    });
+    slider.jump(slider.at);
   }
   function restart() {
     clearTimeout(timer);
-    if (!reduce) timer = setTimeout(() => show(at + 1), PAGE.hero.seconds * 1000);
+    if (!reduce) timer = setTimeout(() => slider.next(), PAGE.hero.seconds * 1000);
   }
   // Swipe on phones
   let x0 = null;
@@ -176,13 +155,13 @@ document.querySelectorAll(".rail").forEach((rail, i) => {
   hero.addEventListener("touchend", e => {
     if (x0 === null) return;
     const dx = e.changedTouches[0].clientX - x0; x0 = null;
-    if (Math.abs(dx) > 40) show(at + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 40) (dx < 0 ? slider.next() : slider.prev());
   });
   // Click (or tap) the left or right side of the screen to go back or forward.
   hero.addEventListener("click", e => {
     if (e.target.closest("a, button")) return;
     const x = e.clientX / innerWidth;
-    if (x < 0.35) show(at - 1); else if (x > 0.65) show(at + 1);
+    if (x < 0.35) slider.prev(); else if (x > 0.65) slider.next();
   });
   hero.addEventListener("mousemove", e => {
     if (e.target.closest("a, button")) { hero.style.cursor = ""; return; }

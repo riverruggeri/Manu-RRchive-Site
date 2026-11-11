@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111020809">
+<link rel="stylesheet" href="assets/site.css?v=20261111021659">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -23,6 +23,20 @@
   body { overflow: hidden; background: var(--fallback-bg); }
   #stage, #fallback { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
   #fallback { background: var(--fallback-bg) center / cover no-repeat; transition: background-image 0.3s; }
+  /* Photos of a label that slide by while its name is hovered */
+  .label-show {
+    position: fixed; inset: 0; overflow: hidden; pointer-events: none;
+    opacity: 0; transition: opacity 0.45s ease;
+    background: #111111;
+  }
+  .label-show.on { opacity: 1; }
+  .label-track { display: flex; height: 100%; transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+  .label-track img {
+    flex: 0 0 100%; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 35%; display: block;
+    filter: brightness(1.05);
+  }
+  @media (prefers-reduced-motion: reduce) { .label-track { transition: none; } }
   .shade {
     position: fixed; inset: 0; pointer-events: none;
     background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.12) 40%, rgba(0,0,0,0) 62%);
@@ -82,6 +96,7 @@
 <body class="photo-page" data-no-menu>
 <canvas id="stage" aria-hidden="true"></canvas>
 <div id="fallback" hidden></div>
+<div class="label-show" id="labelShow" aria-hidden="true"><div class="label-track" id="labelTrack"></div></div>
 <div class="shade" aria-hidden="true"></div>
 
 <main class="brand">
@@ -96,22 +111,23 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261111020809"></script>
-<script src="assets/ripple.js?v=20261111020809"></script>
+<script src="assets/site.js?v=20261111021659"></script>
+<script src="assets/ripple.js?v=20261111021659"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
-   Each label gets a big name, a short caption and its own photo,
-   which the background fades to while you hover the name (on phones
-   the photos take turns). A new label is one more entry in "labels".
+   Each label gets a big name and a short caption. Hovering a name
+   shows that label's photos sliding by (listed in assets/site.js,
+   labels → slides); on phones the labels take turns. Each label
+   carries on from the photo it was last on, and ЯRchive opens on the
+   same photo. A new label is one more entry in "labels".
    ========================================================= */
 const PAGE = {
-  hoverPhotos: true,   // false = names only, no photo change
+  hoverPhotos: true,   // false = names only, no photos
+  slideSeconds: 2.6,   // how long each photo stays while hovering
   labels: [
-    { name: "ЯRchive",  what: "Clothing · one-of-one pieces", link: "shop.html",
-      image: "images/fashion-works/denim-patchwork-vest-01.jpg", tallImage: "images/fashion-works/reworked-denim-phase-01-01.jpg" },
-    { name: "ЯRgraphy", what: "Photography · commissions open", link: "rrgraphy.html",
-      image: "images/photography/drag-me-down-02.jpg", tallImage: "images/photography/drag-me-down-01.jpg" }
+    { key: "rrchive",  name: "ЯRchive",  what: "Clothing · one-of-one pieces",   link: "shop.html" },
+    { key: "rrgraphy", name: "ЯRgraphy", what: "Photography · commissions open", link: "rrgraphy.html" }
   ],
   background: "images/home-bg.jpg",
   mobileBackground: "images/about/about-hero.jpg",
@@ -125,27 +141,47 @@ const insta = document.getElementById("insta");
 insta.href = `https://www.instagram.com/${SITE.contact.instagram}/`;
 insta.textContent = "@" + SITE.contact.instagram;
 
-const canvas = document.getElementById("stage");
-startRipple({ canvas, fallback: document.getElementById("fallback"),
+startRipple({ canvas: document.getElementById("stage"), fallback: document.getElementById("fallback"),
   image: PAGE.background, tallImage: PAGE.mobileBackground, ripple: PAGE.ripple });
 
 if (PAGE.hoverPhotos) {
-  // Load the label photos ahead so the swap is quick.
-  PAGE.labels.forEach(l => [l.image, l.tallImage].forEach(src => { new Image().src = src; }));
-  const show = l => canvas.setRippleImage && canvas.setRippleImage(l ? { image: l.image, tallImage: l.tallImage } : null);
+  const showEl = document.getElementById("labelShow"), track = document.getElementById("labelTrack");
   const links = [...nav.querySelectorAll(".label-link")];
+  let current = null, slider = null, shape = "", timer;
+  const photosOf = l => (SITE.labels[l.key] && SITE.labels[l.key].slides || {})[slideShape()] || [];
+  // Load the first few photos of each label ahead so they appear quickly.
+  PAGE.labels.forEach(l => {
+    const list = photosOf(l), i = slidePlace.get(l.key, slideShape());
+    [i, i + 1, i + 2].forEach(k => list.length && (new Image().src = list[k % list.length]));
+  });
+  // Show a label's photos, starting one on from where it last stopped.
+  function open(l, slide) {
+    clearInterval(timer);
+    const list = photosOf(l);
+    if (!list.length) return close();
+    if (current !== l || shape !== slideShape()) {
+      current = l; shape = slideShape();
+      slider = makeSlider(track, list, slidePlace.get(l.key, shape), i => slidePlace.set(l.key, shape, i));
+    }
+    slider.jump(slider.at + 1);
+    showEl.classList.add("on");
+    if (slide) timer = setInterval(() => slider.next(), PAGE.slideSeconds * 1000);
+  }
+  function close() { clearInterval(timer); showEl.classList.remove("on"); }
+
   if (matchMedia("(hover: hover)").matches) {
-    links.forEach(a => a.addEventListener("mouseenter", () => show(PAGE.labels[a.dataset.i])));
-    nav.addEventListener("mouseleave", () => show(null));
+    links.forEach(a => a.addEventListener("mouseenter", () => open(PAGE.labels[a.dataset.i], true)));
+    nav.addEventListener("mouseleave", close);
   } else {
-    // Phones: slowly cycle Manu → ЯRchive → ЯRgraphy, highlighting the name.
+    // Phones: take turns Manu → ЯRchive → ЯRgraphy, highlighting the name,
+    // each label showing its next photo.
     let step = 0;
     setInterval(() => {
       step = (step + 1) % (PAGE.labels.length + 1);
       const l = PAGE.labels[step - 1];
       nav.classList.toggle("cycling", !!l);
       links.forEach((a, i) => a.classList.toggle("on", i === step - 1));
-      show(l);
+      l ? open(l, false) : close();
     }, 4000);
   }
 }

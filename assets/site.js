@@ -25,7 +25,31 @@ window.SITE = {
         { label: "Archive",              link: "archive.html" },
         { label: "Commissions",          link: "commissions.html", also: ["start-commission.html"] },
         { label: "Experimental Fashion", link: "fashion-works.html", away: true }
-      ]
+      ],
+      // Photos that slide by on the Manu homepage while you hover ЯRchive,
+      // and on the big slideshow at the top of the ЯRchive home. Both
+      // share their place: the photo showing on Manu is the one ЯRchive
+      // opens on. "wide" for computers, "tall" for phones.
+      slides: {
+        wide: [
+          "images/fashion-works/denim-patchwork-vest-01.jpg",
+          "images/fashion-works/distressed-denim-jeans-03.jpg",
+          "images/fashion-works/reworked-denim-phase-01-04.jpg",
+          "images/fashion-works/denim-patchwork-vest-03.jpg",
+          "images/fashion-works/reworked-denim-phase-01-03.jpg",
+          "images/fashion-works/distressed-denim-jeans-01.jpg"
+        ],
+        tall: [
+          "images/fashion-works/reworked-denim-phase-01-01.jpg",
+          "images/fashion-works/distressed-denim-jeans-02.jpg",
+          "images/fashion-works/denim-patchwork-vest-02.jpg",
+          "images/fashion-works/reworked-denim-01.jpg",
+          "images/fashion-works/reworked-denim-phase-01-02.jpg",
+          "images/fashion-works/denim-patchwork-vest-04.jpg",
+          "images/fashion-works/reworked-denim-03.jpg",
+          "images/fashion-works/distressed-denim-jeans-04.jpg"
+        ]
+      }
     },
     rrgraphy: {
       name: "ЯRgraphy",
@@ -36,7 +60,30 @@ window.SITE = {
         { label: "Home",        link: "rrgraphy.html" },
         { label: "Photography", link: "photography.html" },
         { label: "Commissions", link: "photo-commissions.html", also: ["start-commission.html?type=photo"] }
-      ]
+      ],
+      // Photos that slide by on the Manu homepage while you hover ЯRgraphy.
+      slides: {
+        wide: [
+          "images/photography/drag-me-down-02.jpg",
+          "images/photography/riding-back-01.jpg",
+          "images/photography/fashion-photography-01.jpg",
+          "images/photography/blending-with-nature-01.jpg",
+          "images/photography/flash-studio-02.jpg",
+          "images/photography/drag-me-down-06.jpg",
+          "images/photography/riding-back-03.jpg",
+          "images/photography/fashion-photography-04.jpg"
+        ],
+        tall: [
+          "images/photography/drag-me-down-01.jpg",
+          "images/photography/drag-me-down-03.jpg",
+          "images/photography/blending-with-nature-02.jpg",
+          "images/photography/fashion-studio-01.jpg",
+          "images/photography/drag-me-down-05.jpg",
+          "images/photography/riding-back-07.jpg",
+          "images/photography/scanner-01.jpg",
+          "images/photography/fashion-photography-03.jpg"
+        ]
+      }
     }
   },
 
@@ -257,3 +304,55 @@ window.SITE = {
 
   // Small helpers shared by pages
 })();
+
+/* =========================================================
+   Sliding photos shared by the Manu homepage and the ЯRchive home.
+   - slideShape(): "tall" on phones / narrow windows, else "wide".
+   - slidePlace: remembers which photo each label's slideshow is on,
+     so it carries on from there next time (and across pages).
+   - makeSlider(track, photos, start, onChange): a row of photos that
+     always slides the same way; after the last photo it carries on to
+     the first instead of rushing back past them all.
+   ========================================================= */
+window.slideShape = () => (innerWidth / innerHeight < 1 ? "tall" : "wide");
+window.slidePlace = {
+  get(label, shape) {
+    try { const v = parseInt(localStorage.getItem(`slide:${label}:${shape}`), 10); return isNaN(v) ? 0 : v; }
+    catch (e) { return 0; }
+  },
+  set(label, shape, i) { try { localStorage.setItem(`slide:${label}:${shape}`, String(i)); } catch (e) {} }
+};
+window.makeSlider = (track, photos, start, onChange) => {
+  const n = photos.length;
+  const esc2 = window.esc || (x => x);
+  // The first photo is repeated at the end so the last → first step slides forward.
+  track.innerHTML = photos.concat(photos[0]).map((src, i) =>
+    `<img src="${esc2(src)}" alt="" draggable="false"${i > 1 ? ' loading="lazy"' : ""}>`).join("");
+  let at = ((start % n) + n) % n, busy = false;
+  const place = (i, animate) => {
+    track.style.transition = animate ? "" : "none";
+    track.style.transform = `translateX(${-100 * i}%)`;
+    if (!animate) void track.offsetWidth;   // apply the jump before the next move
+  };
+  const ms = () => (parseFloat(getComputedStyle(track).transitionDuration) || 0) * 1000;
+  place(at, false);
+  const api = {
+    get at() { return at; },
+    go(i) {
+      if (busy || !n) return;
+      if (i >= n) {                        // forward past the last photo
+        busy = true; place(n, true);
+        setTimeout(() => { place(0, false); busy = false; }, ms() + 30);
+        at = 0;
+      } else if (i < 0) {                  // backward past the first photo
+        place(n, false); place(n - 1, true); at = n - 1;
+      } else { place(i, true); at = i; }
+      onChange && onChange(at);
+    },
+    next() { api.go(at + 1); },
+    prev() { api.go(at - 1); },
+    jump(i) { at = ((i % n) + n) % n; place(at, false); onChange && onChange(at); }
+  };
+  return api;
+};
+
