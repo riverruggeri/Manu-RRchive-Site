@@ -18,7 +18,7 @@
 <meta name="theme-color" content="#111111">
 <style>
   /* Layout: full-bleed rippling photo, desktop icons centered, clock and name in the bottom corners */
-  :root { --fallback-bg: #1b1d17; }
+  :root { --fallback-bg: #1b1d17; --icon: clamp(70px, 7.4vw, 112px); }
   html, body { height: 100%; }
   body { overflow: hidden; background: var(--fallback-bg); }
 
@@ -45,7 +45,7 @@
     border-radius: 6px; padding: 6px 4px; outline: none;
   }
   .icon-art {
-    width: clamp(70px, 7.4vw, 112px); aspect-ratio: 1; max-width: 100%;
+    width: var(--icon); aspect-ratio: 1; max-width: 100%;
     display: grid; place-items: center;
     filter: drop-shadow(0 4px 10px var(--shadow));
     transition: transform 0.18s ease;
@@ -64,8 +64,8 @@
   .icon:active .icon-art { transform: scale(0.97); }
 
   @media (max-width: 520px) {
+    :root { --icon: 64px; }
     .icon { width: 96px; }
-    .icon-art { width: 70px; }
   }
 </style>
 </head>
@@ -111,7 +111,7 @@ const PAGE = {
   // "outline: true" adds a soft light edge so dark drawings show up.
   icons: [
     { label: "Conceptual Art", icon: "pdf",    link: "conceptual-art.html" },
-    { label: "Fashion Works",  icon: "images/icon-fashion-works.png", link: "fashion-works.html", size: 1.55, outline: true },
+    { label: "Fashion Works",  icon: "images/icon-fashion-works.png", link: "fashion-works.html", size: 2 },
     { label: "Photography",    icon: "disc",   link: "photography.html" }
   ]
 };
@@ -138,8 +138,12 @@ PAGE.icons.forEach(item => {
   a.className = "icon";
   a.href = item.link;
   const art = ICONS[item.icon] ? ICONS[item.icon]
-    : `<img src="${esc(item.icon)}" alt=""${item.outline ? ' class="drawn"' : ""}${item.size ? ` style="transform: scale(${+item.size})"` : ""}>`;
-  a.innerHTML = `<span class="icon-art">${art}</span><span class="icon-label">${esc(item.label)}</span>`;
+    : `<img src="${esc(item.icon)}" alt=""${item.outline ? ' class="drawn"' : ""}>`;
+  // "size" widens this icon's space instead of zooming the picture,
+  // so it stays sharp.
+  const wide = item.size ? ` style="width: calc(var(--icon) * ${+item.size}); aspect-ratio: auto; height: var(--icon)"` : "";
+  if (item.size) a.style.width = `calc(var(--icon) * ${+item.size} + 16px)`;
+  a.innerHTML = `<span class="icon-art"${wide}>${art}</span><span class="icon-label">${esc(item.label)}</span>`;
   iconsEl.appendChild(a);
 });
 

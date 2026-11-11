@@ -53,6 +53,21 @@ body {
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
+/* Cream pages (body class "light"): same stone colour as the shop, dark text */
+body.light {
+  --ink: #141414;
+  --ink-soft: rgba(20, 20, 20, 0.56);
+  --line: rgba(20, 20, 20, 0.16);
+  --panel: rgba(240, 238, 234, 0.97);
+  --shadow: rgba(0, 0, 0, 0.12);
+  color-scheme: light;
+}
+body.light .home-logo img { filter: invert(1); }
+body.light .menu-btn span { box-shadow: none; }
+body.light .menu a:hover, body.light .menu a:focus-visible,
+body.light .menu-group:hover, body.light .menu-group:focus-visible { background: rgba(0, 0, 0, 0.06); }
+body.light .corner { text-shadow: none; }
+
 /* Bottom corners: clock on the left, name on the right */
 .corner {
   position: fixed;

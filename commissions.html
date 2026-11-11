@@ -14,17 +14,18 @@
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#e7e5e0">
 <style>
   /* Layout: one screen, no scrolling. Text column on the left ending in the
      Start a Commission button; a tall slideshow of example pieces on the right. */
   :root {
-    --page: #0c0c0c;
-    --sheet: #222222;
+    --page: #dddad3;     /* old dark: #0c0c0c */
+    --sheet: #e7e5e0;    /* old dark: #222222 */
     --bar: var(--sheet);
   }
-  body { background: var(--page); }
+  html { background: var(--page); }
+  body { background: var(--page); color: var(--ink); }
   .sheet {
     max-width: 1280px;
     margin: 0 auto;
@@ -59,8 +60,8 @@
   .start {
     display: inline-block;
     margin-top: 32px;
-    background: #ffffff;
-    color: #111111;
+    background: #141414;
+    color: #e7e5e0;
     border-radius: 4px;
     padding: 12px 14px 11px;
     font-weight: 800;
@@ -70,7 +71,7 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
     transition: background 0.15s, transform 0.15s;
   }
-  .start:hover { background: #e9e9e9; transform: translateY(-1px); }
+  .start:hover { background: #2b2b2b; transform: translateY(-1px); }
 
   /* Slideshow of example pieces */
   .examples { justify-self: center; position: relative; width: 100%; max-width: 420px; }
@@ -86,9 +87,9 @@
   .ex-arrow {
     position: absolute; top: 50%; transform: translateY(-50%);
     width: 34px; height: 34px; border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.7);
     background: rgba(0, 0, 0, 0.3);
-    color: var(--ink); cursor: pointer;
+    color: #ffffff; cursor: pointer;
     display: grid; place-items: center;
     font: inherit; font-size: 16px; line-height: 1;
     z-index: 2;
@@ -120,7 +121,7 @@
   }
 </style>
 </head>
-<body class="long">
+<body class="long light">
 
 <div class="sheet">
   <div class="layout">
