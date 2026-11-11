@@ -3,7 +3,7 @@
 River's website for the clothing brand Manu (house name) and RRchive, written with the first R flipped (reworked, used-material pieces). Being rebuilt from a Cargo site into plain HTML/CSS/JS that River owns.
 
 ## Direction (restructured 2026-11-11)
-- **Manu** = River as an artist (the main home). Under it, LABELS, one per medium, each with its own name, header, home page and commissions: **ЯRchive** (clothing) and **ЯRgraphy** (photography, added 2026-11-11). Labels are defined in `SITE.labels` in assets/site.js; a future label (e.g. jewelry) is one more entry there plus a doorway on the Manu homepage. A leading "Я" in names is drawn as a flipped R (brandHTML / .flip-r).
+- **Manu** = River as an artist (the main home). Under it, LABELS, one per medium, each with its own name, header, home page and commissions: **ЯRchive** (clothing) and **ЯRgraphy** (photography, added 2026-11-11). Labels are defined in `SITE.labels` in assets/site.js; a future label (e.g. jewelry) is one more entry there plus a doorway on the Manu homepage. A leading "Я" in names is drawn as a flipped R (brandHTML / .flip-r); in ЯRgraphy the two R's sit closer (.flip-r.tight, margin -0.07em, River 2026-11-11). Menu links also go through brandHTML.
 - Which part a page belongs to is set by each label's `pages` list; the shared header adapts:
   - Manu pages: "MANU" top left (to index.html; hidden on the homepage, which has the big MANU), corner label "Manu".
   - Label pages: the label name top left (image logo for ЯRchive, text for ЯRgraphy). On the label's home screen it opens logoLinkFromHome; elsewhere it goes to the home screen. "MANU" link top right next to the dots; the label's tabs along the top; corner label = label name.

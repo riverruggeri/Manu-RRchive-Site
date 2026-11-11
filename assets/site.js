@@ -113,12 +113,14 @@ window.SITE = {
     if (tc) tc.content = "#4c4c4c";
   }
   // Draw a leading "Я" as a flipped R, the way the brand writes it.
-  window.brandHTML = s => esc(s).replace(/Я/g, '<span class="flip-r">R</span>');
+  // In ЯRgraphy the two R's sit closer together (class "tight").
+  window.brandHTML = s => esc(s).replace(/Я/g, () =>
+    /^ЯRgraphy/i.test(s) ? '<span class="flip-r tight">R</span>' : '<span class="flip-r">R</span>');
   const isHere = item => item.link === here || (item.also || []).includes(here);
   function link(item, parent) {
     const a = document.createElement("a");
     a.href = item.link;
-    a.textContent = item.label;
+    a.innerHTML = brandHTML(item.label);
     if (isHere(item)) a.setAttribute("aria-current", "page");
     if (item.ready === false) a.dataset.soon = "1";
     parent.appendChild(a);
