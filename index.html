@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111032808">
+<link rel="stylesheet" href="assets/site.css?v=20261111033127">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -29,6 +29,9 @@
     opacity: 0; transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);   /* soft fade in and out */
   }
   .label-show.on { opacity: 1; }
+  /* Drawn on their own layer so the fade stays smooth on phones */
+  .label-show { will-change: opacity; transform: translateZ(0); }
+  .label-track { will-change: transform; }
   /* The page's fade-in animation would otherwise block this fade */
   body.photo-page > .label-show.label-show { animation: none !important; }
   .label-show.front { z-index: 1; }
@@ -120,8 +123,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261111032808"></script>
-<script src="assets/ripple.js?v=20261111032808"></script>
+<script src="assets/site.js?v=20261111033127"></script>
+<script src="assets/ripple.js?v=20261111033127"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -158,7 +161,8 @@ if (PAGE.hoverPhotos) {
   // fade in over the old ones, so the homepage never shows in between.
   const layers = [...document.querySelectorAll(".label-show")].map(el => ({ el, track: el.firstElementChild, label: null, shape: "", slider: null }));
   const links = [...nav.querySelectorAll(".label-link")];
-  let front = null, timer, closing;
+  let front = null, timer, closing, holdRipple;
+  const stage = document.getElementById("stage");
   const photosOf = l => (SITE.labels[l.key] && SITE.labels[l.key].slides || {})[slideShape()] || [];
   // Load the first few photos of each label ahead so they appear quickly.
   PAGE.labels.forEach(l => {
@@ -192,6 +196,9 @@ if (PAGE.hoverPhotos) {
     ready(layer.track.children[layer.slider.at]).then(() => {
       if (front !== layer) return;
       layer.el.classList.add("on");
+      // Once the photos fully cover the homepage, pause the ripple under them.
+      clearTimeout(holdRipple);
+      holdRipple = setTimeout(() => { if (front === layer) stage.dataset.hold = "1"; }, 800);
       // Once the new photos have faded in on top, quietly hide the old ones.
       if (old && old !== layer) setTimeout(() => { if (front === layer) old.el.classList.remove("on"); }, 750);
     });
@@ -199,6 +206,7 @@ if (PAGE.hoverPhotos) {
   }
   function close() {
     clearInterval(timer);
+    clearTimeout(holdRipple); delete stage.dataset.hold;
     layers.forEach(x => x.el.classList.remove("on"));
     front = null;
   }

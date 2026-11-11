@@ -27,27 +27,28 @@ window.SITE = {
         { label: "Experimental Fashion", link: "fashion-works.html", away: true }
       ],
       // Photos that slide by on the Manu homepage while you hover ЯRchive,
+      // (smaller copies in images/slides/ so they load and fade smoothly on phones),
       // and on the big slideshow at the top of the ЯRchive home. Both
       // share their place: the photo showing on Manu is the one ЯRchive
       // opens on. "wide" for computers, "tall" for phones.
       slides: {
         wide: [
-          "images/fashion-works/denim-patchwork-vest-01.jpg",
-          "images/fashion-works/distressed-denim-jeans-03.jpg",
-          "images/fashion-works/reworked-denim-phase-01-04.jpg",
-          "images/fashion-works/denim-patchwork-vest-03.jpg",
-          "images/fashion-works/reworked-denim-phase-01-03.jpg",
-          "images/fashion-works/distressed-denim-jeans-01.jpg"
+          "images/slides/fashion-works-denim-patchwork-vest-01.jpg",
+          "images/slides/fashion-works-distressed-denim-jeans-03.jpg",
+          "images/slides/fashion-works-reworked-denim-phase-01-04.jpg",
+          "images/slides/fashion-works-denim-patchwork-vest-03.jpg",
+          "images/slides/fashion-works-reworked-denim-phase-01-03.jpg",
+          "images/slides/fashion-works-distressed-denim-jeans-01.jpg"
         ],
         tall: [
-          "images/fashion-works/reworked-denim-phase-01-01.jpg",
-          "images/fashion-works/distressed-denim-jeans-02.jpg",
-          "images/fashion-works/denim-patchwork-vest-02.jpg",
-          "images/fashion-works/reworked-denim-01.jpg",
-          "images/fashion-works/reworked-denim-phase-01-02.jpg",
-          "images/fashion-works/denim-patchwork-vest-04.jpg",
-          "images/fashion-works/reworked-denim-03.jpg",
-          "images/fashion-works/distressed-denim-jeans-04.jpg"
+          "images/slides/fashion-works-reworked-denim-phase-01-01.jpg",
+          "images/slides/fashion-works-distressed-denim-jeans-02.jpg",
+          "images/slides/fashion-works-denim-patchwork-vest-02.jpg",
+          "images/slides/fashion-works-reworked-denim-01.jpg",
+          "images/slides/fashion-works-reworked-denim-phase-01-02.jpg",
+          "images/slides/fashion-works-denim-patchwork-vest-04.jpg",
+          "images/slides/fashion-works-reworked-denim-03.jpg",
+          "images/slides/fashion-works-distressed-denim-jeans-04.jpg"
         ]
       }
     },
@@ -64,24 +65,24 @@ window.SITE = {
       // Photos that slide by on the Manu homepage while you hover ЯRgraphy.
       slides: {
         wide: [
-          "images/photography/drag-me-down-02.jpg",
-          "images/photography/riding-back-01.jpg",
-          "images/photography/fashion-photography-01.jpg",
-          "images/photography/blending-with-nature-01.jpg",
-          "images/photography/flash-studio-02.jpg",
-          "images/photography/drag-me-down-06.jpg",
-          "images/photography/riding-back-03.jpg",
-          "images/photography/fashion-photography-04.jpg"
+          "images/slides/photography-drag-me-down-02.jpg",
+          "images/slides/photography-riding-back-01.jpg",
+          "images/slides/photography-fashion-photography-01.jpg",
+          "images/slides/photography-blending-with-nature-01.jpg",
+          "images/slides/photography-flash-studio-02.jpg",
+          "images/slides/photography-drag-me-down-06.jpg",
+          "images/slides/photography-riding-back-03.jpg",
+          "images/slides/photography-fashion-photography-04.jpg"
         ],
         tall: [
-          "images/photography/drag-me-down-01.jpg",
-          "images/photography/drag-me-down-03.jpg",
-          "images/photography/blending-with-nature-02.jpg",
-          "images/photography/fashion-studio-01.jpg",
-          "images/photography/drag-me-down-05.jpg",
-          "images/photography/riding-back-07.jpg",
-          "images/photography/scanner-01.jpg",
-          "images/photography/fashion-photography-03.jpg"
+          "images/slides/photography-drag-me-down-01.jpg",
+          "images/slides/photography-drag-me-down-03.jpg",
+          "images/slides/photography-blending-with-nature-02.jpg",
+          "images/slides/photography-fashion-studio-01.jpg",
+          "images/slides/photography-drag-me-down-05.jpg",
+          "images/slides/photography-riding-back-07.jpg",
+          "images/slides/photography-scanner-01.jpg",
+          "images/slides/photography-fashion-photography-03.jpg"
         ]
       }
     }
