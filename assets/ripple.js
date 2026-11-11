@@ -20,6 +20,7 @@ window.startRipple = function (opts) {
   // while the ripple effect starts up on top of it.
   fallback.hidden = false;
   fallback.style.backgroundImage = `url("${opts.image}")`;
+  fallback.style.filter = `brightness(${opts.ripple.brightness || 1})`;
   // Keep the still photo underneath the moving one, not on top of it.
   if (fallback.parentNode === canvas.parentNode) canvas.parentNode.insertBefore(fallback, canvas);
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -65,7 +66,7 @@ window.startRipple = function (opts) {
     in vec2 vUv; out vec4 outColor;
     uniform sampler2D uImage, uFlow;
     uniform vec2 uCover, uAmp, uDrift;
-    uniform float uEncoded, uTime, uFreq, uAspect, uMouseBoost;
+    uniform float uEncoded, uTime, uFreq, uAspect, uMouseBoost, uBright;
 
     // Soft ridge along the edges between curvy, moving cells (0 inside a cell, 1 on a line).
     float ripple(vec2 p){
@@ -111,6 +112,7 @@ window.startRipple = function (opts) {
       vec2 uv = vUv + offset;
       uv = (uv - 0.5) * uCover + 0.5;
       outColor = texture(uImage, clamp(uv, 0.001, 0.999));
+      outColor.rgb = min(outColor.rgb * uBright, vec3(1.0));
     }`;
 
   function compile(type, src) {
@@ -204,12 +206,30 @@ window.startRipple = function (opts) {
   addEventListener("pointermove", e => onMove(e.clientX, e.clientY), { passive: true });
   addEventListener("pointerdown", e => onMove(e.clientX, e.clientY), { passive: true });
 
+  // Phones and tablets: nobody drags a finger around, so the ripple is made
+  // stronger and an invisible "finger" wanders slowly over the photo on its
+  // own, pulling the water along. A real touch takes over while it lasts.
+  const touchScreen = matchMedia("(hover: none) and (pointer: coarse)").matches;
+  const phoneBoost = touchScreen ? (R.phoneStrength ?? 2) : 1;
+  const wander = touchScreen && R.phoneAutoMotion !== false;
+  let realTouch = -1e9;
+  addEventListener("touchstart", () => { realTouch = performance.now(); }, { passive: true });
+  addEventListener("touchmove", () => { realTouch = performance.now(); }, { passive: true });
+
   let prevT = performance.now();
   const drift = { x: 0, y: 0 }, push = { x: 0, y: 0 };
   let anim = 0;
   function frame(t) {
     const dt = Math.max(0.001, Math.min(0.05, (t - prevT) / 1000));
     prevT = t;
+
+    if (wander && t - realTouch > 1500) {
+      // A slow looping path that sweeps across most of the screen.
+      const s = t / 1000;
+      const wx = 0.5 + 0.34 * Math.sin(s * 0.31) + 0.1 * Math.sin(s * 0.83 + 1.3);
+      const wy = 0.5 + 0.3 * Math.sin(s * 0.23 + 0.7) + 0.1 * Math.cos(s * 0.67);
+      onMove(wx * innerWidth, (1 - wy) * innerHeight);
+    }
 
     // Cursor speed in screen-widths per second, eased so the smear feels liquid.
     const moving = t - lastMove < 80;
@@ -267,7 +287,8 @@ window.startRipple = function (opts) {
       gl.uniform2f(showProg.u.uCover, cover[0], cover[1]);
       // Translate Cargo-style numbers into shader values.
       gl.uniform2f(showProg.u.uDrift, drift.x, drift.y);
-      gl.uniform2f(showProg.u.uAmp, R.distortionX * 0.006, R.distortionY * 0.006);
+      gl.uniform2f(showProg.u.uAmp, R.distortionX * 0.006 * phoneBoost, R.distortionY * 0.006 * phoneBoost);
+      gl.uniform1f(showProg.u.uBright, R.brightness || 1);
       gl.uniform1f(showProg.u.uFreq, R.scale * 2.8);
       gl.uniform1f(showProg.u.uTime, anim);
       gl.uniform1f(showProg.u.uAspect, aspect);

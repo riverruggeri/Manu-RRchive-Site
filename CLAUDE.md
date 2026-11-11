@@ -25,6 +25,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 
 ## Mobile version (started 2026-11-04 evening)
 - Phones: long pages get a fading bar behind the logo/menu dots (colour from each page's --bar); corner clock/name hidden on long pages.
+- Ripple settings also have brightness (1.15 = 15% brighter), phoneStrength (2.2x stronger ripple on touch screens) and phoneAutoMotion (an invisible "finger" wanders over the photo on phones; a real touch takes over).
 - Homepage and Portfolio on phones use images/about/about-hero.jpg (PAGE.mobileBackground); homepage buttons in a 2x2 grid.
 - Portfolio Fashion Works icon is River's sewing machine drawing (images/icon-fashion-works.png), shown at full original resolution, twice the normal icon width ("size: 2"), no outline/glow (River asked to remove it). "size" widens the icon box rather than zooming, which kept it sharp.
 - About bio is larger on phones.
