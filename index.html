@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111030407">
+<link rel="stylesheet" href="assets/site.css?v=20261111030620">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -30,7 +30,8 @@
   }
   .label-show.on { opacity: 1; }
   /* The page's fade-in animation would otherwise block this fade */
-  #labelShow { animation: none !important; }
+  body.photo-page > .label-show.label-show { animation: none !important; }
+  .label-show.front { z-index: 1; }
   .label-track { display: flex; height: 100%; transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1); }
   .label-track img {
     flex: 0 0 100%; width: 100%; height: 100%;
@@ -97,7 +98,8 @@
 <body class="photo-page" data-no-menu>
 <canvas id="stage" aria-hidden="true"></canvas>
 <div id="fallback" hidden></div>
-<div class="label-show" id="labelShow" aria-hidden="true"><div class="label-track" id="labelTrack"></div></div>
+<div class="label-show" aria-hidden="true"><div class="label-track"></div></div>
+<div class="label-show" aria-hidden="true"><div class="label-track"></div></div>
 <div class="shade" aria-hidden="true"></div>
 
 <main class="brand">
@@ -112,8 +114,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261111030407"></script>
-<script src="assets/ripple.js?v=20261111030407"></script>
+<script src="assets/site.js?v=20261111030620"></script>
+<script src="assets/ripple.js?v=20261111030620"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -146,46 +148,56 @@ startRipple({ canvas: document.getElementById("stage"), fallback: document.getEl
   image: PAGE.background, tallImage: PAGE.mobileBackground, ripple: PAGE.ripple });
 
 if (PAGE.hoverPhotos) {
-  const showEl = document.getElementById("labelShow"), track = document.getElementById("labelTrack");
+  // Two photo layers: going from one label to the other, the new photos
+  // fade in over the old ones, so the homepage never shows in between.
+  const layers = [...document.querySelectorAll(".label-show")].map(el => ({ el, track: el.firstElementChild, label: null, shape: "", slider: null }));
   const links = [...nav.querySelectorAll(".label-link")];
-  let current = null, slider = null, shape = "", timer;
+  let front = null, timer, closing;
   const photosOf = l => (SITE.labels[l.key] && SITE.labels[l.key].slides || {})[slideShape()] || [];
   // Load the first few photos of each label ahead so they appear quickly.
   PAGE.labels.forEach(l => {
     const list = photosOf(l), i = slidePlace.get(l.key, slideShape());
     [i, i + 1, i + 2].forEach(k => list.length && (new Image().src = list[k % list.length]));
   });
+  const ready = img => !img || img.complete ? Promise.resolve()
+    : (img.decode ? img.decode() : Promise.resolve()).catch(() => {});
+
   // Show a label's photos from where they last stopped.
-  let swap;
   function open(l, slide) {
-    clearInterval(timer); clearTimeout(swap);
+    clearInterval(timer); clearTimeout(closing);
     const list = photosOf(l);
     if (!list.length) return close();
-    const start = () => {
-      if (current !== l || shape !== slideShape()) {
-        current = l; shape = slideShape();
-        slider = makeSlider(track, list, slidePlace.get(l.key, shape), i => slidePlace.set(l.key, shape, i));
-      }
-      // Hovering picks up on the photo it stopped on; phones show the next one each turn.
-      if (!slide) slider.jump(slider.at + 1);
-      // Fade in only once the photo has loaded, so it never pops in halfway.
-      const img = track.children[slider.at];
-      const ready = !img || img.complete ? Promise.resolve() : (img.decode ? img.decode() : Promise.resolve()).catch(() => {});
-      ready.then(() => { if (current === l) showEl.classList.add("on"); });
-      if (slide) timer = setInterval(() => slider.next(), PAGE.slideSeconds * 1000);
-    };
-    // Going straight from one label to the other: fade the first out
-    // before the second fades in, instead of an instant switch.
-    if (showEl.classList.contains("on") && current !== l) {
-      showEl.classList.remove("on");
-      swap = setTimeout(start, 350);
-    } else start();
+    // Use the layer already showing this label, otherwise the other one.
+    let layer = layers.find(x => x.label === l && x.shape === slideShape());
+    if (!layer) {
+      layer = layers.find(x => x !== front) || layers[0];
+      layer.label = l; layer.shape = slideShape();
+      layer.slider = makeSlider(layer.track, list, slidePlace.get(l.key, layer.shape), i => slidePlace.set(l.key, layer.shape, i));
+    }
+    // Hovering picks up on the photo it stopped on; phones show the next one each turn.
+    if (!slide) layer.slider.jump(layer.slider.at + 1);
+    const old = front;
+    front = layer;
+    layers.forEach(x => x.el.classList.toggle("front", x === layer));
+    ready(layer.track.children[layer.slider.at]).then(() => {
+      if (front !== layer) return;
+      layer.el.classList.add("on");
+      // Once the new photos have faded in on top, quietly hide the old ones.
+      if (old && old !== layer) setTimeout(() => { if (front === layer) old.el.classList.remove("on"); }, 750);
+    });
+    if (slide) timer = setInterval(() => layer.slider.next(), PAGE.slideSeconds * 1000);
   }
-  function close() { clearInterval(timer); clearTimeout(swap); showEl.classList.remove("on"); }
+  function close() {
+    clearInterval(timer);
+    layers.forEach(x => x.el.classList.remove("on"));
+    front = null;
+  }
 
   if (matchMedia("(hover: hover)").matches) {
     links.forEach(a => a.addEventListener("mouseenter", () => open(PAGE.labels[a.dataset.i], true)));
-    nav.addEventListener("mouseleave", close);
+    // A short pause before fading back to the homepage, so passing
+    // between the two names never shows it.
+    nav.addEventListener("mouseleave", () => { clearTimeout(closing); closing = setTimeout(close, 180); });
   } else {
     // Phones: take turns Manu → ЯRchive → ЯRgraphy, highlighting the name,
     // each label showing its next photo.
