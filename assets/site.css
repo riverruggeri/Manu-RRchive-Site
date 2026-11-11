@@ -122,8 +122,7 @@ body.light .photo-missing { background: var(--cream-deep); }
 a.home-logo:hover .logo-mark { opacity: 0.75; }
 
 /* A leading "Я" in the brand names, drawn as a flipped R */
-.flip-r { display: inline-block; transform: scaleX(-1); }
-.flip-r.tight { margin-right: -0.07em; }  /* ЯRgraphy: R's closer together */
+.flip-r { display: inline-block; transform: scaleX(-1); margin-right: -0.035em; }  /* gap between the two R's, same for every label (River, 2026-11-11) */
 
 /* Label name drawn as text (labels without an image logo, e.g. ЯRgraphy) */
 .home-logo.text-logo {
