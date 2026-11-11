@@ -23,7 +23,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 ## Content status (end of 2026-11-04 session)
 - Photography: Drag Me Down (10), Blending With Nature (2), untitled Fashion Photography night shoot (7), Riding Back (8), Flash Photography Studio Shoot (2, from TIFs), Scanner Experimentation (5), untitled Fashion Photography studio portraits (2). Only Drag Me Down has an overview.
 - Experimental Fashion: Denim Patchwork Vest (4), Reworked Denim (Phase 01/02) (4), Distressed Denim Jeans (5), Reworked Denim (4). No overviews yet. While River said "add these to fashion until I say otherwise", new uploads go here.
-- Conceptual Art: empty.
+- Conceptual Art: one untitled project, 8 photos of layered denim jackets (layered-denim-01..08.jpg, River 2026-11-11, order as sent; year 2026 is a guess; no overview yet).
 - About: big photo set (about-hero.jpg); portrait IMG_5331.jpg still missing.
 - Years set to 2026 for new projects are guesses unless River said otherwise.
 
