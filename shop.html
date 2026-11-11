@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111030810">
+<link rel="stylesheet" href="assets/site.css?v=20261111031337">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -17,7 +17,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#e7e5e0">
-<link rel="stylesheet" href="assets/shop.css?v=20261111030810">
+<link rel="stylesheet" href="assets/shop.css?v=20261111031337">
 </head>
 <body class="shop long over-hero">
 
@@ -39,8 +39,8 @@
   <p class="to-archive label"><a href="archive.html">See past pieces in the Archive →</a></p>
 </main>
 
-<script src="assets/site.js?v=20261111030810"></script>
-<script src="assets/catalog.js?v=20261111030810"></script>
+<script src="assets/site.js?v=20261111031337"></script>
+<script src="assets/catalog.js?v=20261111031337"></script>
 <script>
 const PAGE = {
   // Full-screen slideshow at the top. The photos are listed in
@@ -150,7 +150,7 @@ document.querySelectorAll(".rail").forEach((rail, i) => {
   let visible = true;
   function restart() {
     clearTimeout(timer);
-    if (!reduce && visible && !document.hidden) timer = setTimeout(() => slider.next(), PAGE.hero.seconds * 1000);
+    if (!reduce && visible && !document.hidden) timer = setTimeout(() => { track.classList.add("auto"); slider.next(); }, PAGE.hero.seconds * 1000);
   }
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; restart(); }).observe(hero);
   document.addEventListener("visibilitychange", restart);
@@ -160,12 +160,13 @@ document.querySelectorAll(".rail").forEach((rail, i) => {
   hero.addEventListener("touchend", e => {
     if (x0 === null) return;
     const dx = e.changedTouches[0].clientX - x0; x0 = null;
-    if (Math.abs(dx) > 40) (dx < 0 ? slider.next() : slider.prev());
+    if (Math.abs(dx) > 40) { track.classList.remove("auto"); dx < 0 ? slider.next() : slider.prev(); }
   });
   // Click (or tap) the left or right side of the screen to go back or forward.
   hero.addEventListener("click", e => {
     if (e.target.closest("a, button")) return;
     const x = e.clientX / innerWidth;
+    if (x < 0.35 || x > 0.65) track.classList.remove("auto");
     if (x < 0.35) slider.prev(); else if (x > 0.65) slider.next();
   });
   hero.addEventListener("mousemove", e => {
