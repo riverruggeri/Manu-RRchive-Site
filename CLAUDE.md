@@ -43,6 +43,9 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - Photos live in `images/`.
 - Font: Schibsted Grotesk from Google Fonts as a free stand-in for Cargo's Diatype.
 
+## Saving changes
+- Run `sh bump-version.sh` before each commit: it stamps a new ?v= number on the asset links so phones and GitHub Pages caching load the latest files.
+
 ## Working with River
 - River's original Cargo site must not be changed; look only.
 - River describes changes in plain words; keep explanations non-technical.
