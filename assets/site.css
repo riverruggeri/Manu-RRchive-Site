@@ -325,7 +325,7 @@ body.light .manu-word, body.shop .manu-word, .page ~ .manu-word { text-shadow: n
 }
 
 /* =========================================================
-   ЯRgraphy colours: the old dark grey with moss green.
+   ЯRgraphy colours: dark grey (green accents switched off for now).
    Applies to every ЯRgraphy page (home, photography, photo
    commissions, the photo version of the form). Change the
    four colours here to recolour the whole label.
@@ -333,8 +333,8 @@ body.light .manu-word, body.shop .manu-word, .page ~ .manu-word { text-shadow: n
 html[data-section="rrgraphy"] {
   --graphy-bg: #4c4c4c;     /* page background (the site's old grey) */
   --graphy-deep: #3c3d3a;   /* panels, form boxes, empty photo boxes */
-  --moss: #9fb579;          /* light green: tab underline, flipped R, links */
-  --moss-deep: #34492a;     /* dark green: main buttons */
+  --moss: var(--cream);     /* accent: tab underline, flipped R, links (green was #9fb579) */
+  --moss-deep: #222222;     /* main buttons (green was #34492a) */
   --page: var(--graphy-bg);
   --sheet: var(--graphy-bg);
   --bg: var(--graphy-bg);
