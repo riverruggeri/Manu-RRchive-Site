@@ -2,12 +2,12 @@
    Layout: pale stone ground like a showroom wall, garments cut out and
    floating on it, small uppercase type, lots of empty space. */
 :root {
-  --stone: #e7e5e0;
-  --stone-deep: #dddad3;
+  --stone: var(--cream);
+  --stone-deep: var(--cream-deep);
   --ink: #141414;
   --ink-soft: rgba(20, 20, 20, 0.56);
   --line: rgba(20, 20, 20, 0.16);
-  --panel: rgba(240, 238, 234, 0.97);
+  --panel: var(--cream-panel);
   --shadow: rgba(0, 0, 0, 0.08);
   --bar: var(--stone);
   color-scheme: light;

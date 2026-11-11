@@ -6,7 +6,7 @@
 html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body.photo-page, html:has(body.photo-page) { overscroll-behavior: none; }
 
-/* Page changes: dark ground between pages so nothing flashes white,
+/* Page changes: dark ground between pages so nothing flashes bright,
    each page fades in on arrival and out before leaving. */
 html { background: #111111; }
 body { animation: page-in 0.55s ease both; }
@@ -32,9 +32,13 @@ html.vt body, html.vt body.photo-page > * { animation: none; }
   html.leaving body, html.leaving body.photo-page > * { transition: none; }
 }
 :root {
-  /* Text, logo, dots and buttons on the dark and photo pages. Trying cream;
-     to go back to white, set --cream to #ffffff. */
+  /* THE SITE'S CREAM. Used everywhere white would be: text, logo, dots and
+     buttons on dark/photo pages, and the background of the cream pages.
+     Change --cream to recolour the whole site; the shades below follow it. */
   --cream: #e8e0d2;
+  --cream-light: color-mix(in srgb, var(--cream) 60%, #ffffff);  /* form boxes */
+  --cream-deep: color-mix(in srgb, var(--cream) 88%, #6b5a3e);   /* empty photo boxes, hovers */
+  --cream-panel: color-mix(in srgb, var(--cream) 97%, transparent); /* menu on cream pages */
   --ink: var(--cream);
   --ink-soft: rgba(232, 224, 210, 0.7);
   --line: rgba(232, 224, 210, 0.18);
@@ -61,7 +65,7 @@ body.light {
   --ink: #141414;
   --ink-soft: rgba(20, 20, 20, 0.56);
   --line: rgba(20, 20, 20, 0.16);
-  --panel: rgba(240, 238, 234, 0.97);
+  --panel: var(--cream-panel);
   --shadow: rgba(0, 0, 0, 0.12);
   color-scheme: light;
 }

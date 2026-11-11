@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261110221325">
+<link rel="stylesheet" href="assets/site.css?v=20261110222204">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -51,9 +51,6 @@
     transition: transform 0.18s ease;
   }
   .icon-art img, .icon-art svg { width: 100%; height: 100%; object-fit: contain; }
-  /* Drawn icons (like the sewing machine): a soft light outline so dark
-     line work still reads on the photo. */
-  .icon-art img.drawn { filter: drop-shadow(0 0 1px rgba(255,255,255,0.9)) drop-shadow(0 0 7px rgba(255,255,255,0.55)); }
   .icon-label {
     font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
     text-shadow: 0 1px 3px var(--shadow), 0 0 10px var(--shadow);
@@ -81,8 +78,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" href="index.html">Manu Clothing</a>
 
-<script src="assets/site.js?v=20261110221325"></script>
-<script src="assets/ripple.js?v=20261110221325"></script>
+<script src="assets/site.js?v=20261110222204"></script>
+<script src="assets/ripple.js?v=20261110222204"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -121,18 +118,18 @@ const PAGE = {
 
 /* ---------- Built-in icon drawings ---------- */
 const ICONS = {
-  pdf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efece6"/><stop offset="1" stop-color="#dcd8cf"/></linearGradient></defs>
+  pdf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8e0d2"/><stop offset="1" stop-color="#d6cbb7"/></linearGradient></defs>
     <path d="M22 6h40l18 18v68a2 2 0 0 1-2 2H22a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="url(#pg)" stroke="#c9c9c4" stroke-width="1"/>
-    <path d="M62 6v16a2 2 0 0 0 2 2h16" fill="#dcdcd7" stroke="#c9c9c4" stroke-width="1"/>
+    <path d="M62 6v16a2 2 0 0 0 2 2h16" fill="#d9cfbd" stroke="#c9c9c4" stroke-width="1"/>
     <rect x="31" y="34" width="38" height="4" rx="1" fill="#c4c4bf"/><rect x="31" y="43" width="38" height="4" rx="1" fill="#c4c4bf"/><rect x="31" y="52" width="26" height="4" rx="1" fill="#c4c4bf"/>
     <text x="50" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#9d9d98" letter-spacing="1">PDF</text></svg>`,
   folder: `<svg viewBox="0 0 100 100"><defs><linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd0f7"/><stop offset="1" stop-color="#47aee6"/></linearGradient></defs>
     <path d="M8 24a4 4 0 0 1 4-4h24l7 7h45a4 4 0 0 1 4 4v8H8z" fill="#4aa7dc"/>
     <path d="M8 34a4 4 0 0 1 4-4h76a4 4 0 0 1 4 4v44a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z" fill="url(#fg)"/>
     <path d="M8 36h84" stroke="#a9e2fb" stroke-width="1.5" opacity="0.8"/></svg>`,
-  disc: `<svg viewBox="0 0 100 100"><defs><radialGradient id="dg" cx="0.35" cy="0.3" r="0.9"><stop offset="0" stop-color="#efece6"/><stop offset="0.55" stop-color="#d6d2c9"/><stop offset="1" stop-color="#9aa3ad"/></radialGradient></defs>
+  disc: `<svg viewBox="0 0 100 100"><defs><radialGradient id="dg" cx="0.35" cy="0.3" r="0.9"><stop offset="0" stop-color="#e8e0d2"/><stop offset="0.55" stop-color="#d3c8b3"/><stop offset="1" stop-color="#9aa3ad"/></radialGradient></defs>
     <circle cx="50" cy="50" r="42" fill="url(#dg)" stroke="#8b939c" stroke-width="1"/>
-    <circle cx="50" cy="50" r="14" fill="#5d6670"/><circle cx="50" cy="50" r="9" fill="#2b3036"/><circle cx="46" cy="46" r="3" fill="#efece6" opacity="0.6"/></svg>`
+    <circle cx="50" cy="50" r="14" fill="#5d6670"/><circle cx="50" cy="50" r="9" fill="#2b3036"/><circle cx="46" cy="46" r="3" fill="#e8e0d2" opacity="0.6"/></svg>`
 };
 
 const iconsEl = document.getElementById("icons");

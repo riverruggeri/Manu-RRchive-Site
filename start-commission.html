@@ -8,21 +8,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261110221325">
+<link rel="stylesheet" href="assets/site.css?v=20261110222204">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#e7e5e0">
+<meta name="theme-color" content="#e8e0d2">
 <style>
   /* Layout: same dark sheet as Commissions; one narrow column with the request form */
   :root {
-    --page: #dddad3;     /* old dark: #0c0c0c */
-    --sheet: #e7e5e0;    /* old dark: #222222 */
+    --page: var(--cream);    /* old dark: #0c0c0c */
+    --sheet: var(--cream);   /* old dark: #222222 */
     --bar: var(--sheet);
-    --field: #f3f1ed;
+    --field: var(--cream-light);
     --field-line: rgba(20, 20, 20, 0.2);
     --ok: #2e7a3c;
     --warn: #a63a22;
@@ -70,7 +70,7 @@
   input:focus, select:focus, textarea:focus { outline: 2px solid var(--ink); outline-offset: 1px; border-color: transparent; }
   .send {
     justify-self: start;
-    background: #141414; color: #e7e5e0; border: 0; border-radius: 4px;
+    background: #141414; color: var(--cream); border: 0; border-radius: 4px;
     padding: 12px 18px; font: inherit; font-weight: 800; font-size: 16px; cursor: pointer;
   }
   .send:hover { background: #2b2b2b; }
@@ -134,7 +134,7 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" href="index.html">Manu Clothing</a>
 
-<script src="assets/site.js?v=20261110221325"></script>
+<script src="assets/site.js?v=20261110222204"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS

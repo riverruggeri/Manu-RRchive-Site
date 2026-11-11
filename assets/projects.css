@@ -1,16 +1,16 @@
 /* Project pages (Photography, Fashion Works, Conceptual Art).
    Layout: giant title, then one centered project after another:
    info row, slideshow that bends while scrolling, photo counter. */
-/* Colours. Cream (same as the shop) with dark text. To go back to the
-   old grey, swap in the commented values on each line. */
+/* Colours: the site cream (set in site.css) with dark text. To go back to
+   the old grey, swap in the commented values on each line. */
 :root {
-  --bg: #e7e5e0;                       /* old: #565656 */
+  --bg: var(--cream);                  /* old: #565656 */
   --ink: #141414;                      /* old: #ffffff */
   --ink-soft: rgba(20, 20, 20, 0.56);  /* old: rgba(255, 255, 255, 0.7) */
   --line: rgba(20, 20, 20, 0.16);      /* old: rgba(255, 255, 255, 0.18) */
-  --panel: rgba(240, 238, 234, 0.97);  /* menu; old: rgba(20, 20, 20, 0.94) */
-  --panel-solid: #f2f0ec;              /* "More" panel; old: #161616 */
-  --empty: #d8d5ce;                    /* old: #2f2f2f */
+  --panel: var(--cream-panel);         /* menu; old: rgba(20, 20, 20, 0.94) */
+  --panel-solid: var(--cream);         /* "More" panel; old: #161616 */
+  --empty: var(--cream-deep);          /* old: #2f2f2f */
   --shadow: rgba(0, 0, 0, 0.12);
   --bar: var(--bg);
   color-scheme: light;
@@ -85,7 +85,7 @@ body { background: var(--bg); color: var(--ink); }
   position: absolute; top: 50%; transform: translateY(-50%);
   width: 30px; height: 30px; border-radius: 50%;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.45);
+  background: color-mix(in srgb, var(--cream) 60%, transparent);
   color: var(--ink); cursor: pointer;
   display: grid; place-items: center;
   font: inherit; font-size: 14px; line-height: 1;
