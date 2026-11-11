@@ -16,7 +16,7 @@ html:has(body.shop) { background: var(--stone); }
 body.shop { background: var(--stone); color: var(--ink); }
 
 /* Shared header pieces in their light version */
-body.shop .home-logo img { filter: invert(1); }
+body.shop .home-logo { filter: none; }
 body.shop .menu-btn span { box-shadow: none; }
 body.shop .menu a:hover, body.shop .menu a:focus-visible,
 body.shop .menu button:hover, body.shop .menu button:focus-visible { background: rgba(0, 0, 0, 0.06); }

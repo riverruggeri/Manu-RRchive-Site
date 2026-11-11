@@ -32,9 +32,12 @@ html.vt body, html.vt body.photo-page > * { animation: none; }
   html.leaving body, html.leaving body.photo-page > * { transition: none; }
 }
 :root {
-  --ink: #ffffff;
-  --ink-soft: rgba(255, 255, 255, 0.7);
-  --line: rgba(255, 255, 255, 0.18);
+  /* Text, logo, dots and buttons on the dark and photo pages. Trying cream;
+     to go back to white, set --cream to #ffffff. */
+  --cream: #e7e5e0;
+  --ink: var(--cream);
+  --ink-soft: rgba(231, 229, 224, 0.7);
+  --line: rgba(231, 229, 224, 0.18);
   --shadow: rgba(0, 0, 0, 0.5);
   --panel: rgba(20, 20, 20, 0.94);
   --font-ui: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
@@ -62,7 +65,7 @@ body.light {
   --shadow: rgba(0, 0, 0, 0.12);
   color-scheme: light;
 }
-body.light .home-logo img { filter: invert(1); }
+body.light .home-logo { filter: none; }
 body.light .menu-btn span { box-shadow: none; }
 body.light .menu a:hover, body.light .menu a:focus-visible,
 body.light .menu-group:hover, body.light .menu-group:focus-visible { background: rgba(0, 0, 0, 0.06); }
@@ -98,13 +101,20 @@ body.light .corner { text-shadow: none; }
   line-height: 0;
   border-radius: 4px;
 }
-.home-logo img {
-  height: clamp(22px, 2.3vw, 30px);
-  width: auto;
-  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.45));
+/* The logo is painted in the page's text colour through the logo's shape,
+   so it is cream on dark pages and dark on cream pages. */
+.home-logo { filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.45)); }
+.home-logo .logo-mark {
+  --logo-h: clamp(22px, 2.3vw, 30px);
+  display: block;
+  height: var(--logo-h);
+  width: calc(var(--logo-h) * 963 / 206);
+  background: var(--ink);
+  -webkit-mask: var(--logo) center / contain no-repeat;
+  mask: var(--logo) center / contain no-repeat;
   transition: opacity 0.15s;
 }
-a.home-logo:hover img { opacity: 0.75; }
+a.home-logo:hover .logo-mark { opacity: 0.75; }
 
 /* Menu: three dots, top right */
 .menu-btn {
@@ -151,7 +161,7 @@ a.home-logo:hover img { opacity: 0.75; }
   padding: 9px 12px;
   border-radius: 4px;
 }
-.menu a:hover, .menu a:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
+.menu a:hover, .menu a:focus-visible { background: rgba(231, 229, 224, 0.1); outline: none; }
 .menu a[aria-current="page"] { color: var(--ink-soft); }
 
 /* Dropdowns in the menu (Shop, Portfolio) */
@@ -168,7 +178,7 @@ a.home-logo:hover img { opacity: 0.75; }
   transition: transform 0.2s ease;
 }
 .menu-group[aria-expanded="true"]::after { transform: rotate(225deg) translate(-1px, -1px); }
-.menu-group:hover, .menu-group:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
+.menu-group:hover, .menu-group:focus-visible { background: rgba(231, 229, 224, 0.1); outline: none; }
 .menu-sub { display: flex; flex-direction: column; margin: 0 0 4px 12px; padding-left: 8px; border-left: 1px solid var(--line); }
 .menu-sub a { font-size: 14px; padding: 7px 10px; }
 .menu a[aria-current="page"]::before { content: "■ "; font-size: 10px; vertical-align: 2px; }

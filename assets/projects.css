@@ -18,7 +18,7 @@
 html:has(body .page) { background: var(--bg); }
 body { background: var(--bg); color: var(--ink); }
 /* Light pages: dark logo and menu dots */
-.home-logo img { filter: invert(1); }
+.home-logo { filter: none; }
 .menu-btn span { box-shadow: none; }
 .menu a:hover, .menu a:focus-visible, .menu-group:hover, .menu-group:focus-visible { background: rgba(0, 0, 0, 0.06); }
 

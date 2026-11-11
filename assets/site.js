@@ -121,12 +121,14 @@ window.SITE = {
   const home = document.createElement(onHome ? "span" : "a");
   home.className = "home-logo";
   if (onHome) {
-    home.innerHTML = `<img src="${S.logo}" alt="RRchive">`;
+    home.innerHTML = `<span class="logo-mark" role="img" aria-label="RRchive"></span>`;
   } else {
     home.href = "index.html";
     home.setAttribute("aria-label", "RRchive, back to home");
-    home.innerHTML = `<img src="${S.logo}" alt="">`;
+    home.innerHTML = `<span class="logo-mark" aria-hidden="true"></span>`;
   }
+
+  home.style.setProperty("--logo", `url("${new URL(S.logo, location.href).href}")`);
 
   function mount() {
     if (!document.body.hasAttribute("data-no-menu")) document.body.append(btn, menu);
