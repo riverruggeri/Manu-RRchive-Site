@@ -11,6 +11,7 @@
    {
      id: "piece-name",                 // short, lowercase, hyphens; used in the link
      name: "Piece Name",
+     category: "bottoms",              // which row in the shop: "bottoms", "tops" or "accessories"
      price: "",                        // e.g. "$320". Leave "" to show "Price on request"
      status: "available",              // "available", "reserved" or "sold"
      size: "",                         // e.g. "Fits 30–32 waist"
@@ -33,6 +34,7 @@ window.CATALOG = [
   {
     id: "distressed-denim-jeans",
     name: "Distressed Denim Jeans",
+    category: "bottoms",
     price: "",
     status: "available",
     size: "",
@@ -45,6 +47,7 @@ window.CATALOG = [
   {
     id: "reworked-denim",
     name: "Reworked Denim",
+    category: "bottoms",
     price: "",
     status: "available",
     size: "",
@@ -57,6 +60,7 @@ window.CATALOG = [
   {
     id: "reworked-denim-phase-01",
     name: "Reworked Denim (Phase 01/02)",
+    category: "bottoms",
     price: "",
     status: "available",
     size: "",
@@ -69,6 +73,7 @@ window.CATALOG = [
   {
     id: "denim-patchwork-vest",
     name: "Denim Patchwork Vest",
+    category: "tops",
     price: "",
     status: "available",
     size: "",

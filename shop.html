@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111011912">
+<link rel="stylesheet" href="assets/site.css?v=20261111012726">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -17,7 +17,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#e7e5e0">
-<link rel="stylesheet" href="assets/shop.css?v=20261111011912">
+<link rel="stylesheet" href="assets/shop.css?v=20261111012726">
 </head>
 <body class="shop long">
 
@@ -26,14 +26,22 @@
     <h1>Current<br>Catalog</h1>
     <p class="note label soft" id="note"></p>
   </header>
-  <div class="grid" id="available"></div>
+  <div id="rails"></div>
   <p class="to-archive label"><a href="archive.html">See past pieces in the Archive →</a></p>
 </main>
 
-<script src="assets/site.js?v=20261111011912"></script>
-<script src="assets/catalog.js?v=20261111011912"></script>
+<script src="assets/site.js?v=20261111012726"></script>
+<script src="assets/catalog.js?v=20261111012726"></script>
 <script>
 const PAGE = {
+  // The rows of the shop, top to bottom. Each piece goes in the row
+  // named by its "category" in assets/catalog.js. "empty" is shown
+  // when a row has nothing in it yet.
+  rows: [
+    { category: "bottoms",     title: "Bottoms",     empty: "More coming soon" },
+    { category: "tops",        title: "Tops",        empty: "More coming soon" },
+    { category: "accessories", title: "Accessories", empty: "More coming soon" }
+  ],
   note: "One-of-one pieces, reworked from what already exists. Each piece is made once; when it sells, it's gone.",
   emptyText: "Nothing in the catalog right now. New pieces are on the way."
 };
@@ -61,10 +69,46 @@ function card(p) {
     </div>
   </a>`;
 }
-document.getElementById("available").innerHTML = avail.length
-  ? avail.map(card).join("")
-  : `<p class="empty-catalog label soft">${esc(PAGE.emptyText)}</p>`;
+const rows = PAGE.rows.map(r => ({ ...r, items: avail.filter(p => p.category === r.category) }));
+// Pieces without a known row still show, in an extra row at the end.
+const known = PAGE.rows.map(r => r.category);
+const other = avail.filter(p => !known.includes(p.category));
+if (other.length) rows.push({ title: "More", items: other });
 
+document.getElementById("rails").innerHTML = rows.map((r, i) => `
+  <section class="rail-block">
+    <header class="rail-head">
+      <h2>${esc(r.title)} <span class="soft">${r.items.length || ""}</span></h2>
+      <div class="rail-arrows">
+        <button type="button" class="rail-arrow" data-rail="${i}" data-dir="-1" aria-label="Scroll ${esc(r.title)} left">←</button>
+        <button type="button" class="rail-arrow" data-rail="${i}" data-dir="1" aria-label="Scroll ${esc(r.title)} right">→</button>
+      </div>
+    </header>
+    <div class="rail" id="rail-${i}">
+      ${r.items.length ? r.items.map(card).join("") :
+        `<div class="piece coming"><div class="pic"><span class="label soft">${esc(r.empty || "More coming soon")}</span></div></div>`}
+    </div>
+  </section>`).join("");
+
+// Arrows: slide one card at a time; hide them when a row doesn't overflow.
+document.querySelectorAll(".rail").forEach((rail, i) => {
+  const arrows = document.querySelectorAll(`.rail-arrow[data-rail="${i}"]`);
+  const sync = () => {
+    const max = rail.scrollWidth - rail.clientWidth;
+    arrows.forEach(a => { a.hidden = max < 4; });
+    if (max >= 4) {
+      arrows[0].disabled = rail.scrollLeft < 4;
+      arrows[1].disabled = rail.scrollLeft > max - 4;
+    }
+  };
+  arrows.forEach(a => a.addEventListener("click", () => {
+    const step = (rail.querySelector(".piece")?.offsetWidth || 260) + 24;
+    rail.scrollBy({ left: step * Number(a.dataset.dir), behavior: "smooth" });
+  }));
+  rail.addEventListener("scroll", sync, { passive: true });
+  addEventListener("resize", sync);
+  sync();
+});
 </script>
 </body>
 </html>

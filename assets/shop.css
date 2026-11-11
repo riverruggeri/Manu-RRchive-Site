@@ -50,6 +50,42 @@ body.shop .menu button:hover, body.shop .menu button:focus-visible { background:
 }
 .catalog-head .note { max-width: 34ch; text-align: right; line-height: 1.5; }
 
+/* Rows that slide sideways (Bottoms, Tops, Accessories). Cards are the
+   same size as the old grid: 4 across on a computer, 2 on a phone. */
+.rail-block + .rail-block { margin-top: clamp(48px, 6vw, 80px); }
+.rail-head {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 22px;
+}
+.rail-head h2 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.rail-head h2 .soft { margin-left: 6px; font-weight: 500; }
+.rail-arrows { display: flex; gap: 6px; }
+.rail-arrow {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--line); background: transparent; color: var(--ink);
+  font: inherit; font-size: 15px; line-height: 1; cursor: pointer;
+  display: grid; place-items: center;
+}
+.rail-arrow:hover:not(:disabled) { border-color: var(--ink); }
+.rail-arrow:disabled { opacity: 0.3; cursor: default; }
+.rail {
+  --cols: 4; --gap: clamp(16px, 2.4vw, 32px);
+  display: grid; grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  gap: var(--gap);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail > .piece { scroll-snap-align: start; }
+@media (max-width: 1100px) { .rail { --cols: 3; } }
+.piece.coming .pic {
+  display: grid; place-items: center; text-align: center;
+  border: 1px dashed var(--line); border-radius: 2px;
+}
+
 /* Grid of pieces */
 .grid {
   display: grid;
@@ -155,6 +191,10 @@ details p { margin: 12px 0 4px; font-size: 13px; line-height: 1.5; }
   .catalog-head { grid-template-columns: 1fr; }
   .catalog-head .note { text-align: left; }
   .grid { grid-template-columns: 1fr 1fr; gap: 32px 12px; }
+  .rail { --cols: 2; --gap: 12px; }
+  /* Phones: the row runs to the screen edge so it's clear it slides */
+  .rail { margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px))); padding-right: max(16px, env(safe-area-inset-right, 0px)); scroll-padding-right: 16px; }
+  .rail-arrows { display: none; }
   .piece .meta { grid-template-columns: 1fr; }
   .product { grid-template-columns: 1fr; }
   .gallery {
