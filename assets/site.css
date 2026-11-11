@@ -35,13 +35,13 @@ html.vt body, html.vt body.photo-page > * { animation: none; }
   /* THE SITE'S CREAM. Used everywhere white would be: text, logo, dots and
      buttons on dark/photo pages, and the background of the cream pages.
      Change --cream to recolour the whole site; the shades below follow it. */
-  --cream: #e8e0d2;
+  --cream: #e7e5e0;
   --cream-light: color-mix(in srgb, var(--cream) 60%, #ffffff);  /* form boxes */
   --cream-deep: color-mix(in srgb, var(--cream) 88%, #6b5a3e);   /* empty photo boxes, hovers */
   --cream-panel: color-mix(in srgb, var(--cream) 97%, transparent); /* menu on cream pages */
   --ink: var(--cream);
-  --ink-soft: rgba(232, 224, 210, 0.7);
-  --line: rgba(232, 224, 210, 0.18);
+  --ink-soft: rgba(231, 229, 224, 0.7);
+  --line: rgba(231, 229, 224, 0.18);
   --shadow: rgba(0, 0, 0, 0.5);
   --panel: rgba(20, 20, 20, 0.94);
   --font-ui: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
@@ -165,7 +165,7 @@ a.home-logo:hover .logo-mark { opacity: 0.75; }
   padding: 9px 12px;
   border-radius: 4px;
 }
-.menu a:hover, .menu a:focus-visible { background: rgba(232, 224, 210, 0.1); outline: none; }
+.menu a:hover, .menu a:focus-visible { background: rgba(231, 229, 224, 0.1); outline: none; }
 .menu a[aria-current="page"] { color: var(--ink-soft); }
 
 /* Dropdowns in the menu (Shop, Portfolio) */
@@ -182,7 +182,7 @@ a.home-logo:hover .logo-mark { opacity: 0.75; }
   transition: transform 0.2s ease;
 }
 .menu-group[aria-expanded="true"]::after { transform: rotate(225deg) translate(-1px, -1px); }
-.menu-group:hover, .menu-group:focus-visible { background: rgba(232, 224, 210, 0.1); outline: none; }
+.menu-group:hover, .menu-group:focus-visible { background: rgba(231, 229, 224, 0.1); outline: none; }
 .menu-sub { display: flex; flex-direction: column; margin: 0 0 4px 12px; padding-left: 8px; border-left: 1px solid var(--line); }
 .menu-sub a { font-size: 14px; padding: 7px 10px; }
 .menu a[aria-current="page"]::before { content: "■ "; font-size: 10px; vertical-align: 2px; }
