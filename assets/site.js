@@ -107,6 +107,11 @@ window.SITE = {
   const section = Object.keys(S.labels).find(k => S.labels[k].pages.includes(here)) || "manu";
   const L = S.labels[section];   // the label this page belongs to, if any
   document.documentElement.dataset.section = section;
+  // ЯRgraphy pages are dark grey: tint the phone's browser bar to match.
+  if (section === "rrgraphy") {
+    const tc = document.querySelector('meta[name="theme-color"]');
+    if (tc) tc.content = "#565656";
+  }
   // Draw a leading "Я" as a flipped R, the way the brand writes it.
   window.brandHTML = s => esc(s).replace(/Я/g, '<span class="flip-r">R</span>');
   const isHere = item => item.link === here || (item.also || []).includes(here);

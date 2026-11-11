@@ -323,3 +323,54 @@ body.light .manu-word, body.shop .manu-word, .page ~ .manu-word { text-shadow: n
   .corner { font-size: 13px; }
   .corner.right { font-size: 14px; }
 }
+
+/* =========================================================
+   ЯRgraphy colours: the old dark grey with moss green.
+   Applies to every ЯRgraphy page (home, photography, photo
+   commissions, the photo version of the form). Change the
+   four colours here to recolour the whole label.
+   ========================================================= */
+html[data-section="rrgraphy"] {
+  --graphy-bg: #565656;     /* page background (the site's old grey) */
+  --graphy-deep: #444542;   /* panels, form boxes, empty photo boxes */
+  --moss: #b5c98a;          /* light green: tab underline, flipped R, links */
+  --moss-deep: #4d6a3c;     /* dark green: main buttons */
+  --page: var(--graphy-bg);
+  --sheet: var(--graphy-bg);
+  --bg: var(--graphy-bg);
+  --bar: var(--graphy-bg);
+  --panel-solid: var(--graphy-deep);
+  --empty: var(--graphy-deep);
+  --field: var(--graphy-deep);
+  --field-line: rgba(231, 229, 224, 0.28);
+  --ok: var(--moss);
+  --warn: #f2a68f;
+  background: var(--graphy-bg);
+  color-scheme: dark;
+}
+html[data-section="rrgraphy"] body {
+  --ink: var(--cream);
+  --ink-soft: rgba(231, 229, 224, 0.7);
+  --line: rgba(231, 229, 224, 0.2);
+  --panel: rgba(58, 59, 56, 0.96);
+  --shadow: rgba(0, 0, 0, 0.35);
+  background: var(--graphy-bg);
+  color: var(--ink);
+  color-scheme: dark;
+}
+html[data-section="rrgraphy"] .menu a:hover, html[data-section="rrgraphy"] .menu a:focus-visible,
+html[data-section="rrgraphy"] .menu-group:hover, html[data-section="rrgraphy"] .menu-group:focus-visible { background: rgba(255, 255, 255, 0.07); }
+html[data-section="rrgraphy"] .photo-missing { background: var(--graphy-deep); }
+html[data-section="rrgraphy"] .rr-tabs a[aria-current="page"] { border-bottom-color: var(--moss); }
+html[data-section="rrgraphy"] .flip-r { color: var(--moss); }
+html[data-section="rrgraphy"] .page-sub { border-bottom-color: var(--moss); }
+/* Buttons: dark green with cream text; outlined ones fill green on hover */
+html[data-section="rrgraphy"] .work,
+html[data-section="rrgraphy"] .start:not(.secondary),
+html[data-section="rrgraphy"] .send { background: var(--moss-deep); color: var(--cream); }
+html[data-section="rrgraphy"] .work:hover,
+html[data-section="rrgraphy"] .start:not(.secondary):hover,
+html[data-section="rrgraphy"] .send:hover { background: color-mix(in srgb, var(--moss-deep) 85%, #ffffff); }
+html[data-section="rrgraphy"] .start.secondary { border-color: var(--cream); color: var(--cream); }
+html[data-section="rrgraphy"] .start.secondary:hover { background: var(--moss-deep); border-color: var(--moss-deep); color: var(--cream); }
+html[data-section="rrgraphy"] .arrow { background: rgba(0, 0, 0, 0.35); }
