@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111020701">
+<link rel="stylesheet" href="assets/site.css?v=20261111020809">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -17,7 +17,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#e7e5e0">
-<link rel="stylesheet" href="assets/shop.css?v=20261111020701">
+<link rel="stylesheet" href="assets/shop.css?v=20261111020809">
 </head>
 <body class="shop long over-hero">
 
@@ -39,8 +39,8 @@
   <p class="to-archive label"><a href="archive.html">See past pieces in the Archive →</a></p>
 </main>
 
-<script src="assets/site.js?v=20261111020701"></script>
-<script src="assets/catalog.js?v=20261111020701"></script>
+<script src="assets/site.js?v=20261111020809"></script>
+<script src="assets/catalog.js?v=20261111020809"></script>
 <script>
 const PAGE = {
   // Full-screen slideshow at the top. Wide photos are used on wide
@@ -233,7 +233,13 @@ document.querySelectorAll(".rail").forEach((rail, i) => {
     let y = null;
     try { y = sessionStorage.getItem(KEY); sessionStorage.removeItem(KEY); } catch (err) {}
     const cameBack = y !== null && /product\.html/.test(document.referrer || "") || (y !== null && performance.getEntriesByType?.("navigation")[0]?.type === "back_forward");
-    scrollTo(0, cameBack ? Number(y) : 0);
+    const target = cameBack ? Number(y) : 0;
+    // Set it now, and again once everything has loaded, in case the
+    // browser tries to put back the old position afterwards.
+    const go = () => scrollTo(0, target);
+    go(); requestAnimationFrame(go);
+    if (document.readyState !== "complete") addEventListener("load", () => { go(); setTimeout(go, 60); }, { once: true });
+    else setTimeout(go, 60);
   };
   place();
   addEventListener("pageshow", e => { if (e.persisted) place(); });
