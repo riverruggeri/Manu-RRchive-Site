@@ -81,7 +81,7 @@ body.over-hero :is(.home-logo, .to-manu, .rr-tabs, .menu-btn) {
   --ink: var(--cream); --ink-soft: rgba(231, 229, 224, 0.78);
 }
 body.over-hero .rr-tabs a, body.over-hero .to-manu { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45); }
-body.shop .home-logo { transition: opacity 0.35s ease; }
+body.shop .home-logo { transition: opacity 0.15s ease; }
 body.over-hero .home-logo { opacity: 0; pointer-events: none; }
 body.over-hero::before { opacity: 0; }
 body.shop::before { transition: opacity 0.3s ease; }

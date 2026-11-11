@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111020501">
+<link rel="stylesheet" href="assets/site.css?v=20261111020553">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -17,7 +17,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#e7e5e0">
-<link rel="stylesheet" href="assets/shop.css?v=20261111020501">
+<link rel="stylesheet" href="assets/shop.css?v=20261111020553">
 </head>
 <body class="shop long over-hero">
 
@@ -39,8 +39,8 @@
   <p class="to-archive label"><a href="archive.html">See past pieces in the Archive →</a></p>
 </main>
 
-<script src="assets/site.js?v=20261111020501"></script>
-<script src="assets/catalog.js?v=20261111020501"></script>
+<script src="assets/site.js?v=20261111020553"></script>
+<script src="assets/catalog.js?v=20261111020553"></script>
 <script>
 const PAGE = {
   // Full-screen slideshow at the top. Wide photos are used on wide
@@ -193,9 +193,22 @@ document.querySelectorAll(".rail").forEach((rail, i) => {
   build();
 
   // While the opening is on screen, the header is drawn in cream over the photos.
-  new IntersectionObserver(([e]) => {
-    document.body.classList.toggle("over-hero", e.intersectionRatio > 0.12);
-  }, { threshold: [0, 0.12, 0.5, 1] }).observe(hero);
+  // It switches back the moment the bottom of the photos passes the
+  // middle of the header (logo, MANU and the dots).
+  const headerLine = () => {
+    const el = document.querySelector(".to-manu") || document.querySelector(".menu-btn");
+    if (!el) return 40;
+    const r = el.getBoundingClientRect();
+    return r.top + r.height / 2;
+  };
+  let line = headerLine(), queued = false;
+  const check = () => {
+    queued = false;
+    document.body.classList.toggle("over-hero", hero.getBoundingClientRect().bottom > line);
+  };
+  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(check); } }, { passive: true });
+  addEventListener("resize", () => { line = headerLine(); check(); });
+  check();
 
   // "Current Catalog ↓": glide down to the clothes
   document.querySelector(".hero-down").addEventListener("click", e => {
