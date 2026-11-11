@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111032126">
+<link rel="stylesheet" href="assets/site.css?v=20261111032808">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -82,7 +82,8 @@
   .label-link .arrow { font-size: 0.4em; opacity: 0; transform: translateX(-0.3em); transition: opacity 0.25s, transform 0.25s; }
   .label-link:hover .arrow, .label-link.on .arrow { opacity: 1; transform: none; }
   /* Phones: no text selection or link menu while holding a name */
-  .label-link { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+  .label-link { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
+  .label-link:focus:not(:focus-visible) { outline: none; }
   .label-link .what { font-size: clamp(13px, 1.1vw, 15px); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(231,229,224,0.78); }
   .labels:has(.label-link:hover) .label-link:not(:hover),
   .labels.cycling .label-link:not(.on) { opacity: 0.4; }
@@ -119,8 +120,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261111032126"></script>
-<script src="assets/ripple.js?v=20261111032126"></script>
+<script src="assets/site.js?v=20261111032808"></script>
+<script src="assets/ripple.js?v=20261111032808"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -211,11 +212,16 @@ if (PAGE.hoverPhotos) {
     // Phones: the homepage stays still. Press and hold a name to bring up
     // its photos (they start sliding); let go to fade back. A quick tap
     // still opens the label.
-    let holdTimer, held = false, x0 = 0, y0 = 0;
+    // The iPhone's own press-and-hold (link preview / dragging the link)
+    // is switched off by taking over the touch; a quick tap still opens it.
+    let holdTimer, held = false, moved = false, x0 = 0, y0 = 0;
     links.forEach(a => {
       const l = PAGE.labels[a.dataset.i];
+      a.setAttribute("draggable", "false");
       a.addEventListener("touchstart", e => {
-        held = false; x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+        e.preventDefault();
+        held = false; moved = false;
+        x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
         clearTimeout(holdTimer);
         holdTimer = setTimeout(() => {
           held = true;
@@ -223,19 +229,25 @@ if (PAGE.hoverPhotos) {
           links.forEach(x => x.classList.toggle("on", x === a));
           open(l, true);
         }, 350);
-      }, { passive: true });
+      }, { passive: false });
       a.addEventListener("touchmove", e => {
         const t = e.touches[0];
-        if (!held && Math.hypot(t.clientX - x0, t.clientY - y0) > 10) clearTimeout(holdTimer);
+        if (Math.hypot(t.clientX - x0, t.clientY - y0) > 10) { moved = true; if (!held) clearTimeout(holdTimer); }
       }, { passive: true });
-      const release = () => {
+      a.addEventListener("touchend", e => {
+        e.preventDefault();
         clearTimeout(holdTimer);
-        if (held) { close(); nav.classList.remove("cycling"); links.forEach(x => x.classList.remove("on")); }
-      };
-      a.addEventListener("touchend", release);
-      a.addEventListener("touchcancel", release);
-      // After a hold, letting go doesn't open the page (and no iPhone link menu pops up).
-      a.addEventListener("click", e => { if (held) { e.preventDefault(); held = false; } });
+        if (held) {
+          close(); nav.classList.remove("cycling"); links.forEach(x => x.classList.remove("on"));
+          held = false;
+        } else if (!moved) {
+          a.click();   // quick tap: open the label
+        }
+      }, { passive: false });
+      a.addEventListener("touchcancel", () => {
+        clearTimeout(holdTimer);
+        if (held) { close(); nav.classList.remove("cycling"); links.forEach(x => x.classList.remove("on")); held = false; }
+      });
       a.addEventListener("contextmenu", e => e.preventDefault());
     });
   }
