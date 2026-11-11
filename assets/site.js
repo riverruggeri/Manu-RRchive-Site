@@ -327,7 +327,7 @@ window.makeSlider = (track, photos, start, onChange) => {
   const esc2 = window.esc || (x => x);
   // The first photo is repeated at the end so the last → first step slides forward.
   track.innerHTML = photos.concat(photos[0]).map((src, i) =>
-    `<img src="${esc2(src)}" alt="" draggable="false"${i > 1 ? ' loading="lazy"' : ""}>`).join("");
+    `<img src="${esc2(src)}" alt="" draggable="false">`).join("");
   let at = ((start % n) + n) % n, busy = false;
   const place = (i, animate) => {
     track.style.transition = animate ? "" : "none";

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111024354">
+<link rel="stylesheet" href="assets/site.css?v=20261111024653">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -27,9 +27,10 @@
   .label-show {
     position: fixed; inset: 0; overflow: hidden; pointer-events: none;
     opacity: 0; transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);   /* soft fade in and out */
-    background: #111111;
   }
   .label-show.on { opacity: 1; }
+  /* The page's fade-in animation would otherwise block this fade */
+  #labelShow { animation: none !important; }
   .label-track { display: flex; height: 100%; transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1); }
   .label-track img {
     flex: 0 0 100%; width: 100%; height: 100%;
@@ -111,8 +112,8 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261111024354"></script>
-<script src="assets/ripple.js?v=20261111024354"></script>
+<script src="assets/site.js?v=20261111024653"></script>
+<script src="assets/ripple.js?v=20261111024653"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -167,7 +168,10 @@ if (PAGE.hoverPhotos) {
       }
       // Hovering picks up on the photo it stopped on; phones show the next one each turn.
       if (!slide) slider.jump(slider.at + 1);
-      showEl.classList.add("on");
+      // Fade in only once the photo has loaded, so it never pops in halfway.
+      const img = track.children[slider.at];
+      const ready = !img || img.complete ? Promise.resolve() : (img.decode ? img.decode() : Promise.resolve()).catch(() => {});
+      ready.then(() => { if (current === l) showEl.classList.add("on"); });
       if (slide) timer = setInterval(() => slider.next(), PAGE.slideSeconds * 1000);
     };
     // Going straight from one label to the other: fade the first out
