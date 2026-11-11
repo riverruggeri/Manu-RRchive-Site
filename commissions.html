@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Manu Commissions</title>
+<title>ЯRchive Commissions</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261110232034">
+<link rel="stylesheet" href="assets/site.css?v=20261111002652">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -115,6 +115,7 @@
     h2 { margin-bottom: 10px; }
     .start { margin-top: 20px; font-size: 22px; }
   }
+  @media (max-width: 900px) { html[data-section="rrchive"] .sheet { padding-top: 120px; } }
   @media (max-width: 860px) {
     .layout { grid-template-columns: 1fr; }
     .examples { order: -1; max-width: 360px; }
@@ -140,7 +141,7 @@
         <p class="how" id="how"></p>
       </section>
 
-      <a class="start" href="start-commission.html">START A COMMISSION</a>
+      <a class="start" id="startLink" href="start-commission.html">START A COMMISSION</a>
     </div>
 
     <div class="examples" aria-label="Example pieces" aria-roledescription="slideshow">
@@ -155,9 +156,9 @@
 </div>
 
 <div class="corner left" data-clock aria-label="Current time"></div>
-<a class="corner right" href="index.html">Manu Clothing</a>
+<a class="corner right" href="index.html" data-section-name>Manu</a>
 
-<script src="assets/site.js?v=20261110232034"></script>
+<script src="assets/site.js?v=20261111002652"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -185,15 +186,17 @@ const PAGE = {
     "images/fashion-works/denim-patchwork-vest-04.jpg",
     "images/fashion-works/reworked-denim-02.jpg"
   ],
-  secondsPerSlide: 3
+  secondsPerSlide: 3,
+  startLink: "start-commission.html"   // where START A COMMISSION goes
 };
+document.getElementById("startLink").href = PAGE.startLink;
 
 /* ---------- Fill in the page ---------- */
 document.getElementById("tagline").textContent = PAGE.tagline;
 document.getElementById("intro").textContent = PAGE.intro;
 document.getElementById("how").textContent = PAGE.how;
 document.getElementById("services").innerHTML = PAGE.services
-  .map(s => `<li>${esc(s.name)}<span class="from">, from ${esc(s.from)}</span></li>`).join("");
+  .map(s => `<li>${esc(s.name)}<span class="from">${s.from ? ", from " + esc(s.from) : (s.note ? ", " + esc(s.note) : "")}</span></li>`).join("");
 
 /* ---------- Example slideshow ----------
    Slides sideways on its own every few seconds, with arrows and phone

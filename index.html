@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Manu Clothing</title>
-<meta name="description" content="Manu Clothing and RRchive: one-of-one garments reworked from used and discarded clothing by River Ruggeri.">
+<title>Manu</title>
+<meta name="description" content="Manu: River Ruggeri, an artist working in fashion, textiles and photography. Home of the clothing label ЯRchive.">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261110232034">
+<link rel="stylesheet" href="assets/site.css?v=20261111002652">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -93,22 +93,23 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" id="insta" target="_blank" rel="noopener"></a>
 
-<script src="assets/site.js?v=20261110232034"></script>
-<script src="assets/ripple.js?v=20261110232034"></script>
+<script src="assets/site.js?v=20261111002652"></script>
+<script src="assets/ripple.js?v=20261111002652"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
    ========================================================= */
 const PAGE = {
   wordmark: "MANU",
-  lineName: "RRchive",      // the first R is shown flipped, like the logo
-  lineText: "One-of-one garments, reworked from what already exists.",
+  lineName: "",              // optional bold name before the line (e.g. "RRchive")
+  lineText: "Artist working in fashion, textiles and photography.",
 
-  // Main links. "soon: true" marks something not open yet.
+  // Doorways from Manu into each part of the work. A new label (jewelry,
+  // say) gets added here. "soon: true" marks something not open yet.
   links: [
-    { label: "Shop",        link: "shop.html" },
-    { label: "Start a commission", link: "commissions.html", main: true },
+    { label: "ЯRchive",     link: "shop.html", main: true },
     { label: "Portfolio",   link: "portfolio.html" },
+    { label: "Photography", link: "photography.html" },
     { label: "About",       link: "about.html" }
   ],
 
@@ -133,8 +134,10 @@ const PAGE = {
 /* ---------- Fill in the page ---------- */
 document.getElementById("wordmark").textContent = PAGE.wordmark;
 const lineName = document.getElementById("lineName");
-lineName.setAttribute("aria-label", PAGE.lineName);
-lineName.innerHTML = `<span class="flip" aria-hidden="true">${esc(PAGE.lineName[0])}</span><span aria-hidden="true">${esc(PAGE.lineName.slice(1))}</span>`;
+if (PAGE.lineName) {
+  lineName.setAttribute("aria-label", PAGE.lineName);
+  lineName.innerHTML = `<span class="flip" aria-hidden="true">${esc(PAGE.lineName[0])}</span><span aria-hidden="true">${esc(PAGE.lineName.slice(1))}</span>`;
+} else lineName.remove();
 document.getElementById("lineText").textContent = PAGE.lineText;
 document.getElementById("links").innerHTML = PAGE.links.map(l =>
   `<a href="${esc(l.link)}"${l.main ? ' class="main"' : ""}${l.soon ? ` data-soon="1" data-label="${esc(l.label)}"` : ""}>${esc(l.label)}${l.soon ? '<span class="soon">soon</span>' : ""}</a>`).join("");

@@ -18,7 +18,9 @@
 
   document.title = "Manu " + (PAGE.title || "");
   const page = document.querySelector(".page");
-  page.innerHTML = `<h1 class="page-title">${esc(PAGE.title || "")}</h1><main class="projects"></main>`;
+  // Optional link under the title, e.g. to this medium's commissions page.
+  const sub = PAGE.subLink ? `<a class="page-sub" href="${esc(PAGE.subLink.link)}">${esc(PAGE.subLink.label)} →</a>` : "";
+  page.innerHTML = `<h1 class="page-title">${esc(PAGE.title || "")}</h1>${sub}<main class="projects"></main>`;
   const list = page.querySelector(".projects");
 
   if (!PROJECTS.length) {

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ЯRchive Archive</title>
+<meta name="description" content="The ЯRchive Archive: one-of-one pieces that have been sold or found a home.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=20261111002652">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-title" content="ЯRchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#e7e5e0">
+<link rel="stylesheet" href="assets/shop.css?v=20261111002652">
+</head>
+<body class="shop long">
+
+<main class="shop-page">
+  <header class="catalog-head">
+    <h1>Archive</h1>
+    <p class="note label soft" id="note"></p>
+  </header>
+  <div class="grid" id="pieces"></div>
+</main>
+
+<script src="assets/site.js?v=20261111002652"></script>
+<script src="assets/catalog.js?v=20261111002652"></script>
+<script>
+const PAGE = {
+  note: "Every ЯRchive piece is made once. These have been sold or found a home. For work that was never for sale, see Experimental Fashion.",
+  emptyText: "Nothing in the Archive yet. When a piece from the Current Catalog sells, it moves here."
+};
+
+const img = name => "images/shop/" + name;
+const sold = CATALOG.filter(p => p.status === "sold");
+const note = document.getElementById("note");
+note.innerHTML = esc(PAGE.note).replace("Experimental Fashion", '<a href="fashion-works.html">Experimental Fashion</a>');
+
+function card(p) {
+  const [a, b] = p.photos || [];
+  return `<a class="piece" href="product.html?piece=${encodeURIComponent(p.id)}">
+    <div class="pic">
+      ${a ? `<img class="main" src="${esc(img(a))}" alt="${esc(p.name)}" loading="lazy">` : ""}
+      ${b ? `<img class="alt" src="${esc(img(b))}" alt="" loading="lazy">` : ""}
+    </div>
+    <div class="meta label">
+      <span class="name">${esc(p.name)}</span>
+      <span class="soft">${esc(p.soldNote || "Sold")}</span>
+    </div>
+  </a>`;
+}
+document.getElementById("pieces").innerHTML = sold.length
+  ? sold.map(card).join("")
+  : `<p class="empty-catalog label soft">${esc(PAGE.emptyText)}</p>`;
+</script>
+</body>
+</html>

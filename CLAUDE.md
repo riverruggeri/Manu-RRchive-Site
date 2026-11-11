@@ -2,14 +2,21 @@
 
 River's website for the clothing brand Manu (house name) and RRchive, written with the first R flipped (reworked, used-material pieces). Being rebuilt from a Cargo site into plain HTML/CSS/JS that River owns.
 
-## Direction
-- The site is brand-first: `index.html` is the Manu / ЯRchive homepage (no menu dots there, logo top-left just for looks), with the portfolio as a secondary section.
-- `portfolio.html` is the old Cargo desktop-style homepage, now the portfolio page.
-- Built: Photography, Experimental Fashion (`fashion-works.html`) and Conceptual Art project pages, Commissions (info page) + Start a Commission (form page; uses mailto until a Formspree endpoint is set), About/Contact (fits one screen on computers).
-- Shop: `shop.html` (Current Catalog, one-of-one pieces) and `product.html?piece=<id>`, both built from `assets/catalog.js`; light stone "showroom" look inspired by Rick Owens. Products are cutouts (background removed with an ISNet ONNX model run locally) in images/shop/. The 4 current pieces are placeholders from Experimental Fashion with no prices ("Price on request"); the button emails River until a Stripe payment link is put in `buyLink`. Sold pieces move to a "Sold" section.
-- Menu: Shop and Portfolio are dropdowns (Shop: Start A Commission -> commissions.html, Current Catalog -> shop.html; Portfolio: Fashion Works, Conceptual Art, Photography). portfolio.html is no longer in the menu; it is reached from the homepage button.
-- Live site: https://riverruggeri.github.io/Manu-RRchive-Site/ (GitHub Pages from main; repo is public). Every push goes live. River also wants a custom-domain email later (Cloudflare domain + Email Routing + Gmail "send as" was suggested) and the site needs hosting/a domain.
-- Text was copied from River's Cargo editor; photos are being supplied by River directly and saved under images/<page>/.
+## Direction (restructured 2026-11-11)
+- TWO PARTS. **Manu** = River as an artist (the main home). **ЯRchive** = the clothing label, one part under Manu. Future labels (e.g. jewelry) get their own name and become another doorway on the Manu homepage, like ЯRchive.
+- Which part a page belongs to is set in `assets/site.js` (`SITE.rrchive.pages`); the shared header adapts:
+  - Manu pages: "MANU" top left (to index.html; hidden on the homepage, which has the big MANU), corner label "Manu".
+  - ЯRchive pages (shop, product, archive, commissions, start-commission for clothing): ЯRchive logo top left (on the ЯRchive home screen `shop.html` it opens the Archive; elsewhere it goes to `shop.html`), "MANU" link top right next to the dots, ЯRchive tabs along the top (Current Catalog, Archive, Commissions, Experimental Fashion ↗), corner label "ЯRchive".
+- Manu homepage `index.html`: MANU, "Artist working in fashion, textiles and photography.", doorways ЯRchive / Portfolio / Photography / About.
+- ЯRchive: `shop.html` Current Catalog (available pieces), `archive.html` Archive (sold pieces, status "sold" in catalog.js; optional soldNote), `product.html?piece=<id>`, `commissions.html` (garment commissions) -> `start-commission.html` form.
+- Experimental Fashion (`fashion-works.html`) stays in Manu's portfolio: pieces not for sale, kept or gifted. ЯRchive links to it (tab, Archive note); it links to ЯRchive (subLink under the title).
+- Each medium has its own commissions: garments under ЯRchive; photography at `photo-commissions.html` -> `start-commission.html?type=photo` (same form, photo fields). Photography page links to it under the title (PAGE.subLink). Photo services/text are placeholders until River confirms them.
+- Menu: Manu / ЯRchive (Current Catalog, Archive, Commissions) / Portfolio (Overview, Experimental Fashion, Conceptual Art, Photography, Photography Commissions) / About.
+- Contact: Instagram @rrchive.manu (one handle for the whole site for now; River plans separate ones per medium later). Phone number removed (SITE.contact.phone "").
+- Shop look: light stone "showroom" inspired by Rick Owens. Products are cutouts (background removed with an ISNet ONNX model run locally) in images/shop/. The 4 current pieces are placeholders from Experimental Fashion with no prices ("Price on request"); the button emails River until a Stripe payment link is put in `buyLink`.
+- Live site: https://riverruggeri.github.io/Manu-RRchive-Site/ (GitHub Pages from main; repo is public). Every push goes live. Future domain idea: something like ManuCollective (one domain for now). Custom-domain email later (Cloudflare + Email Routing + Gmail "send as").
+- Text was copied from River's Cargo editor; photos are supplied by River and saved under images/<page>/.
+- Home-screen icon and web-app title still say ЯRchive; may need a Manu version.
 
 ## Content status (end of 2026-11-04 session)
 - Photography: Drag Me Down (10), Blending With Nature (2), untitled Fashion Photography night shoot (7), Riding Back (8), Flash Photography Studio Shoot (2, from TIFs), Scanner Experimentation (5), untitled Fashion Photography studio portraits (2). Only Drag Me Down has an overview.

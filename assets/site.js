@@ -4,31 +4,50 @@
    page updates.
    ========================================================= */
 window.SITE = {
-  name: "Manu Clothing",
-
-  // Logo in the top-left corner of every page.
-  // Clicking it goes back to the homepage.
-  logo: "images/rrchive-logo.png",
+  // The site has two parts:
+  //   MANU    - River as an artist: home, portfolio, photography, about
+  //   ЯRCHIVE - the clothing label: catalog, archive of sold pieces, commissions
+  // A future label (jewelry, say) would be a new part like ЯRchive.
+  manu: { name: "Manu", home: "index.html" },
+  rrchive: {
+    name: "ЯRchive",
+    logo: "images/rrchive-logo.png",   // top left on ЯRchive pages
+    home: "shop.html",                 // ЯRchive's home screen (the Current Catalog)
+    // The logo opens the Archive from the home screen, and goes back to
+    // the home screen from every other ЯRchive page.
+    logoLinkFromHome: "archive.html",
+    pages: ["shop.html", "product.html", "archive.html", "commissions.html", "start-commission.html"],
+    // Tabs along the top of every ЯRchive page
+    tabs: [
+      { label: "Current Catalog",      link: "shop.html", also: ["product.html"] },
+      { label: "Archive",              link: "archive.html" },
+      { label: "Commissions",          link: "commissions.html", also: ["start-commission.html"] },
+      { label: "Experimental Fashion", link: "fashion-works.html", away: true }
+    ]
+  },
 
   contact: {
     email: "riverruggeri@gmail.com",
-    phone: "+1 (541)-674-9866",
-    instagram: "rr.archive.rr"
+    phone: "",                     // leave "" to keep the phone number off the site
+    instagram: "rrchive.manu"
   },
 
   // Menu (three dots, top right). An item with "items" opens
   // into a dropdown. "ready: false" shows a "coming soon" note
   // instead of a broken link.
   menu: [
-    { label: "Home", link: "index.html" },
-    { label: "Shop", items: [
-      { label: "Start A Commission", link: "commissions.html", also: ["start-commission.html"] },
-      { label: "Current Catalog",    link: "shop.html",        also: ["product.html"] }
+    { label: "Manu", link: "index.html" },
+    { label: "ЯRchive", items: [
+      { label: "Current Catalog", link: "shop.html",        also: ["product.html"] },
+      { label: "Archive",         link: "archive.html" },
+      { label: "Commissions",     link: "commissions.html", also: ["start-commission.html"] }
     ]},
     { label: "Portfolio", items: [
-      { label: "Fashion Works",  link: "fashion-works.html" },
-      { label: "Conceptual Art", link: "conceptual-art.html" },
-      { label: "Photography",    link: "photography.html" }
+      { label: "Overview",                link: "portfolio.html" },
+      { label: "Experimental Fashion",    link: "fashion-works.html" },
+      { label: "Conceptual Art",          link: "conceptual-art.html" },
+      { label: "Photography",             link: "photography.html" },
+      { label: "Photography Commissions", link: "photo-commissions.html", also: ["start-commission.html?type=photo"] }
     ]},
     { label: "About / Contact", link: "about.html" }
   ]
@@ -63,7 +82,12 @@ window.SITE = {
   menu.hidden = true;
   btn.setAttribute("aria-controls", "site-menu");
 
-  const here = location.pathname.split("/").pop() || "index.html";
+  const page = location.pathname.split("/").pop() || "index.html";
+  // The form page belongs to ЯRchive for clothing and to Manu for photography.
+  const photoForm = page === "start-commission.html" && /type=photo/.test(location.search);
+  const here = photoForm ? "start-commission.html?type=photo" : page;
+  const section = (!photoForm && S.rrchive.pages.includes(page)) ? "rrchive" : "manu";
+  document.documentElement.dataset.section = section;
   const isHere = item => item.link === here || (item.also || []).includes(here);
   function link(item, parent) {
     const a = document.createElement("a");
@@ -116,24 +140,57 @@ window.SITE = {
     window.showToast(`${(a.dataset.label || a.textContent).trim()} is coming soon`);
   });
 
-  // Home logo, top left
-  const onHome = here === "index.html";
-  const home = document.createElement(onHome ? "span" : "a");
-  home.className = "home-logo";
-  if (onHome) {
-    home.innerHTML = `<span class="logo-mark" role="img" aria-label="RRchive"></span>`;
-  } else {
-    home.href = "index.html";
-    home.setAttribute("aria-label", "RRchive, back to home");
-    home.innerHTML = `<span class="logo-mark" aria-hidden="true"></span>`;
+  // Top-left name. ЯRchive pages: the ЯRchive logo, which opens the Archive,
+  // plus a MANU link top right back to the main site. Manu pages: MANU,
+  // which goes home (hidden on the homepage, which has its own big MANU).
+  const extras = [];
+  if (section === "rrchive") {
+    const logo = document.createElement("a");
+    logo.className = "home-logo";
+    const onRrHome = page === S.rrchive.home;
+    logo.href = onRrHome ? S.rrchive.logoLinkFromHome : S.rrchive.home;
+    logo.setAttribute("aria-label", onRrHome ? "ЯRchive: the Archive of past pieces" : "ЯRchive home");
+    logo.innerHTML = `<span class="logo-mark" aria-hidden="true"></span>`;
+    logo.style.setProperty("--logo", `url("${new URL(S.rrchive.logo, location.href).href}")`);
+    const manu = document.createElement("a");
+    manu.className = "to-manu";
+    manu.href = S.manu.home;
+    manu.textContent = "MANU";
+    manu.setAttribute("aria-label", "Back to Manu");
+    // Tabs for the ЯRchive pages
+    const tabs = document.createElement("nav");
+    tabs.className = "rr-tabs";
+    tabs.setAttribute("aria-label", "ЯRchive");
+    S.rrchive.tabs.forEach(t => {
+      const a = document.createElement("a");
+      a.href = t.link;
+      a.textContent = t.label + (t.away ? " ↗" : "");
+      if (isHere(t)) a.setAttribute("aria-current", "page");
+      tabs.appendChild(a);
+    });
+    extras.push(logo, manu, tabs);
+  } else if (page !== "index.html") {
+    const word = document.createElement("a");
+    word.className = "manu-word";
+    word.href = S.manu.home;
+    word.textContent = "MANU";
+    word.setAttribute("aria-label", "Manu, home");
+    extras.push(word);
   }
 
-  home.style.setProperty("--logo", `url("${new URL(S.logo, location.href).href}")`);
+  // Bottom-right corner label: the name of the part of the site you're in.
+  function cornerName() {
+    document.querySelectorAll("[data-section-name]").forEach(a => {
+      a.textContent = section === "rrchive" ? S.rrchive.name : S.manu.name;
+      a.href = section === "rrchive" ? S.rrchive.home : S.manu.home;
+    });
+  }
 
   function mount() {
     if (!document.body.hasAttribute("data-no-menu")) document.body.append(btn, menu);
-    if (S.logo) document.body.append(home);
+    document.body.append(...extras);
     document.body.append(toast);
+    cornerName();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);
   else mount();

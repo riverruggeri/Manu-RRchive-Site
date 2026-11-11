@@ -24,8 +24,10 @@
                                        // the button email you about the piece instead.
    },
 
-   When a piece sells, change its status to "sold". It moves to
-   the "Sold" section at the bottom of the shop.
+   When a piece sells, change its status to "sold". It leaves the
+   Current Catalog and moves to the Archive (archive.html). You can
+   add  soldNote: "Sold, 2026"  or  soldNote: "Gifted"  to change the
+   label shown there.
    ========================================================= */
 window.CATALOG = [
   {

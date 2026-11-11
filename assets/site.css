@@ -121,6 +121,73 @@ body.light .photo-missing { background: var(--cream-deep); }
 }
 a.home-logo:hover .logo-mark { opacity: 0.75; }
 
+/* MANU name, top left on the artist pages */
+.manu-word {
+  position: fixed;
+  top: calc(18px + env(safe-area-inset-top, 0px));
+  left: max(24px, calc(env(safe-area-inset-left, 0px) + 16px));
+  z-index: 20;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: clamp(22px, 2.2vw, 28px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-shadow: 0 1px 4px var(--shadow);
+}
+.manu-word:hover { opacity: 0.75; }
+body.light .manu-word, body.shop .manu-word, .page ~ .manu-word { text-shadow: none; }
+
+/* ЯRchive pages: MANU link next to the menu dots, and the ЯRchive tabs */
+.to-manu {
+  position: fixed;
+  top: calc(26px + env(safe-area-inset-top, 0px));
+  right: max(84px, calc(env(safe-area-inset-right, 0px) + 78px));
+  z-index: 20;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  padding: 4px 2px;
+}
+.to-manu:hover { opacity: 0.7; }
+.rr-tabs {
+  position: absolute;
+  top: calc(28px + env(safe-area-inset-top, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 19;
+  display: flex;
+  gap: clamp(14px, 2vw, 28px);
+  white-space: nowrap;
+}
+.rr-tabs a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+}
+.rr-tabs a:hover { color: var(--ink); }
+.rr-tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: currentColor; }
+@media (max-width: 900px) {
+  .rr-tabs {
+    top: calc(64px + env(safe-area-inset-top, 0px));
+    left: 0; right: 0;
+    transform: none;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 18px;
+  }
+  .rr-tabs::-webkit-scrollbar { display: none; }
+}
+
 /* Menu: three dots, top right */
 .menu-btn {
   position: fixed;

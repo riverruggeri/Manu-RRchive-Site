@@ -82,6 +82,9 @@ body.shop .menu button:hover, body.shop .menu button:focus-visible { background:
 .piece .meta .tag { grid-column: 1 / -1; }
 .piece.sold .pic img { opacity: 0.45; filter: grayscale(0.6); }
 
+.to-archive { margin: clamp(60px, 8vw, 110px) 0 0; border-top: 1px solid var(--line); padding-top: 14px; }
+.to-archive a, .catalog-head .note a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+.to-archive a:hover, .catalog-head .note a:hover { border-color: var(--ink); }
 .section-title { margin: clamp(70px, 9vw, 120px) 0 24px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
 .empty-catalog { padding: 60px 0; text-align: center; line-height: 1.6; }
 
@@ -148,7 +151,7 @@ details p { margin: 12px 0 4px; font-size: 13px; line-height: 1.5; }
 
 /* Phones: photos swipe sideways, details underneath */
 @media (max-width: 760px) {
-  .shop-page { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-top: calc(86px + env(safe-area-inset-top, 0px)); }
+  .shop-page { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-top: calc(118px + env(safe-area-inset-top, 0px)); }
   .catalog-head { grid-template-columns: 1fr; }
   .catalog-head .note { text-align: left; }
   .grid { grid-template-columns: 1fr 1fr; gap: 32px 12px; }

@@ -3,12 +3,14 @@
 Website for Manu Clothing and R aRchive by River Ruggeri, built with Claude.
 
 ## Pages
-- `index.html`: brand homepage (Manu / R aRchive, main links, ripple photo)
+- `index.html`: Manu homepage (River as an artist; doorways to ЯRchive, Portfolio, Photography, About)
 - `portfolio.html`: portfolio desktop (icons for the three project sections)
 - `photography.html`, `fashion-works.html`, `conceptual-art.html`: project pages (slideshows that bend while scrolling, "More" panel)
-- `commissions.html`: commission info, prices and example slideshow
-- `start-commission.html`: the commission request form
-- `shop.html`: Current Catalog (one-of-one pieces for sale)
+- `commissions.html`: ЯRchive garment commissions
+- `photo-commissions.html`: photography commissions
+- `start-commission.html`: the request form (add `?type=photo` for photography)
+- `shop.html`: ЯRchive Current Catalog (one-of-one pieces for sale)
+- `archive.html`: ЯRchive Archive (pieces that have sold)
 - `product.html`: one piece (opened from the catalog)
 - `about.html`: bio, contact and services
 

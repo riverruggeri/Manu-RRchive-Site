@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Photography Commissions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=20261111002652">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-title" content="ЯRchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#e7e5e0">
+<style>
+  /* Layout: one screen, no scrolling. Text column on the left ending in the
+     Start a Commission button; a tall slideshow of example pieces on the right. */
+  :root {
+    --page: var(--cream);    /* old dark: #0c0c0c */
+    --sheet: var(--cream);   /* old dark: #222222 */
+    --bar: var(--sheet);
+  }
+  html { background: var(--page); }
+  body { background: var(--page); color: var(--ink); }
+  .sheet {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: var(--sheet);
+    box-sizing: border-box;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 90px 60px;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 90px);
+    padding-inline: clamp(0px, 3vw, 30px);
+    align-items: center;
+  }
+  .copy { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+  h1 {
+    margin: 0 0 18px;
+    font-weight: 800;
+    font-size: clamp(40px, 5.4vw, 68px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .lead { margin: 0 0 10px; font-size: 16px; line-height: 1.4; max-width: 60ch; }
+  section { border-top: 1px solid var(--line); margin-top: 24px; padding-top: 22px; align-self: stretch; }
+  h2 { margin: 0 0 16px; font-size: 15px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; }
+  .services { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 16px; }
+  .services .from { color: var(--ink-soft); }
+  .how { margin: 0; font-size: 15px; line-height: 1.42; max-width: 62ch; }
+
+  .start {
+    display: inline-block;
+    margin-top: 32px;
+    background: #141414;
+    color: var(--cream);
+    border-radius: 4px;
+    padding: 12px 14px 11px;
+    font-weight: 800;
+    font-size: clamp(20px, 2.4vw, 28px);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    transition: background 0.15s, transform 0.15s;
+  }
+  .start:hover { background: #2b2b2b; transform: translateY(-1px); }
+
+  /* Slideshow of example pieces */
+  .examples { justify-self: center; position: relative; width: 100%; max-width: 420px; }
+  .window {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    max-width: 100%;
+    overflow: hidden;
+    background: #161616;
+  }
+  .track { display: flex; height: 100%; transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1); }
+  .track img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; }
+  .ex-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid rgba(231, 229, 224, 0.7);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--cream); cursor: pointer;
+    display: grid; place-items: center;
+    font: inherit; font-size: 16px; line-height: 1;
+    z-index: 2;
+  }
+  .ex-arrow.prev { left: 10px; }
+  .ex-arrow.next { right: 10px; }
+  .ex-arrow:hover { background: rgba(0, 0, 0, 0.55); }
+  .ex-count { margin-top: 10px; font-size: 11px; color: var(--ink-soft); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; text-align: center; }
+
+  /* Computers: everything fits on one screen */
+  @media (min-width: 861px) {
+    html, body { height: 100%; }
+    body { overflow: hidden; }
+    .sheet { height: 100vh; height: 100dvh; display: flex; align-items: center; padding-block: 64px 48px; }
+    .layout { width: 100%; }
+    .examples { max-width: min(420px, calc((100dvh - 150px) * 0.75)); }
+  }
+  /* Shorter screens: tighten the text so it still fits */
+  @media (min-width: 861px) and (max-height: 760px) {
+    h1 { font-size: clamp(36px, 4.6vw, 54px); margin-bottom: 12px; }
+    .lead, .services, .how { font-size: 14px; }
+    section { margin-top: 16px; padding-top: 14px; }
+    h2 { margin-bottom: 10px; }
+    .start { margin-top: 20px; font-size: 22px; }
+  }
+  @media (max-width: 900px) { html[data-section="rrchive"] .sheet { padding-top: 120px; } }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .examples { order: -1; max-width: 360px; }
+  }
+</style>
+</head>
+<body class="long light">
+
+<div class="sheet">
+  <div class="layout">
+    <div class="copy">
+      <h1>PHOTOGRAPHY<br>COMMISSIONS</h1>
+      <p class="lead" id="tagline"></p>
+      <p class="lead" id="intro"></p>
+
+      <section>
+        <h2>What I shoot</h2>
+        <ul class="services" id="services"></ul>
+      </section>
+
+      <section>
+        <h2>How it works</h2>
+        <p class="how" id="how"></p>
+      </section>
+
+      <a class="start" id="startLink" href="start-commission.html">START A COMMISSION</a>
+    </div>
+
+    <div class="examples" aria-label="Example pieces" aria-roledescription="slideshow">
+      <div class="window">
+        <div class="track" id="track"></div>
+        <button class="ex-arrow prev" id="prev" aria-label="Previous example">‹</button>
+        <button class="ex-arrow next" id="next" aria-label="Next example">›</button>
+      </div>
+      <div class="ex-count" id="exCount"></div>
+    </div>
+  </div>
+</div>
+
+<div class="corner left" data-clock aria-label="Current time"></div>
+<a class="corner right" href="index.html" data-section-name>Manu</a>
+
+<script src="assets/site.js?v=20261111002652"></script>
+<script>
+/* =========================================================
+   PAGE SETTINGS
+   ========================================================= */
+const PAGE = {
+  tagline: "Fashion and portrait photography.",
+  intro: "Photographs in the same raw, cinematic style as my portfolio. Tell me what you have in mind and I'll send a quote.",
+
+  // "from" shows a starting price (e.g. "$150"); leave it out to show the note instead.
+  services: [
+    { name: "Portrait Photography",           note: "quoted per shoot" },
+    { name: "Fashion / Lookbook Photography", note: "quoted per shoot" }
+  ],
+
+  how: "Send me your idea and references using the form. We settle the date, location and details, and I send you a quote.",
+
+  // Example photos in the slideshow on the right (tall photos fit best).
+  examples: [
+    "images/photography/drag-me-down-01.jpg",
+    "images/photography/fashion-studio-01.jpg",
+    "images/photography/blending-with-nature-02.jpg",
+    "images/photography/drag-me-down-04.jpg",
+    "images/photography/scanner-01.jpg",
+    "images/photography/scanner-03.jpg"
+  ],
+  secondsPerSlide: 3,
+  startLink: "start-commission.html?type=photo"   // where START A COMMISSION goes
+};
+document.getElementById("startLink").href = PAGE.startLink;
+
+/* ---------- Fill in the page ---------- */
+document.getElementById("tagline").textContent = PAGE.tagline;
+document.getElementById("intro").textContent = PAGE.intro;
+document.getElementById("how").textContent = PAGE.how;
+document.getElementById("services").innerHTML = PAGE.services
+  .map(s => `<li>${esc(s.name)}<span class="from">${s.from ? ", from " + esc(s.from) : (s.note ? ", " + esc(s.note) : "")}</span></li>`).join("");
+
+/* ---------- Example slideshow ----------
+   Slides sideways on its own every few seconds, with arrows and phone
+   swipes. It pauses while the mouse is over it and restarts the timer
+   after you use the arrows. */
+(function () {
+  const track = document.getElementById("track");
+  const count = document.getElementById("exCount");
+  const list = PAGE.examples.slice();
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!list.length) { document.querySelector(".examples").hidden = true; return; }
+
+  // A copy of the first photo goes at the end so the loop slides forward
+  // smoothly instead of rewinding.
+  [...list, list[0]].forEach((src, i) => {
+    const img = new Image();
+    img.src = src;
+    img.alt = i < list.length ? `Example piece ${i + 1}` : "";
+    img.draggable = false;
+    img.onerror = () => { img.style.visibility = "hidden"; };
+    track.appendChild(img);
+  });
+
+  const pad = n => String(n).padStart(2, "0");
+  let at = 0, timer = null, hovering = false;
+
+  function go(n, animate = true) {
+    track.style.transition = animate && !reduce ? "" : "none";
+    at = n;
+    track.style.transform = `translateX(${-at * 100}%)`;
+    count.textContent = `${pad((at % list.length) + 1)} / ${pad(list.length)}`;
+  }
+  track.addEventListener("transitionend", () => {
+    if (at >= list.length) { go(0, false); void track.offsetWidth; }
+  });
+  function next() {
+    if (at >= list.length) { go(0, false); void track.offsetWidth; }
+    go(at + 1);
+  }
+  function prev() {
+    if (at <= 0) { go(list.length, false); void track.offsetWidth; }
+    go(at - 1);
+  }
+  function restart() {
+    clearInterval(timer);
+    if (list.length > 1 && !hovering && !reduce) timer = setInterval(next, PAGE.secondsPerSlide * 1000);
+  }
+
+  document.getElementById("next").addEventListener("click", () => { next(); restart(); });
+  document.getElementById("prev").addEventListener("click", () => { prev(); restart(); });
+  const box = document.querySelector(".examples");
+  if (window.matchMedia("(hover: hover)").matches) {
+    box.addEventListener("mouseenter", () => { hovering = true; restart(); });
+    box.addEventListener("mouseleave", () => { hovering = false; restart(); });
+  }
+  let sx = 0;
+  box.addEventListener("touchstart", e => { sx = e.touches[0].clientX; }, { passive: true });
+  box.addEventListener("touchend", e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); restart(); }
+  }, { passive: true });
+  document.addEventListener("visibilitychange", () => { document.hidden ? clearInterval(timer) : restart(); });
+
+  go(0, false);
+  if (list.length < 2) document.querySelectorAll(".ex-arrow").forEach(b => b.hidden = true);
+  restart();
+})();
+</script>
+</body>
+</html>

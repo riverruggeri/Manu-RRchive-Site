@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261110232034">
+<link rel="stylesheet" href="assets/site.css?v=20261111002652">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -85,6 +85,7 @@
     font: inherit; font-size: 12px; padding: 3px 8px; border-radius: 3px; cursor: pointer; margin-left: 6px;
   }
   @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { html[data-section="rrchive"] .sheet { padding-top: 124px; } }
   /* iPhone: 16px stops Safari zooming in when you tap a field */
   @media (max-width: 700px), (hover: none) { input, select, textarea { font-size: 16px; } }
 </style>
@@ -93,17 +94,17 @@
 
 <div class="sheet">
   <div class="wrap">
-    <a class="back" href="commissions.html">← Commissions</a>
-    <h1>START A COMMISSION</h1>
-    <p class="lead">Tell me about the piece you have in mind. I'll reply by email to settle the details and send a quote.</p>
+    <a class="back" id="back" href="commissions.html">← Commissions</a>
+    <h1 id="title">START A COMMISSION</h1>
+    <p class="lead" id="lead"></p>
         <form id="form" novalidate>
           <div class="row">
             <label for="f-name">Name<input id="f-name" name="name" autocomplete="name" required></label>
             <label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
           </div>
-          <label for="f-service">What kind of piece?<select id="f-service" name="service"></select></label>
+          <label for="f-service"><span id="serviceLabel">What kind of piece?</span><select id="f-service" name="service"></select></label>
           <label for="f-idea">Your idea
-            <span class="hint">What you'd like made or changed, the look you're after, and any garments you already have.</span>
+            <span class="hint" id="ideaHint"></span>
             <textarea id="f-idea" name="idea" required></textarea>
           </label>
           <label for="f-refs">References
@@ -111,12 +112,13 @@
             <input id="f-refs" name="references">
           </label>
           <div class="row">
-            <label for="f-size">Size or measurements<input id="f-size" name="size"></label>
+            <label for="f-size" class="clothing-only">Size or measurements<input id="f-size" name="size"></label>
+            <label for="f-location" class="photo-only" hidden>Location<input id="f-location" name="location"></label>
             <label for="f-budget">Budget<input id="f-budget" name="budget" inputmode="decimal"></label>
           </div>
           <div class="row">
-            <label for="f-when">Needed by<input id="f-when" name="needed_by" type="date"></label>
-            <label for="f-where">Shipping or local pickup?
+            <label for="f-when"><span id="whenLabel">Needed by</span><input id="f-when" name="needed_by" type="date"></label>
+            <label for="f-where" class="clothing-only">Shipping or local pickup?
               <select id="f-where" name="delivery">
                 <option>Ship it to me</option>
                 <option>Local pickup</option>
@@ -132,17 +134,38 @@
 </div>
 
 <div class="corner left" data-clock aria-label="Current time"></div>
-<a class="corner right" href="index.html">Manu Clothing</a>
+<a class="corner right" href="index.html" data-section-name>Manu</a>
 
-<script src="assets/site.js?v=20261110232034"></script>
+<script src="assets/site.js?v=20261111002652"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
    ========================================================= */
 const PAGE = {
-  // Choices in "What kind of piece?" (keep these the same as the
-  // services on commissions.html).
-  services: ["Repair / Reimagine Garments", "Custom Garment Commissions", "Custom Textile Commissions"],
+  // This one form handles both kinds of commission. Links ending in
+  // ?type=photo open the photography version.
+  types: {
+    clothing: {
+      back: { label: "Commissions", link: "commissions.html" },
+      lead: "Tell me about the piece you have in mind. I'll reply by email to settle the details and send a quote.",
+      serviceLabel: "What kind of piece?",
+      ideaHint: "What you'd like made or changed, the look you're after, and any garments you already have.",
+      whenLabel: "Needed by",
+      subject: "Commission request",
+      // keep these the same as the services on commissions.html
+      services: ["Repair / Reimagine Garments", "Custom Garment Commissions", "Custom Textile Commissions"]
+    },
+    photo: {
+      back: { label: "Photography Commissions", link: "photo-commissions.html" },
+      lead: "Tell me about the shoot you have in mind. I'll reply by email to settle the details and send a quote.",
+      serviceLabel: "What kind of shoot?",
+      ideaHint: "What the photos are for, the look and mood you're after, and who or what is in them.",
+      whenLabel: "Preferred date",
+      subject: "Photography commission request",
+      // keep these the same as the services on photo-commissions.html
+      services: ["Portrait Photography", "Fashion / Lookbook Photography"]
+    }
+  },
 
   // Where requests go. Leave "" to have the form open the visitor's
   // email app with everything filled in. To get requests straight to
@@ -151,7 +174,23 @@ const PAGE = {
   formEndpoint: ""
 };
 
-document.getElementById("f-service").innerHTML = PAGE.services
+const kind = /type=photo/.test(location.search) ? "photo" : "clothing";
+const T = PAGE.types[kind];
+const back = document.getElementById("back");
+back.href = T.back.link; back.textContent = "← " + T.back.label;
+document.getElementById("lead").textContent = T.lead;
+document.getElementById("serviceLabel").textContent = T.serviceLabel;
+document.getElementById("ideaHint").textContent = T.ideaHint;
+document.getElementById("whenLabel").textContent = T.whenLabel;
+// Fields that don't apply are hidden and left out of the request.
+const toggle = (sel, show) => document.querySelectorAll(sel).forEach(el => {
+  el.hidden = !show;
+  el.querySelectorAll("input, select, textarea").forEach(f => f.disabled = !show);
+});
+toggle(".clothing-only", kind === "clothing");
+toggle(".photo-only", kind === "photo");
+if (kind === "photo") document.title = "Start a Photography Commission";
+document.getElementById("f-service").innerHTML = T.services
   .map(s => `<option>${esc(s)}</option>`).join("") + "<option>Something else</option>";
 
 // Coming from a "Start a commission" link that names a service picks it.
@@ -171,7 +210,7 @@ const status = document.getElementById("status");
 const send = document.getElementById("send");
 const fieldNames = {
   name: "Name", email: "Email", service: "Piece", idea: "Idea", references: "References",
-  size: "Size or measurements", budget: "Budget", needed_by: "Needed by", delivery: "Delivery"
+  size: "Size or measurements", location: "Location", budget: "Budget", needed_by: "Date", delivery: "Delivery"
 };
 
 form.addEventListener("submit", async e => {
@@ -192,7 +231,7 @@ form.addEventListener("submit", async e => {
     // No form service yet: open the visitor's email app with the request written out.
     const body = Object.entries(data).filter(([, v]) => String(v).trim())
       .map(([k, v]) => `${fieldNames[k] || k}: ${v}`).join("\n");
-    const subject = `Commission request: ${data.service}`;
+    const subject = `${T.subject}: ${data.service}`;
     location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     status.textContent = "Your email app should open with the request filled in. If it doesn't, email " + email + " directly.";
     return;
@@ -204,7 +243,7 @@ form.addEventListener("submit", async e => {
     const res = await fetch(PAGE.formEndpoint, {
       method: "POST",
       headers: { "Accept": "application/json", "Content-Type": "application/json" },
-      body: JSON.stringify({ ...data, _subject: `Commission request: ${data.service}` })
+      body: JSON.stringify({ ...data, _subject: `${T.subject}: ${data.service}` })
     });
     if (!res.ok) throw new Error(res.status);
     form.reset();
