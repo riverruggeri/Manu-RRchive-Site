@@ -9,7 +9,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
   - Label pages: the label name top left (image logo for ЯRchive, text for ЯRgraphy). On the label's home screen it opens logoLinkFromHome; elsewhere it goes to the home screen. "MANU" link top right next to the dots; the label's tabs along the top; corner label = label name.
   - ЯRchive: home shop.html (logo -> archive.html); pages shop, product, archive, commissions, start-commission (clothing); tabs Current Catalog / Archive / Commissions / Experimental Fashion ↗.
   - ЯRgraphy: home rrgraphy.html (intro text, slideshow, big VIEW MY PHOTOGRAPHY button, START A COMMISSION -> photo-commissions.html; logo -> photography.html); pages rrgraphy, photography, photo-commissions, start-commission?type=photo; tabs Home / Photography / Commissions.
-- Manu homepage `index.html`: MANU, "Artist working in fashion, textiles and photography.", doorways ЯRchive / Portfolio / ЯRgraphy / About. ЯRgraphy intro text on rrgraphy.html is drafted from River's bio; confirm with River.
+- Manu homepage `index.html`: MANU, "Artist working in fashion, textiles and photography.", doorways ЯRchive / Portfolio / ЯRgraphy / About. ЯRgraphy intro text (style + studio experience in fashion, portrait, object) written 2026-11-11 for commissions; photo services now include Object / Product Photography.
 - ЯRchive: `shop.html` Current Catalog (available pieces), `archive.html` Archive (sold pieces, status "sold" in catalog.js; optional soldNote), `product.html?piece=<id>`, `commissions.html` (garment commissions) -> `start-commission.html` form.
 - Experimental Fashion (`fashion-works.html`) stays in Manu's portfolio: pieces not for sale, kept or gifted. ЯRchive links to it (tab, Archive note); it links to ЯRchive (subLink under the title).
 - Each medium has its own commissions: garments under ЯRchive; photography at `photo-commissions.html` -> `start-commission.html?type=photo` (same form, photo fields). Photography page links to it under the title (PAGE.subLink). Photo services/text are placeholders until River confirms them.
@@ -46,7 +46,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 ## How things are set up
 - Shared code lives in `assets/` (site.js holds the menu and contact details for every page; projects.js builds the project pages; ripple.js is the background effect).
 - Each page keeps its editable settings in a `PAGE` block (and project pages a `PROJECTS` list) at the top of its script.
-- Project page scroll warp (assets/projects.js): flat corner-pin stretch tied to position on screen; straightens only when the photo is centered; names/counters slide clear of the corners with a 64px minimum gap; portrait photos warp less (PORTRAIT_WARP). River tuned these.
+- Project page scroll warp (assets/projects.js): flat corner-pin stretch tied to position on screen; straightens only when the photo is centered; names/counters slide clear of the corners with a 64px minimum gap; portrait photos warp less (PORTRAIT_WARP). River tuned these. Positions are measured once (re-measured on resize/photo change via ResizeObserver) and redrawn every frame while scrolling, for smooth iPhone scrolling (2026-11-11).
 - Pages fade out/in between links (site.js/site.css).
 - Background ripple on `portfolio.html` mirrors Cargo's "Ripple" backdrop controls (distortionX/Y, scale, speed, direction, mouseSensitivity). River tuned it and approved the current values.
 - Photos live in `images/`.
