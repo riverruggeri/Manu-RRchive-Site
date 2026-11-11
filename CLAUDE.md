@@ -27,6 +27,11 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - About: big photo set (about-hero.jpg); portrait IMG_5331.jpg still missing.
 - Years set to 2026 for new projects are guesses unless River said otherwise.
 
+## Next session (River, end of 2026-11-11)
+- Work on the UI of the MOBILE version (River's focus for next time). Start by showing iPhone-size screenshots (Playwright devices['iPhone 13']) of the pages; River liked seeing them side by side.
+- `index.html?phone` makes a computer act like a phone on the Manu homepage (mouse press-and-hold = finger hold), for previews. A clickable iPhone-frame preview was started (scratchpad iphone-preview.html, iframe of home.html?phone) but not published: copying all images is over the 64MB per-publish limit, so it needs two publishes.
+- Still waiting on River: titles/years/overviews for the two Conceptual Art projects; About portrait IMG_5331.jpg; real photo commission details; shop prices/sizes; Archive photos for the slideshows; Manu home-screen icon.
+
 ## To do next session (River's list, 2026-11-04)
 1. DONE: Home/Portfolio switch keeps the photo on screen (no grey gap); browsers with built-in page cross-fades use them.
 2. DONE: slideshow photos slide sideways; swipe on phones.
