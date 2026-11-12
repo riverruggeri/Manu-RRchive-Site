@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111221815">
+<link rel="stylesheet" href="assets/site.css?v=20261111222129">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -111,13 +111,13 @@
   .pill {
     display: inline-flex; align-items: center; gap: 0.45em;
     font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
-    color: var(--ink); border: 1px solid rgba(231,229,224,0.75); border-radius: 999px;
-    padding: 10px 20px; background: rgba(20,20,20,0.38);
+    color: var(--ink); border: 1px solid var(--pill-line, rgba(231,229,224,0.75)); border-radius: 999px;
+    padding: 10px 20px; background: var(--pill-bg, rgba(20,20,20,0.38));
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     transition: background-color 0.25s, color 0.25s, border-color 0.25s;
   }
-  .pill:hover, .pill:focus-visible { background: var(--ink); color: #1d1d1b; border-color: var(--ink); }
-  .pill.solid { background: var(--ink); color: #1d1d1b; border-color: var(--ink); }
+  .pill:hover, .pill:focus-visible { background: var(--ink); color: var(--pill-on, #1d1d1b); border-color: var(--ink); }
+  .pill.solid { background: var(--ink); color: var(--pill-on, #1d1d1b); border-color: var(--ink); }
   .pill.solid:hover { background: transparent; color: var(--ink); }
   .pill .flip-r { color: inherit; letter-spacing: 0; margin-right: 0.085em; }   /* keeps the Я next to its R in spaced capitals */
   .nowrap { white-space: nowrap; }
@@ -134,7 +134,14 @@
   @keyframes nudge { 50% { transform: translateY(5px); } }
 
   /* ---------- Second part: who River is and what they make ---------- */
-  :root { --studio: #4c4c4c; }   /* same dark grey as the About page and ЯRgraphy */
+  :root { --studio: var(--cream); }   /* the site's off-white with dark text (River, 2026-11-11; was grey #4c4c4c) */
+  .studio, body.scrolled .top-nav {
+    --ink: #141414; --ink-soft: rgba(20,20,20,0.56);
+    --pill-line: rgba(20,20,20,0.55); --pill-on: var(--cream); --pill-bg: transparent;
+  }
+  body.scrolled .top-nav { color: var(--ink); }
+  body.scrolled .top-nav .pill { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  :root { --line: rgba(20,20,20,0.2); }
   .studio {
     position: relative; z-index: 4; background: var(--studio); color: var(--ink);
     padding-left: max(28px, calc(env(safe-area-inset-left, 0px) + 16px));
@@ -165,9 +172,9 @@
     letter-spacing: -0.04em; line-height: 1;
   }
   .medium-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2.4vw, 36px); }
-  .medium { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid rgba(231,229,224,0.35); padding-top: 18px; }
+  .medium { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--line); padding-top: 18px; }
   .medium .num { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--ink-soft); }
-  .medium .pic { display: block; overflow: hidden; aspect-ratio: 4 / 5; background: rgba(0,0,0,0.15); }
+  .medium .pic { display: block; overflow: hidden; aspect-ratio: 4 / 5; background: var(--cream-deep); }
   .medium .pic img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .medium .pic:hover img { transform: scale(1.04); }
   .medium h3 { margin: 6px 0 0; font-size: clamp(22px, 2vw, 30px); font-weight: 800; letter-spacing: -0.03em; }
@@ -179,11 +186,11 @@
   .big-links { max-width: 1400px; width: 100%; margin-inline: auto; display: grid; }
   .big-links a {
     display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
-    padding-block: clamp(14px, 2.4vh, 26px); border-top: 1px solid rgba(231,229,224,0.35);
+    padding-block: clamp(14px, 2.4vh, 26px); border-top: 1px solid var(--line);
     text-decoration: none; font-weight: 800; font-size: clamp(44px, 8vw, 132px);
     letter-spacing: -0.05em; line-height: 0.95; transition: padding 0.3s ease, color 0.3s;
   }
-  .big-links a:last-child { border-bottom: 1px solid rgba(231,229,224,0.35); }
+  .big-links a:last-child { border-bottom: 1px solid var(--line); }
   .big-links a small { font-size: clamp(13px, 1.1vw, 16px); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
   .big-links a:hover { padding-left: 0.25em; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-size: 14px; color: var(--ink-soft); max-width: 1400px; width: 100%; margin: -60px auto 0; }
@@ -239,8 +246,8 @@
 
 <main class="studio" id="studio"></main>
 
-<script src="assets/site.js?v=20261111221815"></script>
-<script src="assets/ripple.js?v=20261111221815"></script>
+<script src="assets/site.js?v=20261111222129"></script>
+<script src="assets/ripple.js?v=20261111222129"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
