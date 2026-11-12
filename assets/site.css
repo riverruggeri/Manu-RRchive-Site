@@ -35,13 +35,13 @@ html.vt body, html.vt body.photo-page > * { animation: none; }
   /* THE SITE'S CREAM. Used everywhere white would be: text, logo, dots and
      buttons on dark/photo pages, and the background of the cream pages.
      Change --cream to recolour the whole site; the shades below follow it. */
-  --cream: #ede4d1;
+  --cream: #e7e5e0;
   --cream-light: color-mix(in srgb, var(--cream) 60%, #ffffff);  /* form boxes */
   --cream-deep: color-mix(in srgb, var(--cream) 88%, #6b5a3e);   /* empty photo boxes, hovers */
   --cream-panel: color-mix(in srgb, var(--cream) 97%, transparent); /* menu on cream pages */
   --ink: var(--cream);
-  --ink-soft: rgba(237, 228, 209, 0.7);
-  --line: rgba(237, 228, 209, 0.18);
+  --ink-soft: rgba(231, 229, 224, 0.7);
+  --line: rgba(231, 229, 224, 0.18);
   --shadow: rgba(0, 0, 0, 0.5);
   --panel: rgba(20, 20, 20, 0.94);
   --font-ui: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
@@ -248,7 +248,7 @@ body.light .manu-word, body.shop .manu-word, .page ~ .manu-word { text-shadow: n
   padding: 9px 12px;
   border-radius: 4px;
 }
-.menu a:hover, .menu a:focus-visible { background: rgba(237, 228, 209, 0.1); outline: none; }
+.menu a:hover, .menu a:focus-visible { background: rgba(231, 229, 224, 0.1); outline: none; }
 .menu a[aria-current="page"] { color: var(--ink-soft); }
 
 /* Dropdowns in the menu (Shop, Portfolio) */
@@ -265,7 +265,7 @@ body.light .manu-word, body.shop .manu-word, .page ~ .manu-word { text-shadow: n
   transition: transform 0.2s ease;
 }
 .menu-group[aria-expanded="true"]::after { transform: rotate(225deg) translate(-1px, -1px); }
-.menu-group:hover, .menu-group:focus-visible { background: rgba(237, 228, 209, 0.1); outline: none; }
+.menu-group:hover, .menu-group:focus-visible { background: rgba(231, 229, 224, 0.1); outline: none; }
 .menu-sub { display: flex; flex-direction: column; margin: 0 0 4px 12px; padding-left: 8px; border-left: 1px solid var(--line); }
 .menu-sub a { font-size: 14px; padding: 7px 10px; }
 .menu a[aria-current="page"]::before { content: "■ "; font-size: 10px; vertical-align: 2px; }
@@ -342,7 +342,7 @@ html[data-section="rrgraphy"] {
   --panel-solid: var(--graphy-deep);
   --empty: var(--graphy-deep);
   --field: var(--graphy-deep);
-  --field-line: rgba(237, 228, 209, 0.28);
+  --field-line: rgba(231, 229, 224, 0.28);
   --ok: var(--moss);
   --warn: #f2a68f;
   background: var(--graphy-bg);
@@ -350,8 +350,8 @@ html[data-section="rrgraphy"] {
 }
 html[data-section="rrgraphy"] body {
   --ink: var(--cream);
-  --ink-soft: rgba(237, 228, 209, 0.7);
-  --line: rgba(237, 228, 209, 0.2);
+  --ink-soft: rgba(231, 229, 224, 0.7);
+  --line: rgba(231, 229, 224, 0.2);
   --panel: rgba(58, 59, 56, 0.96);
   --shadow: rgba(0, 0, 0, 0.35);
   background: var(--graphy-bg);
@@ -374,3 +374,14 @@ html[data-section="rrgraphy"] .send:hover { background: color-mix(in srgb, var(-
 html[data-section="rrgraphy"] .start.secondary { border-color: var(--cream); color: var(--cream); }
 html[data-section="rrgraphy"] .start.secondary:hover { background: var(--moss-deep); border-color: var(--moss-deep); color: var(--cream); }
 html[data-section="rrgraphy"] .arrow { background: rgba(0, 0, 0, 0.35); }
+
+/* =========================================================
+   MANU pages (homepage, Portfolio, About, Experimental Fashion,
+   Conceptual Art) use a warmer cream instead of the stone off-white
+   (River, 2026-11-11). ЯRchive and ЯRgraphy keep the stone colour.
+   ========================================================= */
+html[data-section="manu"] {
+  --cream: #ede4d1;
+  --ink-soft: rgba(237, 228, 209, 0.7);
+  --line: rgba(237, 228, 209, 0.18);
+}
