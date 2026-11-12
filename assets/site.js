@@ -98,7 +98,7 @@ window.SITE = {
     tilt: true,      // Portfolio cut-outs follow the mouse a little
     // Trying out (River, 2026-11-11 night): switch any to false to remove it
     cards3d: true,   // 1. photos tilt toward the mouse in 3D (glare removed, River 2026-11-12)
-    magnetic: true,  // 5. buttons lean toward the mouse when it comes close
+    magnetic: false, // 5. buttons lean toward the mouse (River switched off, 2026-11-12)
     smooth: true,    // 12. smooth, gliding scrolling with the mouse wheel
     stitch: true,    // 14. dividing lines are dashed stitches that sew themselves in, slowly
     denimText: true, // 15. some big titles are filled with plain denim that shifts as you scroll
