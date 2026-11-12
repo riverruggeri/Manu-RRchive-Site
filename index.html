@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111231816">
+<link rel="stylesheet" href="assets/site.css?v=20261111233758">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -256,7 +256,7 @@
   }
 </style>
 </head>
-<body class="photo-page" data-no-menu>
+<body class="photo-page" data-no-menu data-grain-photo>
 <canvas id="stage" aria-hidden="true"></canvas>
 <div id="fallback" hidden></div>
 <div class="label-show" aria-hidden="true"><div class="label-track"></div></div>
@@ -286,8 +286,8 @@
 
 <main class="studio" id="studio"></main>
 
-<script src="assets/site.js?v=20261111231816"></script>
-<script src="assets/ripple.js?v=20261111231816"></script>
+<script src="assets/site.js?v=20261111233758"></script>
+<script src="assets/ripple.js?v=20261111233758"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -299,11 +299,10 @@
    ========================================================= */
 const PAGE = {
   hoverPhotos: true,   // false = names only, no photos
-  fog: true,           // the photo opens in mist that clears; mist returns as you scroll down
-  threads: 14,         // thin threads falling over the photo (0 = none)
-  // Big words sliding sideways between the intro and "What I make" ("" row = none)
-  drift: ["Reconstructed · Distressed · Reworked · Reconstructed · Distressed · Reworked ·",
-          "Denim · Textile · Photography · One of one · Denim · Textile · Photography ·"],
+  fog: false,          // mist over the photo that clears (River switched off, 2026-11-11)
+  threads: 0,          // thin falling threads over the photo (River switched off: 0 = none)
+  // Big sliding words: kept for ЯRchive only (River, 2026-11-11). Add rows here to bring them back.
+  drift: [],
   slideSeconds: 2.8,   // how long each photo stays while hovering (River, 2026-11-11: was 3.6)
   boxSeconds: 3.6,     // how long each photo stays in the "What I make" boxes
   labels: [
@@ -399,6 +398,13 @@ document.querySelectorAll(".medium .pic-track").forEach((track, i) => {
 // Once you scroll past the first screen: the top bar gets a background,
 // and the ripple pauses while it's covered.
 const heroEl = document.getElementById("top"), stageEl = document.getElementById("stage");
+// Always open the homepage at the top, even when coming back to it with
+// the browser's back button (River, 2026-11-11).
+try { history.scrollRestoration = "manual"; } catch (e) {}
+const toTop = () => { if (!location.hash) scrollTo(0, 0); };
+toTop(); addEventListener("load", toTop);
+addEventListener("pageshow", e => { if (e.persisted) { toTop(); onScroll(); } });
+
 // Fog: clears over the first 2.6 seconds, then follows the scroll.
 const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let intro = PAGE.fog && !still ? 1 : 0, scrollFog = 0;

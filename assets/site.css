@@ -378,10 +378,12 @@ html[data-section="rrgraphy"] .arrow { background: rgba(0, 0, 0, 0.35); }
 /* =========================================================
    MOVING EFFECTS (switches: SITE.effects in assets/site.js)
    ========================================================= */
-/* Film grain over everything */
+/* Film grain: on page backgrounds only (never on photos) ... */
+html body, html .studio { background-image: var(--grain, none); }
+/* ... plus moving grain over the big Manu homepage photo (below its words) */
 .fx-grain {
-  position: fixed; inset: -60px; z-index: 2147483000; pointer-events: none;
-  opacity: 0.07; mix-blend-mode: overlay;
+  position: fixed; inset: -60px; z-index: 2; pointer-events: none;
+  opacity: 0.9;
   animation: fx-grain 0.9s steps(6) infinite;
 }
 @keyframes fx-grain {
@@ -403,7 +405,7 @@ html[data-section="rrgraphy"] .arrow { background: rgba(0, 0, 0, 0.35); }
 .fx-drift { overflow: hidden; overflow: clip; display: grid; gap: 0.05em; padding-block: 0.1em; }
 .fx-drift > div {
   white-space: nowrap; font-weight: 400; text-transform: uppercase;
-  font-size: clamp(56px, 10.5vw, 180px); line-height: 1; letter-spacing: -0.02em;
+  font-size: clamp(40px, 7vw, 120px);   /* smaller, so more words show at once (River, 2026-11-11) */ line-height: 1; letter-spacing: -0.02em;
   will-change: translate;
 }
 .fx-drift > div.outline { color: transparent; -webkit-text-stroke: 1.2px var(--ink); }
@@ -412,3 +414,5 @@ html[data-section="rrgraphy"] .arrow { background: rgba(0, 0, 0, 0.35); }
 
 [data-float], [data-tilt] { will-change: translate; }
 [data-tilt] { transition: translate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+body.photo-page > .fx-grain.fx-grain { animation: fx-grain 0.9s steps(6) infinite; }
+@media (prefers-reduced-motion: reduce) { body.photo-page > .fx-grain.fx-grain { animation: none; } }

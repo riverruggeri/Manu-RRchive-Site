@@ -377,18 +377,25 @@ window.makeSlider = (track, photos, start, onChange) => {
   const hover = matchMedia("(hover: hover)").matches;
 
   // ---------- Film grain ----------
+  // Sits on the page backgrounds only, so it never covers photos.
+  // A page whose body has data-grain-photo also gets moving grain over
+  // its big background photo (the Manu homepage).
   function grain() {
     const c = document.createElement("canvas"); c.width = c.height = 180;
     const g = c.getContext("2d"), d = g.createImageData(180, 180);
     for (let i = 0; i < d.data.length; i += 4) {
-      const v = Math.random() * 255;
-      d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255;
+      const v = Math.random() < 0.5 ? 0 : 255;
+      d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = Math.random() * 26;
     }
     g.putImageData(d, 0, 0);
-    const el = document.createElement("div");
-    el.className = "fx-grain"; el.setAttribute("aria-hidden", "true");
-    el.style.backgroundImage = `url(${c.toDataURL()})`;
-    document.body.appendChild(el);
+    const url = `url(${c.toDataURL()})`;
+    document.documentElement.style.setProperty("--grain", url);
+    if (document.body.hasAttribute("data-grain-photo")) {
+      const el = document.createElement("div");
+      el.className = "fx-grain"; el.setAttribute("aria-hidden", "true");
+      el.style.backgroundImage = url;
+      document.body.appendChild(el);
+    }
   }
 
   // ---------- Text that appears line by line ----------
