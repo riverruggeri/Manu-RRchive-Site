@@ -65,3 +65,8 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - River's full name on the site is always "River Manu Ruggeri" (River, 2026-11-11).
 - River's original Cargo site must not be changed; look only.
 - River describes changes in plain words; keep explanations non-technical.
+
+## Moving effects (River, 2026-11-11 night; from a scroll-video reference; River will say which to remove)
+- Site-wide switches in SITE.effects (assets/site.js): grain (film grain overlay .fx-grain), reveal (elements with data-reveal appear line by line as they scroll in; used on homepage intro/what-I-make text, About bio, ЯRgraphy intro, ЯRchive "Current Catalog"), float (data-float: ЯRchive catalog cut-outs drift at their own speed with scroll), drift (data-drift rows in .fx-drift: big words sliding sideways; homepage between intro and What I make, ЯRchive between slideshow and catalog; words in each page's PAGE.drift), tilt (data-tilt: Portfolio cut-outs follow the mouse). CSS at the end of assets/site.css.
+- Homepage only (PAGE in index.html): fog (photo opens in mist that clears over ~2.6s, MANU sharpens out of a blur; mist rolls back in as you scroll down; .fog layer must stay excluded from the page-in animation), threads (thin cream lines falling over the photo; number of threads).
+- Not done yet, needs material from River: scroll-controlled film of a piece being made (video), before/after scroll per piece (before photos).

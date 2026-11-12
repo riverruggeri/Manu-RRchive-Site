@@ -88,6 +88,16 @@ window.SITE = {
     }
   },
 
+  // Moving effects (River, 2026-11-11 night, inspired by a scroll video).
+  // Set any of these to false to switch that effect off on every page.
+  effects: {
+    grain: true,     // fine film grain over the whole site
+    reveal: true,    // text appears line by line as it scrolls into view
+    float: true,     // ЯRchive cut-outs drift at their own speed as you scroll
+    drift: true,     // big words that slide sideways as you scroll
+    tilt: true       // Portfolio cut-outs follow the mouse a little
+  },
+
   contact: {
     email: "riverruggeri@gmail.com",
     phone: "",                     // leave "" to keep the phone number off the site
@@ -357,3 +367,128 @@ window.makeSlider = (track, photos, start, onChange) => {
   return api;
 };
 
+
+/* =========================================================
+   MOVING EFFECTS (switches in SITE.effects above)
+   ========================================================= */
+(function () {
+  const FX = SITE.effects || {};
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hover = matchMedia("(hover: hover)").matches;
+
+  // ---------- Film grain ----------
+  function grain() {
+    const c = document.createElement("canvas"); c.width = c.height = 180;
+    const g = c.getContext("2d"), d = g.createImageData(180, 180);
+    for (let i = 0; i < d.data.length; i += 4) {
+      const v = Math.random() * 255;
+      d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255;
+    }
+    g.putImageData(d, 0, 0);
+    const el = document.createElement("div");
+    el.className = "fx-grain"; el.setAttribute("aria-hidden", "true");
+    el.style.backgroundImage = `url(${c.toDataURL()})`;
+    document.body.appendChild(el);
+  }
+
+  // ---------- Text that appears line by line ----------
+  // Any element with data-reveal (pages add it to their text).
+  function split(el) {
+    const words = [];
+    const walk = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const parts = n.textContent.split(/(\s+)/);
+          const frag = document.createDocumentFragment();
+          parts.forEach(t => {
+            if (!t) return;
+            if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(t)); return; }
+            const w = document.createElement("span"); w.className = "w"; w.textContent = t;
+            frag.appendChild(w); words.push(w);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) {
+          const inline = getComputedStyle(n).display.startsWith("inline");
+          if (inline && !n.querySelector("p, div, br")) { n.classList.add("w"); words.push(n); }
+          else walk(n);
+        }
+      });
+    };
+    walk(el);
+    return words;
+  }
+  function measure(el) {
+    let line = -1, last = -1e9;
+    el._words.forEach(w => {
+      const top = w.getBoundingClientRect().top;
+      if (top > last + 4) { line++; last = top; }
+      w.style.setProperty("--d", Math.min(line, 14) * 0.09 + "s");
+    });
+  }
+  function reveal() {
+    const els = [...document.querySelectorAll("[data-reveal]")].filter(el => !el._words);
+    if (!els.length) return;
+    const io = new IntersectionObserver(list => list.forEach(e => {
+      if (!e.isIntersecting) return;
+      measure(e.target); e.target.classList.add("fx-in"); io.unobserve(e.target);
+    }), { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    els.forEach(el => { el._words = split(el); el.classList.add("fx-reveal"); io.observe(el); });
+  }
+  window.fxReveal = reveal;   // pages that add text later can call this again
+
+  // ---------- Scroll-driven movement: floating cut-outs and sliding words ----------
+  let floats = [], drifts = [], ticking = false;
+  function collect() {
+    floats = FX.float ? [...document.querySelectorAll("[data-float]")] : [];
+    drifts = FX.drift ? [...document.querySelectorAll("[data-drift]")] : [];
+  }
+  function frame() {
+    ticking = false;
+    const vh = innerHeight;
+    floats.forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -100 || r.top > vh + 100) return;
+      const off = (r.top + r.height / 2 - vh / 2) / vh;          // -1 … 1 across the screen
+      const amount = parseFloat(el.dataset.float) || 26;
+      el.style.translate = `0 ${(-off * amount).toFixed(1)}px`;
+    });
+    drifts.forEach(el => {
+      const r = el.parentElement.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh + 200) return;
+      const p = (vh - r.top) / (vh + r.height);                  // 0 as it comes in, 1 as it leaves
+      const speed = parseFloat(el.dataset.drift) || 30;
+      el.style.translate = `${(-(p - 0.5) * speed).toFixed(2)}% 0`;
+    });
+  }
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+  window.fxRefresh = () => { collect(); frame(); };
+
+  // ---------- Portfolio cut-outs follow the mouse ----------
+  function tilt() {
+    const els = [...document.querySelectorAll("[data-tilt]")];
+    if (!els.length || !hover) return;
+    let mx = 0, my = 0, raf = 0;
+    addEventListener("mousemove", e => {
+      mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5;
+      if (!raf) raf = requestAnimationFrame(() => {
+        raf = 0;
+        els.forEach(el => {
+          const depth = parseFloat(el.dataset.tilt) || 14;
+          el.style.translate = `${(mx * depth).toFixed(1)}px ${(my * depth).toFixed(1)}px`;
+        });
+      });
+    }, { passive: true });
+  }
+
+  function start() {
+    if (FX.grain) grain();
+    if (still) return;
+    if (FX.reveal) { reveal(); if (document.fonts) document.fonts.ready.then(() => {}); }
+    collect(); frame();
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    if (FX.tilt) tilt();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+})();

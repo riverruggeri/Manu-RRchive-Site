@@ -285,3 +285,7 @@ details p { margin: 12px 0 4px; font-size: 13px; line-height: 1.5; }
 @media (prefers-reduced-motion: reduce) {
   .piece .pic img { transition: none; }
 }
+
+/* Sliding words between the slideshow and the catalog (River, 2026-11-11) */
+.shop-drift { padding-top: clamp(70px, 10vh, 120px); color: var(--ink); }
+.shop-drift + .shop-page { padding-top: clamp(40px, 6vh, 70px); }

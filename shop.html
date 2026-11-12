@@ -8,8 +8,8 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111225202">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=20261111231816">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -17,7 +17,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#e7e5e0">
-<link rel="stylesheet" href="assets/shop.css?v=20261111225202">
+<link rel="stylesheet" href="assets/shop.css?v=20261111231816">
 </head>
 <body class="shop long over-hero">
 
@@ -30,19 +30,23 @@
   <a class="hero-down label" href="#catalog">Current Catalog <span aria-hidden="true">↓</span></a>
 </section>
 
+<div class="fx-drift shop-drift" id="drift" aria-hidden="true"></div>
 <main class="shop-page" id="catalog">
   <header class="catalog-head">
-    <h1>Current<br>Catalog</h1>
+    <h1 data-reveal>Current<br>Catalog</h1>
     <p class="note label soft" id="note"></p>
   </header>
   <div id="rails"></div>
   <p class="to-archive label"><a href="archive.html">See past pieces in the Archive →</a></p>
 </main>
 
-<script src="assets/site.js?v=20261111225202"></script>
-<script src="assets/catalog.js?v=20261111225202"></script>
+<script src="assets/site.js?v=20261111231816"></script>
+<script src="assets/catalog.js?v=20261111231816"></script>
 <script>
 const PAGE = {
+  // Big words sliding sideways under the slideshow ("" row = none; SITE.effects.drift switches all off)
+  drift: ["Reworked · One of one · Reconstructed · Reworked · One of one ·",
+          "ЯRchive · Denim · Distressed · ЯRchive · Denim · Distressed ·"],
   // Full-screen slideshow at the top. The photos are listed in
   // assets/site.js (labels → rrchive → slides), shared with the Manu
   // homepage so the slideshow opens on the photo you saw there.
@@ -71,7 +75,7 @@ document.getElementById("note").textContent =
 function card(p) {
   const [a, b] = p.photos || [];
   return `<a class="piece${p.status === "sold" ? " sold" : ""}" href="product.html?piece=${encodeURIComponent(p.id)}">
-    <div class="pic">
+    <div class="pic" data-float="${18 + (p.id.length % 3) * 10}">
       ${a ? `<img class="main" src="${esc(img(a))}" alt="${esc(p.name)}" loading="lazy">` : ""}
       ${b ? `<img class="alt" src="${esc(img(b))}" alt="" loading="lazy">` : ""}
     </div>
@@ -229,6 +233,12 @@ document.querySelectorAll(".rail").forEach((rail, i) => {
   place();
   addEventListener("pageshow", e => { if (e.persisted) place(); });
 })();
+
+// Sliding words under the slideshow
+if (SITE.effects.drift && PAGE.drift.some(Boolean)) {
+  document.getElementById("drift").innerHTML = PAGE.drift.filter(Boolean).map((t, i) =>
+    `<div${i % 2 ? ' class="outline"' : ""} data-drift="${i % 2 ? -24 : 24}">${brandHTML(t)}</div>`).join("");
+} else document.getElementById("drift").remove();
 </script>
 </body>
 </html>
