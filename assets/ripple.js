@@ -258,7 +258,7 @@ window.startRipple = function (opts) {
   function frame(t) {
     // A page can pause the ripple while something covers it completely
     // (canvas.dataset.hold = "1"), so phones only draw what is seen.
-    if (canvas.dataset.hold === "1") { prevT = t; requestAnimationFrame(frame); return; }
+    if (canvas.dataset.hold === "1" || canvas.dataset.away === "1") { prevT = t; requestAnimationFrame(frame); return; }
     const dt = Math.max(0.001, Math.min(0.05, (t - prevT) / 1000));
     prevT = t;
 
