@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111233758">
+<link rel="stylesheet" href="assets/site.css?v=20261111235526">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -155,7 +155,7 @@
     display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 6vw, 110px); align-items: center;
     max-width: 1400px; width: 100%; margin-inline: auto;
   }
-  .intro img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block; max-height: 82vh; }
+  .intro .intro-photo { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block; max-height: 82vh; }
   .intro h2 {
     margin: 0 0 26px; font-weight: 800; font-size: clamp(38px, 5.4vw, 88px);
     line-height: 0.95; letter-spacing: -0.045em; text-wrap: balance;
@@ -168,7 +168,7 @@
   .studio .pill.solid:hover { background: transparent; }
 
   .mediums { max-width: 1400px; width: 100%; margin-inline: auto; }
-  .mediums > h2 {
+  .mediums .pin-stick > h2 {
     margin: 0 0 clamp(26px, 4vh, 44px); font-weight: 800; font-size: clamp(34px, 4vw, 64px);
     letter-spacing: -0.04em; line-height: 1;
   }
@@ -184,6 +184,48 @@
   .medium p { margin: 0; font-size: 16px; line-height: 1.5; max-width: 34em; }
   .medium .buttons { margin-top: 4px; }
   .medium .pill { font-size: 13px; padding: 9px 16px; }
+
+  /* 10. Photo that zooms open as you scroll */
+  .zoom { height: 230vh; width: 100vw; margin-inline: calc(50% - 50vw); margin-block: -40px; }
+  .zoom-stick { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; place-items: center; overflow: hidden; }
+  .zoom-frame {
+    --z: var(--zoom, 0);
+    width: calc(34vw + (100vw - 34vw) * var(--z)); height: calc(44vh + (100vh - 44vh) * var(--z));
+    border-radius: calc(4px * (1 - var(--z))); overflow: hidden;
+  }
+  .zoom-frame img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(calc(1.3 - 0.3 * var(--zoom, 0))); }
+  .zoom-caption {
+    position: absolute; left: 0; right: 0; bottom: 8vh; margin: 0; text-align: center;
+    font-weight: 800; font-size: clamp(34px, 6vw, 96px); letter-spacing: -0.04em; color: var(--cream);
+    text-shadow: 0 2px 30px rgba(0,0,0,0.35);
+    opacity: calc((var(--zoom, 0) - 0.75) * 4);
+  }
+  @media (max-width: 700px) { .zoom-frame { width: calc(62vw + 38vw * var(--zoom, 0)); height: calc(38vh + 62vh * var(--zoom, 0)); } }
+
+  /* 11. "What I make" pinned while the mediums swap */
+  .pin-stick { display: contents; }
+  .mediums.pinned { height: 320vh; max-width: none; }
+  .mediums.pinned .pin-stick {
+    display: flex; flex-direction: column; justify-content: center; gap: 3vh;
+    position: sticky; top: 0; height: 100vh; max-width: 1400px; margin-inline: auto; padding-top: 70px; box-sizing: border-box;
+  }
+  .mediums.pinned .pin-stick > h2 { margin: 0; }
+  .mediums.pinned .medium-list { display: block; position: relative; height: 72vh; }
+  .mediums.pinned .medium {
+    position: absolute; inset: 0; border-top: 0; padding-top: 0;
+    display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto auto 1fr;
+    column-gap: clamp(28px, 5vw, 90px); align-content: start;
+    opacity: 0; transform: translateY(50px); pointer-events: none;
+    transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .mediums.pinned .medium.past { transform: translateY(-50px); }
+  .mediums.pinned .medium.active { opacity: 1; transform: none; pointer-events: auto; }
+  .mediums.pinned .medium .pic { grid-column: 1; grid-row: 1 / span 4; height: 72vh; width: auto; aspect-ratio: 4 / 5; }
+  .mediums.pinned .medium > :not(.pic) { grid-column: 2; }
+  .mediums.pinned .medium .num { font-size: 15px; margin-top: 4vh; }
+  .mediums.pinned .medium h3 { font-size: clamp(40px, 5.5vw, 92px); line-height: 0.95; letter-spacing: -0.045em; margin: 10px 0 18px; }
+  .mediums.pinned .medium p { font-size: clamp(16px, 1.3vw, 20px); }
+  .mediums.pinned .medium .buttons { margin-top: 20px; align-self: start; }
 
   /* Big Portfolio / About links at the end */
   .big-links { max-width: 1400px; width: 100%; margin-inline: auto; display: grid; }
@@ -248,7 +290,7 @@
   }
   @media (max-width: 900px) {
     .intro { grid-template-columns: 1fr; }
-    .intro img { max-height: none; }
+    .intro .intro-photo { max-height: none; }
     .medium-list { grid-template-columns: 1fr; gap: 56px; }
     .medium .pic { aspect-ratio: 4 / 4.4; }
     .foot { margin-top: -40px; }
@@ -275,7 +317,7 @@
 <section class="hero" id="top">
   <div class="threads" id="threads" aria-hidden="true"></div>
   <div class="brand">
-    <h1 class="wordmark">MANU</h1>
+    <h1 class="wordmark" data-push>MANU</h1>
     <p class="line">Artist working in fashion, textiles and photography.</p>
     <nav class="labels" id="labels" aria-label="Labels"></nav>
   </div>
@@ -286,8 +328,8 @@
 
 <main class="studio" id="studio"></main>
 
-<script src="assets/site.js?v=20261111233758"></script>
-<script src="assets/ripple.js?v=20261111233758"></script>
+<script src="assets/site.js?v=20261111235526"></script>
+<script src="assets/ripple.js?v=20261111235526"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -312,6 +354,8 @@ const PAGE = {
   // The part you scroll down to. River's photo, a short intro, then each medium.
   about: {
     photo: "images/home/river.jpg",
+    depthBack: "images/home/river-back.jpg",     // layered version (SITE.effects.depth)
+    depthFront: "images/home/river-front.webp",
     eyebrow: "About",
     title: "River Manu Ruggeri",
     text: `I’m an artist based in Florida whose work focuses on fashion, textiles, and photography. A large part of my process involves transforming used or discarded garments into new pieces through reconstruction, distressing, fabric manipulation, and experimentation with texture and material.
@@ -319,6 +363,8 @@ const PAGE = {
 I aim to create work that feels raw, intentional, and honest rather than overly polished or perfect.`
   },
   mediumsTitle: "What I make",
+  // A photo that grows to fill the screen as you scroll (SITE.effects.zoomOpen)
+  zoom: { photo: "images/slides/fashion-works-denim-patchwork-vest-01.jpg", caption: "Reworked by hand" },
   mediums: [
     { title: "Fashion & Textiles", photos: ["images/home/fashion-01.jpg", "images/home/fashion-02.jpg", "images/home/fashion-03.jpg", "images/home/fashion-04.jpg", "images/home/fashion-05.jpg", "images/home/fashion-06.jpg", "images/home/fashion-07.jpg", "images/home/fashion-08.jpg"], link: "fashion-works.html",
       text: "Used and discarded garments taken apart and rebuilt through reconstruction, distressing and fabric manipulation. One-of-one pieces are available through ЯRchive.",
@@ -350,7 +396,9 @@ const pills = list => `<div class="buttons">${list.map(b =>
   `<a class="pill${b.solid ? " solid" : ""}" href="${esc(b.link)}"><span>${brandHTML(b.label)}</span><span aria-hidden="true">→</span></a>`).join("")}</div>`;
 document.getElementById("studio").innerHTML = `
   <div class="intro">
-    <img src="${esc(A.photo)}" alt="River Manu Ruggeri wearing a reworked denim piece" loading="lazy">
+    ${SITE.effects.depth
+      ? `<div class="depth intro-photo" data-depth role="img" aria-label="River Manu Ruggeri wearing a reworked denim piece"><img class="depth-back" src="${esc(A.depthBack)}" alt=""><img class="depth-front" src="${esc(A.depthFront)}" alt=""></div>`
+      : `<img class="intro-photo" src="${esc(A.photo)}" alt="River Manu Ruggeri wearing a reworked denim piece" loading="lazy">`}
     <div>
       <p class="eyebrow">${esc(A.eyebrow)}</p>
       <h2 data-reveal>${esc(A.title)}</h2>
@@ -360,8 +408,11 @@ document.getElementById("studio").innerHTML = `
   </div>
   ${SITE.effects.drift && PAGE.drift.some(Boolean) ? `<div class="fx-drift" aria-hidden="true">${PAGE.drift.filter(Boolean).map((t, i) =>
     `<div${i % 2 ? ' class="outline"' : ""} data-drift="${i % 2 ? -26 : 26}">${esc(t)}</div>`).join("")}</div>` : ""}
-  <section class="mediums">
-    <h2 data-reveal>${esc(PAGE.mediumsTitle)}</h2>
+  ${SITE.effects.zoomOpen ? `<section class="zoom" data-zoom aria-label="${esc(PAGE.zoom.caption)}">
+    <div class="zoom-stick"><div class="zoom-frame"><img src="${esc(PAGE.zoom.photo)}" alt=""></div>
+    <p class="zoom-caption">${esc(PAGE.zoom.caption)}</p></div></section>` : ""}
+  <section class="mediums"${SITE.effects.pin ? ' data-pin=".medium"' : ""}><div class="pin-stick">
+    <h2${SITE.effects.denimText ? " data-denim" : " data-reveal"}>${esc(PAGE.mediumsTitle)}</h2>
     <div class="medium-list">${PAGE.mediums.map((m, i) => `
       <article class="medium">
         <span class="num">0${i + 1}</span>
@@ -371,9 +422,9 @@ document.getElementById("studio").innerHTML = `
         ${pills(m.buttons)}
       </article>`).join("")}
     </div>
-  </section>
+  </div></section>
   <nav class="big-links" aria-label="Portfolio and About">${PAGE.bigLinks.map(b =>
-    `<a href="${esc(b.link)}"><span>${esc(b.label)} →</span><small>${esc(b.note)}</small></a>`).join("")}
+    `<a href="${esc(b.link)}"><span data-push>${esc(b.label)} →</span><small>${esc(b.note)}</small></a>`).join("")}
   </nav>
   <footer class="foot"><span>© ${new Date().getFullYear()} River Manu Ruggeri</span>
     <a href="https://www.instagram.com/${esc(SITE.contact.instagram)}/" target="_blank" rel="noopener">@${esc(SITE.contact.instagram)}</a></footer>`;

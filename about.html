@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111233758">
+<link rel="stylesheet" href="assets/site.css?v=20261111235526">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -33,7 +33,7 @@
     padding-block: 0 90px;
   }
   .hero { margin-left: clamp(150px, 11vw, 200px); min-width: 0; }   /* leaves room for the logo and clock */
-  .hero img, .hero .photo-missing {
+  .hero img, .hero .photo-missing, .hero .hero-depth {
     width: 100%;
     height: 100vh;
     object-fit: cover;
@@ -67,7 +67,8 @@
   @media (min-width: 901px) {
     .about { min-height: 100vh; min-height: 100dvh; padding-block: 0; }
     /* a little narrower than the photo's own shape (River, 2026-11-11): sides trimmed slightly */
-    .hero img, .hero .photo-missing { height: 100vh; height: 100dvh; width: min(57vh, 38vw); width: min(57dvh, 38vw); }
+    .hero img, .hero .photo-missing, .hero .hero-depth { height: 100vh; height: 100dvh; width: min(57vh, 38vw); width: min(57dvh, 38vw); }
+    .hero .hero-depth img { position: absolute; width: 100%; height: 100%; }
     .side { padding-top: clamp(44px, 8vh, 100px); gap: clamp(16px, 3.5vh, 48px); padding-bottom: 40px; }
     .portrait { aspect-ratio: auto; height: min(46vh, 100%); max-height: 460px; }   /* bigger portrait slot */
     .intro { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
@@ -84,6 +85,8 @@
     .hero img, .hero .photo-missing { width: 100%; }
     .hero { margin-left: 0; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); }
     .hero img, .hero .photo-missing { position: static; height: auto; }   /* whole photo, not cropped */
+    .hero .hero-depth { position: relative; height: auto; aspect-ratio: 1365 / 2048; }
+    .hero .hero-depth img { position: absolute; height: 100%; }
     .hero .photo-missing { height: 70vh; }
     .side { padding-top: 40px; padding-right: 0; }
   }
@@ -121,7 +124,7 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" href="index.html" data-section-name>Manu</a>
 
-<script src="assets/site.js?v=20261111233758"></script>
+<script src="assets/site.js?v=20261111235526"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -133,6 +136,8 @@ const PAGE = {
 
   // Big photo on the left, and the portrait. Files go in images/about/.
   heroPhoto: "images/about/about-hero.jpg",
+  depthBack: "images/about/about-hero-back.jpg",    // layered version (SITE.effects.depth)
+  depthFront: "images/about/about-hero-front.webp",
   heroStandIn: "",
   portraitPhoto: "images/about/IMG_5331.jpg",
   showNameOnPortrait: true,   // the vertical name over the portrait
@@ -168,7 +173,10 @@ function photo(srcList, alt, missingText) {
   img.src = srcList[0];
   return img;
 }
-document.getElementById("hero").appendChild(
+if (SITE.effects.depth && PAGE.depthBack) {
+  // Layered version: River in front, the background behind (SITE.effects.depth)
+  document.getElementById("hero").innerHTML = `<div class="depth hero-depth" data-depth role="img" aria-label="River Manu Ruggeri wearing a reworked denim piece"><img class="depth-back" src="${esc(PAGE.depthBack)}" alt=""><img class="depth-front" src="${esc(PAGE.depthFront)}" alt=""></div>`;
+} else document.getElementById("hero").appendChild(
   photo([PAGE.heroPhoto, PAGE.heroStandIn].filter(Boolean), "River Manu Ruggeri wearing a reworked denim piece", "Photo to add: " + PAGE.heroPhoto.split("/").pop()));
 const portrait = document.getElementById("portrait");
 portrait.appendChild(photo([PAGE.portraitPhoto], "Portrait of " + PAGE.name, "Portrait to add: " + PAGE.portraitPhoto.split("/").pop()));

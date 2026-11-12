@@ -91,11 +91,23 @@ window.SITE = {
   // Moving effects (River, 2026-11-11 night, inspired by a scroll video).
   // Set any of these to false to switch that effect off on every page.
   effects: {
-    grain: true,     // fine film grain over the whole site
+    grain: false,    // fine film grain (River switched off, 2026-11-11)
     reveal: true,    // text appears line by line as it scrolls into view
     float: true,     // ЯRchive cut-outs drift at their own speed as you scroll
-    drift: true,     // big words that slide sideways as you scroll
-    tilt: true       // Portfolio cut-outs follow the mouse a little
+    drift: true,     // big words that slide sideways as you scroll (ЯRchive)
+    tilt: true,      // Portfolio cut-outs follow the mouse a little
+    // Trying out (River, 2026-11-11 night): switch any to false to remove it
+    cards3d: true,   // 1. photos tilt toward the mouse in 3D, with a soft glare
+    depth: true,     // 2. River's photo splits into layers (person in front) that move apart
+    cursor: true,    // 6. custom round cursor that grows into "View" over photos
+    fabric: true,    // 8. photos ripple like fabric under the mouse
+    pushText: true,  // 9. big titles' letters get pushed away by the mouse
+    zoomOpen: true,  // 10. a photo on the Manu homepage grows to fill the screen as you scroll
+    pin: true,       // 11. "What I make" stays put while the three mediums swap in turn
+    smooth: true,    // 12. smooth, gliding scrolling with the mouse wheel
+    morph: true,     // 13. clicking a photo grows it to fill the screen before the next page
+    stitch: true,    // 14. dividing lines are dashed stitches that sew themselves in
+    denimText: true  // 15. some big titles are filled with denim that shifts as you scroll
   },
 
   contact: {
@@ -495,6 +507,298 @@ window.makeSlider = (track, photos, start, onChange) => {
     addEventListener("scroll", onScroll, { passive: true });
     addEventListener("resize", onScroll);
     if (FX.tilt) tilt();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+})();
+
+/* =========================================================
+   MORE MOVING EFFECTS (River, 2026-11-11 night) — each has its
+   switch in SITE.effects at the top of this file.
+   ========================================================= */
+(function () {
+  const FX = SITE.effects || {};
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const hover = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const $$ = sel => [...document.querySelectorAll(sel)];
+  let mx = innerWidth / 2, my = innerHeight / 2;
+  addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+
+  // ---------- 1. 3D tilt cards ----------
+  function cards3d() {
+    if (!hover) return;
+    $$(".medium .pic, .piece .pic").forEach(el => {
+      el.classList.add("fx-card");
+      const glare = el.matches(".medium .pic");   // no glare on cut-outs
+      let g;
+      if (glare) { g = document.createElement("span"); g.className = "fx-glare"; el.appendChild(g); }
+      el.addEventListener("pointermove", e => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        el.style.transform = `perspective(900px) rotateX(${((0.5 - y) * 10).toFixed(2)}deg) rotateY(${((x - 0.5) * 12).toFixed(2)}deg) scale(1.02)`;
+        if (g) { g.style.setProperty("--gx", x * 100 + "%"); g.style.setProperty("--gy", y * 100 + "%"); g.style.opacity = 1; }
+      });
+      el.addEventListener("pointerleave", () => { el.style.transform = ""; if (g) g.style.opacity = 0; });
+    });
+  }
+
+  // ---------- 2. Layered photo (data-depth: .depth-back + .depth-front) ----------
+  function depth() {
+    const els = $$("[data-depth]");
+    if (!els.length) return;
+    const frame = () => {
+      const vh = innerHeight;
+      els.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        const sc = (r.top + r.height / 2 - vh / 2) / vh;           // scroll position
+        const px = hover ? mx / innerWidth - 0.5 : 0, py = hover ? my / innerHeight - 0.5 : 0;
+        const f = el.querySelector(".depth-front"), b = el.querySelector(".depth-back");
+        if (f) f.style.transform = `translate3d(${(-px * 22).toFixed(1)}px, ${(-py * 14 - sc * 46).toFixed(1)}px, 0) scale(1.04)`;
+        if (b) b.style.transform = `translate3d(${(px * 12).toFixed(1)}px, ${(py * 8 + sc * 18).toFixed(1)}px, 0) scale(1.1)`;
+      });
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- 6. Custom cursor ----------
+  function cursor() {
+    if (!hover) return;
+    const c = document.createElement("div");
+    c.className = "fx-cursor"; c.innerHTML = "<span></span>";
+    document.body.appendChild(c);
+    document.documentElement.classList.add("fx-cursor-on");
+    let x = mx, y = my;
+    const label = c.firstChild;
+    const loop = () => {
+      x += (mx - x) * 0.22; y += (my - y) * 0.22;
+      c.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      requestAnimationFrame(loop);
+    };
+    loop();
+    addEventListener("pointerover", e => {
+      const t = e.target;
+      const pic = t.closest(".pic, .piece, [data-cursor], .hero-track, .label-link, .icon, figure");
+      const link = t.closest("a, button, summary, [role=button]");
+      c.classList.toggle("big", !!pic);
+      c.classList.toggle("link", !pic && !!link);
+      label.textContent = pic ? (pic.dataset.cursor || (t.closest(".hero-track") ? "Next" : "View")) : "";
+    });
+    document.addEventListener("mouseleave", () => c.style.opacity = 0);
+    document.addEventListener("mouseenter", () => c.style.opacity = "");
+  }
+
+  // ---------- 8. Fabric ripple on hover ----------
+  function fabric() {
+    if (!hover) return;
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("width", 0); svg.setAttribute("height", 0); svg.setAttribute("aria-hidden", "true");
+    svg.style.position = "absolute";
+    svg.innerHTML = `<filter id="fx-fabric" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.006 0.018" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+    document.body.appendChild(svg);
+    const turb = svg.querySelector("feTurbulence"), disp = svg.querySelector("feDisplacementMap");
+    let on = null, amount = 0, t = 0, raf = 0;
+    const loop = () => {
+      amount += ((on ? 16 : 0) - amount) * 0.08;
+      t += 0.012;
+      turb.setAttribute("baseFrequency", `${(0.006 + Math.sin(t) * 0.0015).toFixed(4)} ${(0.018 + Math.cos(t * 0.8) * 0.004).toFixed(4)}`);
+      disp.setAttribute("scale", amount.toFixed(2));
+      if (!on && amount < 0.2) { $$(".fx-fabric").forEach(el => el.classList.remove("fx-fabric")); raf = 0; return; }
+      raf = requestAnimationFrame(loop);
+    };
+    $$(".medium .pic, .piece .pic").forEach(el => {
+      el.addEventListener("pointerenter", () => {
+        $$(".fx-fabric").forEach(x => x.classList.remove("fx-fabric"));
+        el.classList.add("fx-fabric"); on = el;
+        if (!raf) raf = requestAnimationFrame(loop);
+      });
+      el.addEventListener("pointerleave", () => { if (on === el) on = null; });
+    });
+  }
+
+  // ---------- 9. Letters pushed by the mouse (data-push) ----------
+  function pushText() {
+    if (!hover) return;
+    const letters = [];
+    $$("[data-push]").forEach(el => {
+      const walk = node => [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          [...n.textContent].forEach(ch => {
+            if (/\s/.test(ch)) { frag.appendChild(document.createTextNode(ch)); return; }
+            const sp = document.createElement("span"); sp.className = "fx-l"; sp.textContent = ch;
+            frag.appendChild(sp); letters.push(sp);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) {
+          if (n.classList.contains("flip-r")) { n.classList.add("fx-l"); letters.push(n); }
+          else walk(n);
+        }
+      });
+      walk(el);
+    });
+    if (!letters.length) return;
+    const R = 220;
+    const loop = () => {
+      letters.forEach(l => {
+        const r = l.getBoundingClientRect();
+        if (r.bottom < -50 || r.top > innerHeight + 50) return;
+        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        const dx = cx - mx, dy = cy - my, d = Math.hypot(dx, dy);
+        const k = d < R ? Math.pow(1 - d / R, 2) : 0;
+        const base = l.classList.contains("flip-r") ? "scaleX(-1) " : "";
+        l.style.transform = base + (k ? `translate(${(dx / (d || 1) * k * 26).toFixed(1)}px, ${(dy / (d || 1) * k * 26).toFixed(1)}px) rotate(${(dx / (d || 1) * k * 6).toFixed(1)}deg)` : "");
+      });
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+
+  // ---------- 10. Photo that zooms open (data-zoom section) ----------
+  function zoomOpen() {
+    const els = $$("[data-zoom]");
+    if (!els.length) return;
+    const loop = () => {
+      els.forEach(el => {
+        const r = el.getBoundingClientRect(), vh = innerHeight;
+        if (r.bottom < 0 || r.top > vh) return;
+        const p = Math.min(1, Math.max(0, -r.top / (r.height - vh)));
+        const e = p < 0.85 ? p / 0.85 : 1;
+        const k = 1 - Math.pow(1 - e, 3);
+        el.style.setProperty("--zoom", k.toFixed(4));
+      });
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+
+  // ---------- 11. Pinned section (data-pin): children swap as you scroll ----------
+  function pin() {
+    const els = $$("[data-pin]");
+    if (!els.length) return;
+    const wide = matchMedia("(min-width: 901px)");
+    const apply = () => els.forEach(el => el.classList.toggle("pinned", wide.matches));
+    apply(); wide.addEventListener("change", apply);
+    const loop = () => {
+      els.forEach(el => {
+        if (!el.classList.contains("pinned")) return;
+        const items = [...el.querySelectorAll(el.dataset.pin)];
+        const r = el.getBoundingClientRect(), vh = innerHeight;
+        const p = Math.min(0.999, Math.max(0, -r.top / (r.height - vh)));
+        const i = Math.floor(p * items.length);
+        items.forEach((x, j) => { x.classList.toggle("active", j === i); x.classList.toggle("past", j < i); });
+        el.style.setProperty("--pin", p.toFixed(4));
+      });
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+
+  // ---------- 12. Smooth scrolling with the mouse wheel ----------
+  function smooth() {
+    if (!hover) return;
+    let target = scrollY, cur = scrollY, running = false;
+    const max = () => document.documentElement.scrollHeight - innerHeight;
+    const scrollsInside = (el, dy) => {
+      for (; el && el !== document.body && el !== document.documentElement; el = el.parentElement) {
+        const cs = getComputedStyle(el);
+        if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1) {
+          if ((dy > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 1) || (dy < 0 && el.scrollTop > 0)) return true;
+        }
+      }
+      return false;
+    };
+    addEventListener("wheel", e => {
+      if (e.ctrlKey || e.defaultPrevented || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      if (getComputedStyle(document.body).overflowY === "hidden" || max() <= 0) return;
+      if (scrollsInside(e.target, e.deltaY)) return;
+      e.preventDefault();
+      const unit = e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? innerHeight : 1;
+      if (!running) { target = cur = scrollY; }
+      target = Math.min(max(), Math.max(0, target + e.deltaY * unit));
+      if (!running) { running = true; requestAnimationFrame(step); }
+    }, { passive: false });
+    function step() {
+      cur += (target - cur) * 0.085;
+      if (Math.abs(target - cur) < 0.5) { cur = target; running = false; }
+      scrollTo(0, cur);
+      if (running) requestAnimationFrame(step);
+    }
+  }
+
+  // ---------- 13. Clicked photo grows to fill the screen before the next page ----------
+  function morph() {
+    document.addEventListener("click", e => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target.closest("a[href]");
+      if (!a || a.target === "_blank") return;
+      const url = new URL(a.href, location.href);
+      if (url.origin !== location.origin || url.pathname === location.pathname) return;
+      const box = a.getBoundingClientRect();
+      // the photo actually showing inside the link
+      const img = [...a.querySelectorAll("img")].find(im => {
+        const r = im.getBoundingClientRect();
+        return r.width > 40 && r.left < box.right - 5 && r.right > box.left + 5 && getComputedStyle(im).opacity > 0.5;
+      });
+      if (!img) return;
+      e.preventDefault();
+      const r = img.getBoundingClientRect();
+      const clone = new Image();
+      clone.src = img.currentSrc || img.src;
+      clone.className = "fx-morph";
+      clone.style.objectFit = getComputedStyle(img).objectFit || "cover";
+      Object.assign(clone.style, { left: r.left + "px", top: r.top + "px", width: r.width + "px", height: r.height + "px" });
+      document.documentElement.appendChild(clone);
+      document.documentElement.classList.add("fx-morphing");
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        Object.assign(clone.style, { left: "0px", top: "0px", width: innerWidth + "px", height: innerHeight + "px" });
+      }));
+      setTimeout(() => { location.href = url.href; }, 720);
+    }, true);
+    addEventListener("pageshow", () => {
+      document.documentElement.classList.remove("fx-morphing");
+      $$(".fx-morph").forEach(x => x.remove());
+    });
+  }
+
+  // ---------- 14. Stitched dividing lines ----------
+  function stitch() {
+    const top = $$(".labels, .medium, .big-links a, .to-archive");
+    const bottom = $$(".catalog-head, .rail-head, .big-links a:last-child, .section-title");
+    top.forEach(el => el.classList.add("fx-stitch"));
+    bottom.forEach(el => el.classList.add("fx-stitch-b"));
+    const io = new IntersectionObserver(list => list.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("fx-sewn"); io.unobserve(e.target); }
+    }), { threshold: 0.05 });
+    top.concat(bottom).forEach(el => io.observe(el));
+  }
+
+  // ---------- 15. Denim-filled titles (data-denim) ----------
+  function denimText() {
+    const els = $$("[data-denim]");
+    els.forEach(el => el.classList.add("fx-denim"));
+    if (!els.length) return;
+    const loop = () => {
+      els.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) return;
+        el.style.setProperty("--denim-y", (r.top * -0.35).toFixed(1) + "px");
+        el.style.setProperty("--denim-x", (r.top * 0.12).toFixed(1) + "px");
+      });
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+
+  function start() {
+    const run = (k, f) => { if (FX[k]) try { f(); } catch (err) { console.warn(k, err); } };
+    run("cards3d", cards3d); run("depth", depth); run("cursor", cursor); run("fabric", fabric);
+    run("pushText", pushText); run("zoomOpen", zoomOpen); run("pin", pin); run("smooth", smooth);
+    run("morph", morph); run("stitch", stitch); run("denimText", denimText);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
