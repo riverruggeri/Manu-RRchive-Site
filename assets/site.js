@@ -97,17 +97,19 @@ window.SITE = {
     drift: true,     // big words that slide sideways as you scroll (ЯRchive)
     tilt: true,      // Portfolio cut-outs follow the mouse a little
     // Trying out (River, 2026-11-11 night): switch any to false to remove it
-    cards3d: true,   // 1. photos tilt toward the mouse in 3D, with a soft glare
-    depth: true,     // 2. River's photo splits into layers (person in front) that move apart
-    cursor: true,    // 6. custom round cursor that grows into "View" over photos
-    fabric: true,    // 8. photos ripple like fabric under the mouse
-    pushText: true,  // 9. big titles' letters get pushed away by the mouse
-    zoomOpen: true,  // 10. a photo on the Manu homepage grows to fill the screen as you scroll
-    pin: true,       // 11. "What I make" stays put while the three mediums swap in turn
+    cards3d: true,   // 1. photos tilt toward the mouse in 3D (glare removed, River 2026-11-12)
+    magnetic: true,  // 5. buttons lean toward the mouse when it comes close
     smooth: true,    // 12. smooth, gliding scrolling with the mouse wheel
-    morph: true,     // 13. clicking a photo grows it to fill the screen before the next page
-    stitch: true,    // 14. dividing lines are dashed stitches that sew themselves in
-    denimText: true  // 15. some big titles are filled with denim that shifts as you scroll
+    stitch: true,    // 14. dividing lines are dashed stitches that sew themselves in, slowly
+    denimText: true, // 15. some big titles are filled with plain denim that shifts as you scroll
+    // Tried and switched off by River (2026-11-12); true brings one back
+    depth: false,    // 2. River's photo as layers that move apart
+    cursor: false,   // 6. custom round cursor
+    fabric: false,   // 8. photos ripple like fabric under the mouse
+    pushText: false, // 9. letters pushed by the mouse
+    zoomOpen: false, // 10. homepage photo that grows to fill the screen (idea liked, not this version)
+    pin: false,      // 11. "What I make" pinned while the mediums swap (idea liked, not this version)
+    morph: false     // 13. clicked photo grows to fill the screen before the next page
   },
 
   contact: {
@@ -529,7 +531,7 @@ window.makeSlider = (track, photos, start, onChange) => {
     if (!hover) return;
     $$(".medium .pic, .piece .pic").forEach(el => {
       el.classList.add("fx-card");
-      const glare = el.matches(".medium .pic");   // no glare on cut-outs
+      const glare = false;   // the shine made photos look blurry (River, 2026-11-12)
       let g;
       if (glare) { g = document.createElement("span"); g.className = "fx-glare"; el.appendChild(g); }
       el.addEventListener("pointermove", e => {
@@ -765,15 +767,40 @@ window.makeSlider = (track, photos, start, onChange) => {
     });
   }
 
+  // ---------- 5. Magnetic buttons ----------
+  function magnetic() {
+    if (!hover) return;
+    const els = $$(".pill, .start, .work, .buy, .send, .hero-down, .scroll-cue, .to-manu");
+    els.forEach(el => el.classList.add("fx-magnet"));
+    addEventListener("pointermove", e => {
+      els.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) return;
+        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        const dx = e.clientX - cx, dy = e.clientY - cy;
+        const reach = Math.max(r.width, r.height) / 2 + 60;
+        const d = Math.hypot(dx, dy);
+        el.style.translate = d < reach ? `${(dx * 0.3).toFixed(1)}px ${(dy * 0.35).toFixed(1)}px` : "";
+      });
+    }, { passive: true });
+  }
+
   // ---------- 14. Stitched dividing lines ----------
+  // Sewn one stitch at a time; starts once the line is well onto the screen.
   function stitch() {
     const top = $$(".labels, .medium, .big-links a, .to-archive");
     const bottom = $$(".catalog-head, .rail-head, .big-links a:last-child, .section-title");
     top.forEach(el => el.classList.add("fx-stitch"));
     bottom.forEach(el => el.classList.add("fx-stitch-b"));
+    const size = () => top.concat(bottom).forEach(el => {
+      const n = Math.max(4, Math.round(el.offsetWidth / 12));     // one step per stitch (12px)
+      el.style.setProperty("--st-n", n);
+      el.style.setProperty("--st-dur", Math.min(7, Math.max(2, n * 0.08)).toFixed(2) + "s");
+    });
+    size(); addEventListener("resize", size);
     const io = new IntersectionObserver(list => list.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add("fx-sewn"); io.unobserve(e.target); }
-    }), { threshold: 0.05 });
+      if (e.isIntersecting) { const t = e.target; io.unobserve(t); setTimeout(() => t.classList.add("fx-sewn"), 450); }
+    }), { threshold: 0, rootMargin: "0px 0px -28% 0px" });
     top.concat(bottom).forEach(el => io.observe(el));
   }
 
@@ -798,7 +825,7 @@ window.makeSlider = (track, photos, start, onChange) => {
     const run = (k, f) => { if (FX[k]) try { f(); } catch (err) { console.warn(k, err); } };
     run("cards3d", cards3d); run("depth", depth); run("cursor", cursor); run("fabric", fabric);
     run("pushText", pushText); run("zoomOpen", zoomOpen); run("pin", pin); run("smooth", smooth);
-    run("morph", morph); run("stitch", stitch); run("denimText", denimText);
+    run("morph", morph); run("stitch", stitch); run("denimText", denimText); run("magnetic", magnetic);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
