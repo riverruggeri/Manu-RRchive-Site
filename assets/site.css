@@ -374,14 +374,3 @@ html[data-section="rrgraphy"] .send:hover { background: color-mix(in srgb, var(-
 html[data-section="rrgraphy"] .start.secondary { border-color: var(--cream); color: var(--cream); }
 html[data-section="rrgraphy"] .start.secondary:hover { background: var(--moss-deep); border-color: var(--moss-deep); color: var(--cream); }
 html[data-section="rrgraphy"] .arrow { background: rgba(0, 0, 0, 0.35); }
-
-/* =========================================================
-   MANU pages (homepage, Portfolio, About, Experimental Fashion,
-   Conceptual Art) use a warmer cream instead of the stone off-white
-   (River, 2026-11-11). ЯRchive and ЯRgraphy keep the stone colour.
-   ========================================================= */
-html[data-section="manu"] {
-  --cream: #ede4d1;
-  --ink-soft: rgba(237, 228, 209, 0.7);
-  --line: rgba(237, 228, 209, 0.18);
-}

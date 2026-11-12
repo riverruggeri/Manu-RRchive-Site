@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-section="manu">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,18 +8,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111223649">
+<link rel="stylesheet" href="assets/site.css?v=20261111225202">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#4c4c4c">
+<meta name="theme-color" content="#e7e5e0">
 <style>
   /* Layout: tall photo on the left; portrait, bio, contact and services on the right */
-  /* Same dark grey as ЯRgraphy, cream text (River, 2026-11-11). Cream was var(--cream). */
-  :root { --page: #4c4c4c; --bar: var(--page); }
+  /* Stone white with dark text again (River, 2026-11-11 night; was the ЯRgraphy grey #4c4c4c). */
+  :root { --page: var(--cream); --bar: var(--page); }
   html { background: var(--page); }
   body { background: var(--page); color: var(--ink); }
   .about {
@@ -63,18 +63,20 @@
   .info a { text-decoration: none; }
   .info a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-  /* Computers: everything fits on one screen, no scrolling */
+  /* Computers: fits on one screen; on short windows it scrolls rather than cutting text off */
   @media (min-width: 901px) {
-    body { overflow: hidden; }
-    .about { height: 100vh; height: 100dvh; min-height: 0; padding-block: 0; }
-    .hero img, .hero .photo-missing { height: 100vh; height: 100dvh; width: min(66.7vh, 46vw); width: min(66.7dvh, 46vw); }
-    .side { padding-top: clamp(56px, 11vh, 116px); gap: clamp(18px, 4.5vh, 56px); padding-bottom: 52px; }
-    .portrait { aspect-ratio: auto; height: min(34vh, 100%); max-height: 300px; }
-    .intro { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr); }
-    .bio { font-size: clamp(11px, 1.45vh, 13px); }
+    .about { min-height: 100vh; min-height: 100dvh; padding-block: 0; }
+    /* a little narrower than the photo's own shape (River, 2026-11-11): sides trimmed slightly */
+    .hero img, .hero .photo-missing { height: 100vh; height: 100dvh; width: min(57vh, 38vw); width: min(57dvh, 38vw); }
+    .side { padding-top: clamp(44px, 8vh, 100px); gap: clamp(16px, 3.5vh, 48px); padding-bottom: 40px; }
+    .portrait { aspect-ratio: auto; height: min(46vh, 100%); max-height: 460px; }   /* bigger portrait slot */
+    .intro { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+    .bio { font-size: clamp(13px, 1.75vh, 16px); line-height: 1.4; }
     .info { margin-top: clamp(-30px, -2.5vh, -10px); }
     .info h2 { margin-bottom: clamp(8px, 1.8vh, 18px); }
-    .info .services ul { gap: clamp(6px, 1.6vh, 16px); }
+    .info .services ul { gap: clamp(6px, 1.3vh, 14px); }
+    .info h2 { font-size: clamp(16px, 2vh, 19px); }
+    .info ul { font-size: clamp(15px, 1.9vh, 18px); }
   }
 
   @media (max-width: 900px) {
@@ -93,7 +95,7 @@
   }
 </style>
 </head>
-<body class="long">
+<body class="long light">
 
 <main class="about">
   <div class="hero" id="hero"></div>
@@ -119,7 +121,7 @@
 <div class="corner left" data-clock aria-label="Current time"></div>
 <a class="corner right" href="index.html" data-section-name>Manu</a>
 
-<script src="assets/site.js?v=20261111223649"></script>
+<script src="assets/site.js?v=20261111225202"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -141,7 +143,13 @@ I’m interested in the history that clothing carries and how garments can be gi
 
 Photography extends this to the atmosphere, the emotion, and the feelings surrounding it. Overall, I aim to create work that feels raw, intentional, and honest rather than overly polished or perfect.`,
 
-  services: ["Custom Garment Commissions", "Custom Textile Commissions", "Repair / Reimagine Garments"]
+  // Each service and the page it opens
+  services: [
+    { label: "Custom Garment Commissions", link: "commissions.html" },
+    { label: "Custom Textile Commissions", link: "commissions.html" },
+    { label: "Repair / Reimagine Garments", link: "commissions.html" },
+    { label: "Photography Commissions", link: "photo-commissions.html" }
+  ]
 };
 
 /* ---------- Fill in the page ---------- */
@@ -175,7 +183,7 @@ document.getElementById("contact").innerHTML = [
   c.instagram && `<li><a href="https://www.instagram.com/${esc(c.instagram)}/" target="_blank" rel="noopener">@${esc(c.instagram)}</a></li>`
 ].filter(Boolean).join("");
 document.getElementById("services").innerHTML = PAGE.services
-  .map(s => `<li><a href="commissions.html">${esc(s)}</a></li>`).join("");
+  .map(s => `<li><a href="${esc(s.link)}">${esc(s.label)}</a></li>`).join("");
 </script>
 </body>
 </html>

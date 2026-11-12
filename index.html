@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-section="manu">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111223649">
+<link rel="stylesheet" href="assets/site.css?v=20261111225202">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -63,14 +63,14 @@
     font-size: clamp(64px, 13vw, 210px);
     line-height: 0.78; letter-spacing: -0.055em; margin-left: -0.04em;
   }
-  .line { margin: 0; font-size: clamp(15px, 1.4vw, 18px); color: rgba(237, 228, 209,0.85); }
+  .line { margin: 0; font-size: clamp(15px, 1.4vw, 18px); color: rgba(231, 229, 224,0.85); }
 
   /* The labels: big, each its own thing */
   .labels {
     display: flex; flex-wrap: wrap; gap: 10px clamp(28px, 5vw, 80px);
     margin-top: clamp(14px, 3vh, 34px);
     padding-top: clamp(14px, 2.4vh, 22px);
-    border-top: 1px solid rgba(237, 228, 209,0.35);
+    border-top: 1px solid rgba(231, 229, 224,0.35);
     width: 100%;
   }
   .label-link {
@@ -88,7 +88,7 @@
   /* Phones: no text selection or link menu while holding a name */
   .label-link { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
   .label-link:focus:not(:focus-visible) { outline: none; }
-  .label-link .what { font-size: clamp(13px, 1.1vw, 15px); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(237, 228, 209,0.78); }
+  .label-link .what { font-size: clamp(13px, 1.1vw, 15px); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(231, 229, 224,0.78); }
   .labels:has(.label-link:hover) .label-link:not(:hover),
   .labels.cycling .label-link:not(.on) { opacity: 0.4; }
 
@@ -111,7 +111,7 @@
   .pill {
     display: inline-flex; align-items: center; gap: 0.45em;
     font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
-    color: var(--ink); border: 1px solid var(--pill-line, rgba(237, 228, 209,0.75)); border-radius: 999px;
+    color: var(--ink); border: 1px solid var(--pill-line, rgba(231, 229, 224,0.75)); border-radius: 999px;
     padding: 10px 20px; background: var(--pill-bg, rgba(20,20,20,0.38));
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     transition: background-color 0.25s, color 0.25s, border-color 0.25s;
@@ -128,7 +128,7 @@
     bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     display: flex; flex-direction: column; align-items: center; gap: 4px;
     font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none;
-    color: rgba(237, 228, 209,0.85); text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    color: rgba(231, 229, 224,0.85); text-shadow: 0 1px 8px rgba(0,0,0,0.4);
   }
   .scroll-cue .down { font-size: 18px; animation: nudge 2.2s ease-in-out infinite; }
   @keyframes nudge { 50% { transform: translateY(5px); } }
@@ -175,8 +175,10 @@
   .medium { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--line); padding-top: 18px; }
   .medium .num { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--ink-soft); }
   .medium .pic { display: block; overflow: hidden; aspect-ratio: 4 / 5; background: var(--cream-deep); }
-  .medium .pic img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .medium .pic:hover img { transform: scale(1.04); }
+  /* Each box slides through its photos: same 1s even-speed move as the hover photos */
+  .pic-track { display: flex; height: 100%; transition: transform 1s linear; will-change: transform; }
+  .pic-track img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (prefers-reduced-motion: reduce) { .pic-track { transition: none; } }
   .medium h3 { margin: 6px 0 0; font-size: clamp(22px, 2vw, 30px); font-weight: 800; letter-spacing: -0.03em; }
   .medium p { margin: 0; font-size: 16px; line-height: 1.5; max-width: 34em; }
   .medium .buttons { margin-top: 4px; }
@@ -246,8 +248,8 @@
 
 <main class="studio" id="studio"></main>
 
-<script src="assets/site.js?v=20261111223649"></script>
-<script src="assets/ripple.js?v=20261111223649"></script>
+<script src="assets/site.js?v=20261111225202"></script>
+<script src="assets/ripple.js?v=20261111225202"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -259,7 +261,8 @@
    ========================================================= */
 const PAGE = {
   hoverPhotos: true,   // false = names only, no photos
-  slideSeconds: 3.6,   // how long each photo stays while hovering
+  slideSeconds: 2.8,   // how long each photo stays while hovering (River, 2026-11-11: was 3.6)
+  boxSeconds: 3.6,     // how long each photo stays in the "What I make" boxes
   labels: [
     { key: "rrchive",  name: "ЯRchive",  what: "Clothing · one-of-one pieces",   link: "shop.html" },
     { key: "rrgraphy", name: "ЯRgraphy", what: "Photography · commissions open", link: "rrgraphy.html" }
@@ -275,13 +278,13 @@ I aim to create work that feels raw, intentional, and honest rather than overly 
   },
   mediumsTitle: "What I make",
   mediums: [
-    { title: "Fashion & Textiles", photo: "images/home/fashion.jpg", link: "fashion-works.html",
+    { title: "Fashion & Textiles", photos: ["images/home/fashion-01.jpg", "images/home/fashion-02.jpg", "images/home/fashion-03.jpg", "images/home/fashion-04.jpg", "images/home/fashion-05.jpg", "images/home/fashion-06.jpg", "images/home/fashion-07.jpg", "images/home/fashion-08.jpg"], link: "fashion-works.html",
       text: "Used and discarded garments taken apart and rebuilt through reconstruction, distressing and fabric manipulation. One-of-one pieces are available through ЯRchive.",
       buttons: [{ label: "ЯRchive", link: "shop.html", solid: true }, { label: "Experimental Fashion", link: "fashion-works.html" }] },
-    { title: "Photography", photo: "images/home/photography.jpg", link: "photography.html",
+    { title: "Photography", photos: ["images/home/photography-01.jpg", "images/home/photography-02.jpg", "images/home/photography-03.jpg", "images/home/photography-04.jpg", "images/home/photography-05.jpg", "images/home/photography-06.jpg", "images/home/photography-07.jpg", "images/home/photography-08.jpg"], link: "photography.html",
       text: "Fashion, portrait and object photography built around atmosphere, emotion and feeling. Shoots and commissions through ЯRgraphy.",
       buttons: [{ label: "ЯRgraphy", link: "rrgraphy.html", solid: true }, { label: "Photography", link: "photography.html" }] },
-    { title: "Conceptual Art", photo: "images/home/conceptual.jpg", link: "conceptual-art.html",
+    { title: "Conceptual Art", photos: ["images/home/conceptual-01.jpg", "images/home/conceptual-02.jpg", "images/home/conceptual-03.jpg", "images/home/conceptual-04.jpg", "images/home/conceptual-05.jpg", "images/home/conceptual-06.jpg"], link: "conceptual-art.html",
       text: "Projects that take clothing past wearing, where denim, layering and form become the idea itself.",
       buttons: [{ label: "View projects", link: "conceptual-art.html" }] }
   ],
@@ -318,7 +321,7 @@ document.getElementById("studio").innerHTML = `
     <div class="medium-list">${PAGE.mediums.map((m, i) => `
       <article class="medium">
         <span class="num">0${i + 1}</span>
-        <a class="pic" href="${esc(m.link)}" aria-label="${esc(m.title)}"><img src="${esc(m.photo)}" alt="" loading="lazy"></a>
+        <a class="pic" href="${esc(m.link)}" aria-label="${esc(m.title)}"><div class="pic-track"></div></a>
         <h3>${esc(m.title)}</h3>
         <p>${brandWord(m.text)}</p>
         ${pills(m.buttons)}
@@ -330,6 +333,23 @@ document.getElementById("studio").innerHTML = `
   </nav>
   <footer class="foot"><span>© ${new Date().getFullYear()} River Manu Ruggeri</span>
     <a href="https://www.instagram.com/${esc(SITE.contact.instagram)}/" target="_blank" rel="noopener">@${esc(SITE.contact.instagram)}</a></footer>`;
+
+// "What I make" boxes: each slides through its photos while on screen,
+// one after another so they don't all move at once.
+document.querySelectorAll(".medium .pic-track").forEach((track, i) => {
+  const s = makeSlider(track, PAGE.mediums[i].photos, 0);
+  let seen = false, timer;
+  const run = () => {
+    clearInterval(timer);
+    if (!seen || document.hidden) return;
+    timer = setInterval(() => s.next(), PAGE.boxSeconds * 1000);
+  };
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting && !seen) { seen = true; setTimeout(run, i * 1200); }
+    else if (!e.isIntersecting) { seen = false; clearInterval(timer); }
+  }).observe(track);
+  document.addEventListener("visibilitychange", run);
+});
 
 // Once you scroll past the first screen: the top bar gets a background,
 // and the ripple pauses while it's covered.
