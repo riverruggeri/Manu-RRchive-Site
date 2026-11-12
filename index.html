@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261111222129">
+<link rel="stylesheet" href="assets/site.css?v=20261111222939">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -63,14 +63,14 @@
     font-size: clamp(64px, 13vw, 210px);
     line-height: 0.78; letter-spacing: -0.055em; margin-left: -0.04em;
   }
-  .line { margin: 0; font-size: clamp(15px, 1.4vw, 18px); color: rgba(231,229,224,0.85); }
+  .line { margin: 0; font-size: clamp(15px, 1.4vw, 18px); color: rgba(237, 228, 209,0.85); }
 
   /* The labels: big, each its own thing */
   .labels {
     display: flex; flex-wrap: wrap; gap: 10px clamp(28px, 5vw, 80px);
     margin-top: clamp(14px, 3vh, 34px);
     padding-top: clamp(14px, 2.4vh, 22px);
-    border-top: 1px solid rgba(231,229,224,0.35);
+    border-top: 1px solid rgba(237, 228, 209,0.35);
     width: 100%;
   }
   .label-link {
@@ -88,7 +88,7 @@
   /* Phones: no text selection or link menu while holding a name */
   .label-link { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
   .label-link:focus:not(:focus-visible) { outline: none; }
-  .label-link .what { font-size: clamp(13px, 1.1vw, 15px); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(231,229,224,0.78); }
+  .label-link .what { font-size: clamp(13px, 1.1vw, 15px); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(237, 228, 209,0.78); }
   .labels:has(.label-link:hover) .label-link:not(:hover),
   .labels.cycling .label-link:not(.on) { opacity: 0.4; }
 
@@ -111,7 +111,7 @@
   .pill {
     display: inline-flex; align-items: center; gap: 0.45em;
     font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
-    color: var(--ink); border: 1px solid var(--pill-line, rgba(231,229,224,0.75)); border-radius: 999px;
+    color: var(--ink); border: 1px solid var(--pill-line, rgba(237, 228, 209,0.75)); border-radius: 999px;
     padding: 10px 20px; background: var(--pill-bg, rgba(20,20,20,0.38));
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     transition: background-color 0.25s, color 0.25s, border-color 0.25s;
@@ -128,7 +128,7 @@
     bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     display: flex; flex-direction: column; align-items: center; gap: 4px;
     font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none;
-    color: rgba(231,229,224,0.85); text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    color: rgba(237, 228, 209,0.85); text-shadow: 0 1px 8px rgba(0,0,0,0.4);
   }
   .scroll-cue .down { font-size: 18px; animation: nudge 2.2s ease-in-out infinite; }
   @keyframes nudge { 50% { transform: translateY(5px); } }
@@ -246,8 +246,8 @@
 
 <main class="studio" id="studio"></main>
 
-<script src="assets/site.js?v=20261111222129"></script>
-<script src="assets/ripple.js?v=20261111222129"></script>
+<script src="assets/site.js?v=20261111222939"></script>
+<script src="assets/ripple.js?v=20261111222939"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS

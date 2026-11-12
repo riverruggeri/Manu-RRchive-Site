@@ -80,7 +80,7 @@ body.shop .menu button:hover, body.shop .menu button:focus-visible { background:
 
 /* Header over the photos: cream, with the small logo hidden (the big one is showing) */
 body.over-hero :is(.home-logo, .to-manu, .rr-tabs, .menu-btn) {
-  --ink: var(--cream); --ink-soft: rgba(231, 229, 224, 0.78);
+  --ink: var(--cream); --ink-soft: rgba(237, 228, 209, 0.78);
 }
 body.over-hero .rr-tabs a, body.over-hero .to-manu { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45); }
 body.shop .home-logo { transition: opacity 0.15s ease; }
