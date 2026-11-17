@@ -1,0 +1,65 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Option E – warp photo + card + bottom bar</title>
+<link rel="stylesheet" href="base.css"><style>
+/* E = your current warped photo (stays still behind) + D's card + C's bottom bar */
+body{background:#111}
+#stage,#fallback{position:fixed;inset:0;width:100%;height:100%;display:block}
+#fallback{background:center 25%/cover no-repeat}
+.bar{position:fixed;top:0;left:0;right:0;z-index:3;display:flex;justify-content:flex-end;align-items:center;padding:54px 18px 0;color:var(--cream);pointer-events:none}
+.sheet{position:relative;z-index:2;margin-top:56svh;min-height:70svh;background:var(--cream);border-radius:26px 26px 0 0;padding:12px 18px 130px;box-shadow:0 -20px 40px rgba(0,0,0,.25)}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 16px}
+.wm{font-weight:800;font-size:22vw;letter-spacing:-.06em;line-height:.85;margin:0}
+.line{margin:8px 0 18px;font-size:15px;color:var(--soft)}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lab{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;color:var(--cream);display:flex;flex-direction:column;justify-content:flex-end;padding:12px}
+.lab .ph{position:absolute;inset:0;background:center/cover;opacity:0;transition:opacity 1s linear}
+.lab .ph.on{opacity:1}
+.lab::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.65))}
+.lab>h2,.lab>p{position:relative;z-index:1}
+.lab h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.04em}
+.lab p{margin:4px 0 0}
+.sec{margin:34px 0 0}.sec .cap{color:var(--soft);margin:0 0 12px}
+.it{display:flex;align-items:baseline;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+.it:last-child{border-bottom:1px solid var(--line)}
+.it h3{margin:0;font-size:30px;font-weight:800;letter-spacing:-.045em;line-height:1;flex:1}
+.it .ar{font-size:20px}
+.dock{position:fixed;z-index:4;left:12px;right:12px;bottom:calc(22px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;border-radius:22px;background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.dock a{text-align:center;padding:14px 0;border-radius:15px;color:var(--cream);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.dock a:first-child{background:var(--cream);color:var(--ink)}
+</style>
+<canvas id="stage" aria-hidden="true"></canvas>
+<div id="fallback" hidden></div>
+<div class="bar"><span class="dots"><i></i><i></i><i></i></span></div>
+
+<div class="sheet"><div class="grab"></div>
+  <h1 class="wm">MANU</h1>
+  <p class="line">Artist working in fashion, textiles and photography.</p>
+  <div class="big">
+    <a class="lab" href="#" data-photos="fashion-01,fashion-02,fashion-03"><h2><span class="flip-r">R</span>Rchive</h2><p class="cap">Clothing</p></a>
+    <a class="lab" href="#" data-photos="photography-01,photography-02,photography-03"><h2><span class="flip-r">R</span>Rgraphy</h2><p class="cap">Photography</p></a>
+  </div>
+  <div class="sec"><p class="cap">What I make</p>
+    <a class="it" href="#"><h3>Fashion &amp; Textiles</h3><span class="ar">→</span></a>
+    <a class="it" href="#"><h3>Photography</h3><span class="ar">→</span></a>
+    <a class="it" href="#"><h3>Conceptual Art</h3><span class="ar">→</span></a>
+  </div>
+</div>
+
+<nav class="dock"><a href="#">Portfolio</a><a href="#">About</a></nav>
+
+<script src="../assets/ripple.js"></script>
+<script>
+// Same warp settings as the real homepage (index.html PAGE.ripple).
+startRipple({ canvas: document.getElementById("stage"), fallback: document.getElementById("fallback"),
+  image: "../images/home-bg.jpg", tallImage: "../images/about/about-hero.jpg",
+  ripple: { distortionX: 2, distortionY: 2, scale: 4.3, speed: 4, direction: 270,
+            mouseInteraction: true, mouseSensitivity: 50, brightness: 1.15, phoneStrength: 2.2, phoneAutoMotion: true } });
+// The two label tiles fade through their photos, staggered.
+document.querySelectorAll(".lab").forEach((lab, n) => {
+  const ph = lab.dataset.photos.split(",").map(p => {
+    const d = document.createElement("div"); d.className = "ph";
+    d.style.backgroundImage = `url(../images/home/${p}.jpg)`; lab.prepend(d); return d; });
+  let i = 0; ph[0].classList.add("on");
+  setTimeout(() => setInterval(() => { ph[i].classList.remove("on"); i = (i + 1) % ph.length; ph[i].classList.add("on"); }, 3600), n * 1200);
+});
+</script>
