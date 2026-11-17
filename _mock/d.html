@@ -1,0 +1,26 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="base.css"><style>
+body{background:#111}
+.bg{position:fixed;inset:0;background:url(../images/about/about-hero.jpg) center 25%/cover}
+.bar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:54px 18px 0;color:var(--cream)}
+.bar b{font-size:22px;font-weight:800;letter-spacing:-.04em}
+.sheet{position:absolute;left:0;right:0;top:52svh;min-height:60svh;background:var(--cream);border-radius:26px 26px 0 0;padding:12px 18px 40px;box-shadow:0 -20px 40px rgba(0,0,0,.25)}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 16px}
+.wm{font-weight:800;font-size:22vw;letter-spacing:-.06em;line-height:.85;margin:0}
+.line{margin:8px 0 18px;font-size:15px;color:var(--soft)}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lab{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background-size:cover;background-position:center;color:var(--cream);display:flex;flex-direction:column;justify-content:flex-end;padding:12px}
+.lab::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.65))}
+.lab>*{position:relative}.lab h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.04em}
+.lab p{margin:4px 0 0}
+.links{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.links a{border:1px solid var(--ink);border-radius:14px;padding:15px 0;text-align:center;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+</style>
+<div class="bg"></div>
+<div class="bar"><b></b><span class="dots"><i></i><i></i><i></i></span></div>
+<div class="sheet"><div class="grab"></div>
+<h1 class="wm">MANU</h1><p class="line">Artist working in fashion, textiles and photography.</p>
+<div class="big"><a class="lab" href="#" style="background-image:url(../images/home/fashion-01.jpg)"><h2><span class="flip-r">R</span>Rchive</h2><p class="cap">Clothing</p></a>
+<a class="lab" href="#" style="background-image:url(../images/home/photography-01.jpg)"><h2><span class="flip-r">R</span>Rgraphy</h2><p class="cap">Photography</p></a></div>
+<div class="links"><a href="#">Portfolio</a><a href="#">About</a></div>
+</div>

@@ -1,0 +1,26 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="base.css"><style>
+body{background:#111;color:var(--cream)}
+.split{height:100svh;display:grid;grid-template-rows:1fr 1fr;position:relative}
+.half{position:relative;background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:flex-end;padding:18px}
+.half::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.6))}
+.half>*{position:relative}
+.half h2{margin:0;font-size:52px;font-weight:800;letter-spacing:-.045em;line-height:.9}
+.half p{margin:8px 0 0;display:flex;justify-content:space-between}
+.a{background-image:url(../images/slides/fashion-works-denim-patchwork-vest-02.jpg)}
+.b{background-image:url(../images/slides/photography-drag-me-down-01.jpg)}
+.seam{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:46px;background:var(--cream);color:var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:2}
+.seam b{font-size:26px;font-weight:800;letter-spacing:-.05em}
+.seam span{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.bar{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;justify-content:flex-end;gap:8px;padding:52px 16px 0}
+.pill{border:1px solid rgba(231,229,224,.8);border-radius:99px;padding:8px 14px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;background:rgba(0,0,0,.25)}
+.more{background:var(--cream);color:var(--ink);padding:36px 18px}
+.more h3{font-size:30px;margin:0 0 10px;letter-spacing:-.04em}
+</style>
+<div class="split">
+<div class="bar"><span class="pill">Portfolio</span><span class="pill">About</span></div>
+<a class="half a" href="#"><h2><span class="flip-r">R</span>Rchive</h2><p class="cap"><span>Clothing · One-of-one</span><span>Enter →</span></p></a>
+<div class="seam"><b>MANU</b><span>Fashion · Textiles · Photography</span></div>
+<a class="half b" href="#"><h2><span class="flip-r">R</span>Rgraphy</h2><p class="cap"><span>Photography · Commissions</span><span>Enter →</span></p></a>
+</div>
+<div class="more"><p class="cap" style="opacity:.55">About</p><h3>River Manu Ruggeri</h3><p>I’m an artist based in Florida whose work focuses on fashion, textiles, and photography…</p></div>
