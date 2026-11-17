@@ -27,6 +27,9 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - About: big photo set (about-hero.jpg); portrait IMG_5331.jpg still missing.
 - Years set to 2026 for new projects are guesses unless River said otherwise.
 
+## Latest status
+- See HANDOFF.md (2026-11-17) for the current state, open decisions (iPhone homepage option A–D, PayPal vs Stripe, returns policy) and the to-do list.
+
 ## Next session (River, end of 2026-11-11)
 - Work on the UI of the MOBILE version (River's focus for next time). Start by showing iPhone-size screenshots (Playwright devices['iPhone 13']) of the pages; River liked seeing them side by side.
 - `index.html?phone` makes a computer act like a phone on the Manu homepage (mouse press-and-hold = finger hold), for previews. A clickable iPhone-frame preview was started (scratchpad iphone-preview.html, iframe of home.html?phone) but not published: copying all images is over the 64MB per-publish limit, so it needs two publishes.
