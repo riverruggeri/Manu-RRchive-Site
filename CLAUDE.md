@@ -28,6 +28,7 @@ River's website for the clothing brand Manu (house name) and RRchive, written wi
 - Years set to 2026 for new projects are guesses unless River said otherwise.
 
 ## Latest status
+- iPhone homepage (River, 2026-11-17): River is combining C + D with the warp photo as mock E (`_mock/e.html`), idea 2: card a sliver at the bottom, MANU + intro (name/Florida row, lead line, one-sentence description, label names) on the warped photo over a soft shade; the card slides over the intro (lines fade) and MANU moves onto the card (cream→dark clip); Portfolio/About pills top right, then a dark bar rises from the bottom once you slide; only drags starting on the card/bar scroll the page (fingers on the photo just play with the warp); white-backdrop photos tinted to stone with a multiply layer. Not yet built into index.html. ripple.js: finger scrolling / pull-to-reload no longer smears the photo (snap instead of push).
 - See HANDOFF.md (2026-11-17) for the current state, open decisions (iPhone homepage option A–D, PayPal vs Stripe, returns policy) and the to-do list.
 
 ## Next session (River, end of 2026-11-11)
