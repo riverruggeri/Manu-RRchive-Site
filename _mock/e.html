@@ -4,48 +4,50 @@
 <link rel="stylesheet" href="base.css"><style>
 /* Option E (River chose idea 2, 2026-11-17):
    - your warped photo fills the screen and stays still behind everything
-   - MANU + a short intro sit on the photo; the card slides up over them,
-     the intro fades line by line and MANU moves onto the card
-   - the card only moves when you drag the card itself (or the bar), so
-     fingers on the photo just play with the warp
-   - Portfolio / About: pills top right at first, a bar rises from the bottom once you slide
-   Every light colour is the site's stone white (--cream #e7e5e0), never plain white. */
+   - MANU + a short intro sit on the photo; the card slides up over them
+     and MANU moves onto the card, then rides with it
+   - only drags that start on the card (or the bar) move the page
+   - Portfolio / About: stone-white pills top right at first, then a bar rises from the bottom
+   Every light colour is the site's stone white (--cream #e7e5e0), never plain white.
+   How MANU stays smooth: nothing is moved by code while you scroll. The stone MANU
+   and the intro are fixed on the photo UNDER the card, so the card simply covers them;
+   a dark MANU, fixed in the same spot, lives INSIDE the card (which clips it), so it
+   appears exactly where the card covers. Once MANU reaches its place on the card,
+   the card's own MANU takes over and scrolls with it. */
 html,body{background:#111}
 #stage,#fallback{position:fixed;inset:0;width:100%;height:100%;display:block}
 #fallback{background:center 25%/cover no-repeat}
+.shade{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(10,10,10,.28) 0,transparent 16%,transparent 36%,rgba(10,10,10,.66) 100%)}
+
+/* Stone-white buttons that turn grey while pressed. */
+.btn{display:flex;align-items:center;justify-content:center;background:var(--cream);color:var(--ink);border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;-webkit-tap-highlight-color:transparent;transition:background-color .12s,transform .12s;user-select:none;-webkit-user-select:none}
+.btn:active,.btn.pressed{background:color-mix(in srgb,var(--cream) 72%,#6e6a63);transform:scale(.97)}
+
+/* On the photo, under the card. */
+.wm{font-weight:800;font-size:22vw;letter-spacing:-.06em;line-height:.85;margin:0;white-space:nowrap}
+.fixed-name{position:fixed;left:18px;top:0;pointer-events:none}
+.on-photo{z-index:1;color:var(--cream);text-shadow:0 2px 24px rgba(0,0,0,.25)}
+.intro{position:fixed;z-index:1;left:18px;right:18px;top:0;margin:0;color:var(--cream);text-shadow:0 1px 16px rgba(0,0,0,.45)}
+.intro>*{margin:0}
+.intro .who{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid color-mix(in srgb,var(--cream) 55%,transparent)}
+.intro .lead{font-size:18px;font-weight:500;line-height:1.3;letter-spacing:-.01em;margin-top:12px}
+.intro .more{font-size:14px;line-height:1.45;margin-top:6px;color:color-mix(in srgb,var(--cream) 85%,transparent)}
+.intro .labels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;text-shadow:none}
+.intro .labels .btn{justify-content:space-between;padding:0 16px;height:52px;border-radius:16px;font-size:21px;font-weight:800;letter-spacing:-.04em;text-transform:none;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.intro .labels .btn .ar{font-size:18px;font-weight:500}
 
 /* The card: just a sliver at the bottom at first. */
-.sheet{position:relative;z-index:2;margin-top:calc(100svh - 58px - env(safe-area-inset-bottom));min-height:100svh;background:var(--cream);border-radius:26px 26px 0 0;padding:10px 18px 130px;box-shadow:0 -20px 40px rgba(0,0,0,.25)}
-.grab{display:flex;flex-direction:column;align-items:center;gap:7px;margin:0 0 18px;color:var(--soft)}
-.grab i{width:40px;height:5px;border-radius:3px;background:var(--line);display:block}
-.grab span{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;transition:opacity .3s}
-body.scrolled .grab span{opacity:0}
-
-/* MANU: two copies in the same spot, stone white over the photo, dark over the card. */
-.wm{font-weight:800;font-size:22vw;letter-spacing:-.06em;line-height:.85;margin:0;white-space:nowrap}
-.name{position:fixed;z-index:3;left:18px;top:0;pointer-events:none;will-change:transform}
-.name .wm{position:absolute;left:0;top:0}
-.name .on-photo{color:var(--cream);text-shadow:0 2px 24px rgba(0,0,0,.25)}
-.name .on-card{color:var(--ink)}
-.slot{visibility:hidden}
-
-/* Soft shade at the bottom of the photo so the text stays readable; fades as the card comes up. */
-.shade{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(10,10,10,.28) 0,transparent 16%,transparent 38%,rgba(10,10,10,.62) 100%)}
-/* The intro on the photo. */
-.intro{position:fixed;z-index:3;left:18px;right:18px;top:0;margin:0;color:var(--cream);pointer-events:none;text-shadow:0 1px 16px rgba(0,0,0,.45)}
-.intro>*{margin:0;will-change:opacity}
-.intro .who{display:flex;justify-content:space-between;font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid color-mix(in srgb,var(--cream) 55%,transparent)}
-.intro .lead{font-size:18px;font-weight:500;line-height:1.3;letter-spacing:-.01em;margin-top:12px}
-.intro .more{font-size:14px;line-height:1.45;margin-top:6px;color:color-mix(in srgb,var(--cream) 82%,transparent);max-width:30em}
-.intro .labels{display:flex;gap:18px;margin-top:14px;font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
-.intro .labels b{font-weight:800;letter-spacing:-.02em;font-size:15px;text-transform:none;margin-right:6px}
-
-.line{margin:8px 0 18px;font-size:15px;color:var(--soft)}
+.sheet{position:relative;z-index:2;margin-top:calc(100svh - 42px - env(safe-area-inset-bottom));min-height:100svh;border-radius:26px 26px 0 0;padding:10px 18px 130px;box-shadow:0 -20px 40px rgba(0,0,0,.25)}
+.sheet>.paper{position:absolute;inset:0;z-index:-1;background:var(--cream);border-radius:inherit;clip-path:inset(0 round 26px 26px 0 0)}
+.on-card{color:var(--ink)}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 18px}
+.slot{visibility:hidden;margin-bottom:22px}
+body.riding .slot{visibility:visible}
+body.riding .fixed-name{visibility:hidden}
 .big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .lab{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;color:var(--cream);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;background:var(--cream)}
 .lab .ph{position:absolute;inset:0;background:center/cover;opacity:0;transition:opacity 1s linear}
 .lab .ph.on{opacity:1}
-/* Studio photos with white backdrops are tinted to the stone white. */
 .lab.stone::before{content:"";position:absolute;inset:0;z-index:1;background:var(--cream);mix-blend-mode:multiply;pointer-events:none}
 .lab::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(transparent 40%,rgba(0,0,0,.65))}
 .lab>h2,.lab>p{position:relative;z-index:2}
@@ -57,35 +59,34 @@ body.scrolled .grab span{opacity:0}
 .it h3{margin:0;font-size:30px;font-weight:800;letter-spacing:-.045em;line-height:1;flex:1}
 .it .ar{font-size:20px}
 
-/* Portfolio / About: top-right pills first, then the bottom bar. */
+/* Portfolio / About: pills top right first, then the bottom bar. */
 .top-pills{position:fixed;z-index:5;top:calc(14px + env(safe-area-inset-top, 34px));right:18px;display:flex;gap:8px;transition:opacity .35s}
-.top-pills a{border:1px solid color-mix(in srgb,var(--cream) 80%,transparent);color:var(--cream);border-radius:99px;padding:8px 14px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(20,20,20,.38);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(6px)}
+.top-pills .btn{padding:9px 15px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 body.scrolled .top-pills{opacity:0;pointer-events:none}
 .dock{position:fixed;z-index:6;left:12px;right:12px;bottom:calc(22px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;border-radius:22px;background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:transform .45s cubic-bezier(.2,.8,.2,1);transform:translateY(160%)}
 body.scrolled .dock{transform:none}
-.dock a{text-align:center;padding:14px 0;border-radius:15px;color:var(--cream);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
-.dock a:first-child{background:var(--cream);color:var(--ink)}
+.dock .btn{padding:14px 0;border-radius:15px;font-size:12px}
 </style>
 <canvas id="stage" aria-hidden="true"></canvas>
 <div id="fallback" hidden></div>
 <div class="shade" id="shade" aria-hidden="true"></div>
-<nav class="top-pills"><a href="#">Portfolio</a><a href="#">About</a></nav>
+<nav class="top-pills"><a class="btn" href="#">Portfolio</a><a class="btn" href="#">About</a></nav>
 
-<div class="name" id="name" aria-hidden="true">
-  <div class="wm on-photo">MANU</div>
-  <div class="wm on-card">MANU</div>
-</div>
-
+<div class="wm fixed-name on-photo" aria-hidden="true">MANU</div>
 <div class="intro" id="intro">
-  <p class="who"><span>River Manu Ruggeri</span><span>Florida</span></p>
+  <p class="who">River Manu Ruggeri</p>
   <p class="lead">Artist working in fashion, textiles and photography.</p>
   <p class="more">Used and discarded garments, taken apart and rebuilt into one-of-one pieces.</p>
-  <p class="labels"><span><b><span class="flip-r">R</span>Rchive</b>Clothing</span><span><b><span class="flip-r">R</span>Rgraphy</b>Photography</span></p>
+  <p class="labels">
+    <a class="btn" href="#"><span><span class="flip-r">R</span>Rchive</span><span class="ar">→</span></a>
+    <a class="btn" href="#"><span><span class="flip-r">R</span>Rgraphy</span><span class="ar">→</span></a>
+  </p>
 </div>
 
-<div class="sheet" id="sheet"><div class="grab"><i></i><span>Slide up</span></div>
-  <h1 class="wm slot" id="slot">MANU</h1>
-  <p class="line">Artist working in fashion, textiles and photography.</p>
+<div class="sheet" id="sheet">
+  <div class="paper"><div class="wm fixed-name on-card" aria-hidden="true">MANU</div></div>
+  <div class="grab"></div>
+  <h1 class="wm slot on-card" id="slot">MANU</h1>
   <div class="big">
     <a class="lab stone" href="#" data-photos="fashion-01,fashion-02,fashion-04"><h2><span class="flip-r">R</span>Rchive</h2><p class="cap">Clothing</p></a>
     <a class="lab" href="#" data-photos="photography-01,photography-02,photography-03"><h2><span class="flip-r">R</span>Rgraphy</h2><p class="cap">Photography</p></a>
@@ -97,7 +98,7 @@ body.scrolled .dock{transform:none}
   </div>
 </div>
 
-<nav class="dock"><a href="#">Portfolio</a><a href="#">About</a></nav>
+<nav class="dock"><a class="btn" href="#">Portfolio</a><a class="btn" href="#">About</a></nav>
 
 <script src="../assets/ripple.js"></script>
 <script>
@@ -109,47 +110,40 @@ startRipple({ canvas: document.getElementById("stage"), fallback: document.getEl
 
 // Only the card and the bar move the page. A finger anywhere else stays on
 // the photo and just plays with the warp.
-const sheet = document.getElementById("sheet"), shade = document.getElementById("shade");
 let dragOK = false;
-addEventListener("touchstart", e => { dragOK = !!e.target.closest(".sheet, .dock, .top-pills"); }, { passive: true });
+addEventListener("touchstart", e => { dragOK = !!e.target.closest(".sheet, .dock"); }, { passive: true });
 addEventListener("touchmove", e => { if (!dragOK) e.preventDefault(); }, { passive: false });
+// Grey while pressed (also on iPhones, where :active can be unreliable).
+document.querySelectorAll(".btn").forEach(b => {
+  const off = () => b.classList.remove("pressed");
+  b.addEventListener("touchstart", () => b.classList.add("pressed"), { passive: true });
+  ["touchend", "touchcancel", "touchmove"].forEach(t => b.addEventListener(t, off, { passive: true }));
+});
 
-// MANU stays on the photo just above the intro; the card slides up over the
-// intro (each line fades as the card reaches it) and then over MANU (the
-// covered part turns dark), and MANU rides up with the card in its slot.
-const nameEl = document.getElementById("name"), slot = document.getElementById("slot");
-const intro = document.getElementById("intro"), introLines = [...intro.children];
-const [onPhoto, onCard] = nameEl.children;
-const rest = sheet.querySelectorAll(".line, .big, .sec");
+const sheet = document.getElementById("sheet"), slot = document.getElementById("slot");
+const intro = document.getElementById("intro"), shade = document.getElementById("shade");
+const names = document.querySelectorAll(".fixed-name");
 const GAP = 22;                       // space between the intro and the top of the card
-let restY = 0, h = 0, introY = 0;
+let handover = 0;                     // how far you slide before MANU sits in its place on the card
 function measure() {
-  h = slot.offsetHeight;
-  introY = sheet.offsetTop - intro.offsetHeight - GAP;
-  restY = introY - h - 14;            // where MANU sits on the photo
+  const cardTop = sheet.offsetTop, h = slot.offsetHeight;
+  const introY = cardTop - intro.offsetHeight - GAP;
+  const nameY = introY - h - 14;
+  intro.style.top = introY + "px";
+  names.forEach(n => n.style.top = nameY + "px");
+  handover = cardTop + slot.offsetTop - nameY;
+  update();
 }
-function place() {
-  const cardTop = sheet.getBoundingClientRect().top;
-  intro.style.transform = `translateY(${introY}px)`;
-  for (const el of introLines) {
-    const bottom = introY + el.offsetTop + el.offsetHeight;
-    el.style.opacity = Math.max(0, Math.min(1, (cardTop - bottom) / 24));
-  }
-  const y = Math.min(restY, slot.getBoundingClientRect().top);
-  nameEl.style.transform = `translateY(${y}px)`;
-  const covered = Math.max(0, Math.min(h, y + h - cardTop));   // px of MANU over the card
-  onPhoto.style.clipPath = `inset(0 0 ${covered}px 0)`;
-  onCard.style.clipPath = `inset(${h - covered}px 0 0 0)`;
-  const fade = Math.max(0, Math.min(1, (scrollY - 20) / 90));
-  for (const el of rest) el.style.opacity = fade;
-  shade.style.opacity = 1 - Math.max(0, Math.min(1, scrollY / 260));
+// Only small switches happen while scrolling; nothing is moved by code.
+function update() {
+  document.body.classList.toggle("riding", scrollY >= handover);
   document.body.classList.toggle("scrolled", scrollY > 30);
+  shade.style.opacity = 1 - Math.max(0, Math.min(1, scrollY / 260));
 }
-measure(); place();
-document.fonts && document.fonts.ready.then(() => { measure(); place(); });
-addEventListener("resize", () => { measure(); place(); });
-addEventListener("scroll", place, { passive: true });
-(function loop() { place(); requestAnimationFrame(loop); })();   // keeps it glued during iPhone momentum scrolling
+measure();
+document.fonts && document.fonts.ready.then(measure);
+addEventListener("resize", measure);
+addEventListener("scroll", update, { passive: true });
 
 // The two label tiles fade through their photos, staggered.
 document.querySelectorAll(".lab").forEach((lab, n) => {
