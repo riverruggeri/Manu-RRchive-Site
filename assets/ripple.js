@@ -233,14 +233,24 @@ window.startRipple = function (opts) {
   // Pointer tracking (mouse and touch)
   const mouse = { x: 0.5, y: 0.5 }, last = { x: 0.5, y: 0.5 }, vel = { x: 0, y: 0 };
   let lastMove = 0, hasPointer = false;
-  function onMove(x, y) {
+  // snap = jump to the new spot without pushing the water (no smear).
+  function onMove(x, y, snap) {
     mouse.x = x / innerWidth;
     mouse.y = 1 - y / innerHeight;
-    if (!hasPointer) { last.x = mouse.x; last.y = mouse.y; hasPointer = true; }
+    if (!hasPointer || snap) { last.x = mouse.x; last.y = mouse.y; hasPointer = true; }
     lastMove = performance.now();
   }
-  addEventListener("pointermove", e => onMove(e.clientX, e.clientY), { passive: true });
-  addEventListener("pointerdown", e => onMove(e.clientX, e.clientY), { passive: true });
+  // A finger that is scrolling the page (or pulling it down to reload)
+  // must not smear the photo, so touches only push the water while the
+  // page sits still. A new touch starts where the finger is, with no jump.
+  let lastScroll = -1e9;
+  addEventListener("scroll", () => { lastScroll = performance.now(); }, { passive: true });
+  const scrolling = () => scrollY < 0 || performance.now() - lastScroll < 250;
+  addEventListener("pointermove", e => {
+    if (e.pointerType === "touch" && scrolling()) { onMove(e.clientX, e.clientY, true); return; }
+    onMove(e.clientX, e.clientY);
+  }, { passive: true });
+  addEventListener("pointerdown", e => onMove(e.clientX, e.clientY, e.pointerType === "touch"), { passive: true });
 
   // Phones and tablets: nobody drags a finger around, so the ripple is made
   // stronger and an invisible "finger" wanders slowly over the photo on its
@@ -248,7 +258,7 @@ window.startRipple = function (opts) {
   const touchScreen = matchMedia("(hover: none) and (pointer: coarse)").matches;
   const phoneBoost = touchScreen ? (R.phoneStrength ?? 2) : 1;
   const wander = touchScreen && R.phoneAutoMotion !== false;
-  let realTouch = -1e9;
+  let realTouch = -1e9, wandering = false;
   addEventListener("touchstart", () => { realTouch = performance.now(); }, { passive: true });
   addEventListener("touchmove", () => { realTouch = performance.now(); }, { passive: true });
 
@@ -263,12 +273,14 @@ window.startRipple = function (opts) {
     prevT = t;
 
     if (wander && t - realTouch > 1500) {
+      const resume = !wandering; wandering = true;
       // A slow looping path that sweeps across most of the screen.
       const s = t / 1000;
       const wx = 0.5 + 0.34 * Math.sin(s * 0.31) + 0.1 * Math.sin(s * 0.83 + 1.3);
       const wy = 0.5 + 0.3 * Math.sin(s * 0.23 + 0.7) + 0.1 * Math.cos(s * 0.67);
-      onMove(wx * innerWidth, (1 - wy) * innerHeight);
-    }
+      // Coming back after a touch: start from the path, no sudden jump.
+      onMove(wx * innerWidth, (1 - wy) * innerHeight, resume);
+    } else if (wander) wandering = false;
 
     // Cursor speed in screen-widths per second, eased so the smear feels liquid.
     const moving = t - lastMove < 80;

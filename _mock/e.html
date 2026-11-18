@@ -1,14 +1,22 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Option E – warp photo + card + bottom bar</title>
 <link rel="stylesheet" href="base.css"><style>
-/* E = your current warped photo (stays still behind) + D's card + C's bottom bar */
-body{background:#111}
+/* E = your current warped photo (stays still behind) + D's card + C's bottom bar.
+   MANU sits on the photo; when the card slides up over it, it turns dark and rides on the card. */
+html,body{background:#111}
 #stage,#fallback{position:fixed;inset:0;width:100%;height:100%;display:block}
 #fallback{background:center 25%/cover no-repeat}
-.bar{position:fixed;top:0;left:0;right:0;z-index:3;display:flex;justify-content:flex-end;align-items:center;padding:54px 18px 0;color:var(--cream);pointer-events:none}
-.sheet{position:relative;z-index:2;margin-top:56svh;min-height:70svh;background:var(--cream);border-radius:26px 26px 0 0;padding:12px 18px 130px;box-shadow:0 -20px 40px rgba(0,0,0,.25)}
-.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 16px}
-.wm{font-weight:800;font-size:22vw;letter-spacing:-.06em;line-height:.85;margin:0}
+.bar{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;justify-content:flex-end;align-items:center;padding:54px 18px 0;color:var(--cream);pointer-events:none}
+/* The card peeks just above the bottom bar. */
+.sheet{position:relative;z-index:2;margin-top:calc(100svh - 150px);min-height:100svh;background:var(--cream);border-radius:26px 26px 0 0;padding:12px 18px 130px;box-shadow:0 -20px 40px rgba(0,0,0,.25)}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 14px}
+.wm{font-weight:800;font-size:22vw;letter-spacing:-.06em;line-height:.85;margin:0;white-space:nowrap}
+/* Two copies of MANU in the same spot: cream over the photo, dark over the card. */
+.name{position:fixed;z-index:3;left:18px;top:0;pointer-events:none;will-change:transform}
+.name .wm{position:absolute;left:0;top:0}
+.name .on-photo{color:var(--cream);text-shadow:0 2px 24px rgba(0,0,0,.25)}
+.name .on-card{color:var(--ink)}
+.slot{visibility:hidden}
 .line{margin:8px 0 18px;font-size:15px;color:var(--soft)}
 .big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .lab{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;color:var(--cream);display:flex;flex-direction:column;justify-content:flex-end;padding:12px}
@@ -23,7 +31,7 @@ body{background:#111}
 .it:last-child{border-bottom:1px solid var(--line)}
 .it h3{margin:0;font-size:30px;font-weight:800;letter-spacing:-.045em;line-height:1;flex:1}
 .it .ar{font-size:20px}
-.dock{position:fixed;z-index:4;left:12px;right:12px;bottom:calc(22px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;border-radius:22px;background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.dock{position:fixed;z-index:6;left:12px;right:12px;bottom:calc(22px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;border-radius:22px;background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .dock a{text-align:center;padding:14px 0;border-radius:15px;color:var(--cream);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
 .dock a:first-child{background:var(--cream);color:var(--ink)}
 </style>
@@ -31,8 +39,13 @@ body{background:#111}
 <div id="fallback" hidden></div>
 <div class="bar"><span class="dots"><i></i><i></i><i></i></span></div>
 
-<div class="sheet"><div class="grab"></div>
-  <h1 class="wm">MANU</h1>
+<div class="name" id="name" aria-hidden="true">
+  <div class="wm on-photo">MANU</div>
+  <div class="wm on-card">MANU</div>
+</div>
+
+<div class="sheet" id="sheet"><div class="grab"></div>
+  <h1 class="wm slot" id="slot">MANU</h1>
   <p class="line">Artist working in fashion, textiles and photography.</p>
   <div class="big">
     <a class="lab" href="#" data-photos="fashion-01,fashion-02,fashion-03"><h2><span class="flip-r">R</span>Rchive</h2><p class="cap">Clothing</p></a>
@@ -54,6 +67,35 @@ startRipple({ canvas: document.getElementById("stage"), fallback: document.getEl
   image: "../images/home-bg.jpg", tallImage: "../images/about/about-hero.jpg",
   ripple: { distortionX: 2, distortionY: 2, scale: 4.3, speed: 4, direction: 270,
             mouseInteraction: true, mouseSensitivity: 50, brightness: 1.15, phoneStrength: 2.2, phoneAutoMotion: true } });
+
+// MANU: stays on the photo just above the card; the card slides up over it
+// (the covered part turns dark), then it rides up with the card in its slot.
+const nameEl = document.getElementById("name"), sheet = document.getElementById("sheet"), slot = document.getElementById("slot");
+const [onPhoto, onCard] = nameEl.children;
+const rest = sheet.querySelectorAll(".line, .big, .sec");
+const GAP = 12;                       // space between MANU and the top of the card
+let restY = 0, h = 0;
+function measure() {
+  h = slot.offsetHeight;
+  restY = sheet.offsetTop - h - GAP;  // where MANU sits on the photo
+}
+function place() {
+  const cardTop = sheet.getBoundingClientRect().top;
+  const y = Math.min(restY, slot.getBoundingClientRect().top);
+  nameEl.style.transform = `translateY(${y}px)`;
+  const covered = Math.max(0, Math.min(h, y + h - cardTop));   // px of MANU over the card
+  onPhoto.style.clipPath = `inset(0 0 ${covered}px 0)`;
+  onCard.style.clipPath = `inset(${h - covered}px 0 0 0)`;
+  // The card's contents fade in as it starts to slide up.
+  const fade = Math.max(0, Math.min(1, (scrollY - 20) / 90));
+  for (const el of rest) el.style.opacity = fade;
+}
+measure(); place();
+document.fonts && document.fonts.ready.then(() => { measure(); place(); });
+addEventListener("resize", () => { measure(); place(); });
+addEventListener("scroll", place, { passive: true });
+(function loop() { place(); requestAnimationFrame(loop); })();   // keeps it glued during iPhone momentum scrolling
+
 // The two label tiles fade through their photos, staggered.
 document.querySelectorAll(".lab").forEach((lab, n) => {
   const ph = lab.dataset.photos.split(",").map(p => {
