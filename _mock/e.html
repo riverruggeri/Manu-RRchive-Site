@@ -19,6 +19,13 @@ html,body{background:#111}
 #fallback{background:center 25%/cover no-repeat}
 .shade{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(10,10,10,.28) 0,transparent 16%,transparent 36%,rgba(10,10,10,.66) 100%)}
 
+/* Stone floor under the card: when you bounce past the bottom of the page you see
+   stone white, not the photo. Only switched on once the card covers it. */
+.floor{position:fixed;left:0;right:0;bottom:0;height:45vh;z-index:1;background:var(--cream);visibility:hidden;pointer-events:none}
+body.deep .floor{visibility:visible}
+body.deep .intro,body.deep .on-photo{visibility:hidden}
+body.deep .sheet{box-shadow:none}
+
 /* Stone-white buttons that turn grey while pressed. */
 .btn{display:flex;align-items:center;justify-content:center;background:var(--cream);color:var(--ink);border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;-webkit-tap-highlight-color:transparent;transition:background-color .12s,transform .12s;user-select:none;-webkit-user-select:none}
 .btn:active,.btn.pressed{background:color-mix(in srgb,var(--cream) 72%,#6e6a63);transform:scale(.97)}
@@ -70,6 +77,7 @@ body.scrolled .dock{transform:none}
 <canvas id="stage" aria-hidden="true"></canvas>
 <div id="fallback" hidden></div>
 <div class="shade" id="shade" aria-hidden="true"></div>
+<div class="floor" aria-hidden="true"></div>
 <nav class="top-pills"><a class="btn" href="#">Portfolio</a><a class="btn" href="#">About</a></nav>
 
 <div class="wm fixed-name on-photo" aria-hidden="true">MANU</div>
@@ -138,6 +146,7 @@ function measure() {
 function update() {
   document.body.classList.toggle("riding", scrollY >= handover);
   document.body.classList.toggle("scrolled", scrollY > 30);
+  document.body.classList.toggle("deep", scrollY > innerHeight * 0.75);
   shade.style.opacity = 1 - Math.max(0, Math.min(1, scrollY / 260));
 }
 measure();
