@@ -3,13 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+  // Phones get their own homepage (home-phone.html, River 2026-11-17). Computers and
+  // tablets stay here. Add ?desktop to the address to see this version on a phone.
+  if (!/[?&](desktop|phone)\b/.test(location.search) &&
+      matchMedia("(hover: none) and (pointer: coarse)").matches &&
+      Math.min(screen.width, screen.height) < 600) location.replace("home-phone.html");
+</script>
 <title>Manu</title>
 <meta name="description" content="Manu: River Manu Ruggeri, an artist working in fashion, textiles and photography. Home of the labels ЯRchive (clothing) and ЯRgraphy (photography).">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261117212330">
+<link rel="stylesheet" href="assets/site.css?v=20261117214319">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -328,8 +335,8 @@
 
 <main class="studio" id="studio"></main>
 
-<script src="assets/site.js?v=20261117212330"></script>
-<script src="assets/ripple.js?v=20261117212330"></script>
+<script src="assets/site.js?v=20261117214319"></script>
+<script src="assets/ripple.js?v=20261117214319"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS

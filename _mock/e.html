@@ -60,11 +60,40 @@ body.riding .fixed-name{visibility:hidden}
 .lab>h2,.lab>p{position:relative;z-index:2}
 .lab h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.04em}
 .lab p{margin:4px 0 0}
-.sec{margin:34px 0 0}.sec .cap{color:var(--soft);margin:0 0 12px}
-.it{display:flex;align-items:baseline;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
-.it:last-child{border-bottom:1px solid var(--line)}
-.it h3{margin:0;font-size:30px;font-weight:800;letter-spacing:-.045em;line-height:1;flex:1}
-.it .ar{font-size:20px}
+/* Buttons on the card: dark, or outlined. */
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.row .btn{gap:10px;padding:14px 18px;border-radius:99px;font-size:11px}
+.btn.dark{background:var(--ink);color:var(--cream)}
+.btn.dark:active,.btn.dark.pressed{background:#55524d}
+.btn.line{background:transparent;box-shadow:inset 0 0 0 1px var(--ink)}
+.btn.line:active,.btn.line.pressed{background:color-mix(in srgb,var(--cream) 72%,#6e6a63)}
+
+/* About */
+.about{margin-top:56px;padding-top:28px;border-top:1px solid var(--line)}
+.about .me{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block;margin-bottom:22px}
+.eyebrow{color:var(--soft);margin:0 0 8px}
+.about h2{margin:0 0 14px;font-size:34px;font-weight:800;letter-spacing:-.045em;line-height:1}
+.about p:not(.cap){font-size:16px;line-height:1.55;margin:0 0 12px}
+
+/* What I make */
+.make{margin-top:56px;padding-top:28px;border-top:1px solid var(--line)}
+.big-title{margin:0 0 26px;font-size:15vw;font-weight:800;letter-spacing:-.06em;line-height:.9}
+.medium{padding:0 0 40px}
+.medium+.medium{padding-top:28px;border-top:1px solid var(--line)}
+.num{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--soft);margin-bottom:10px}
+.pic{position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden;background:var(--cream)}
+.pic .track{display:flex;height:100%;will-change:transform}
+.pic .track div{flex:0 0 100%;height:100%;background:center/cover}
+.pic[data-stone]::after{content:"";position:absolute;inset:0;background:var(--cream);mix-blend-mode:multiply;pointer-events:none}
+.medium h3{margin:18px 0 8px;font-size:32px;font-weight:800;letter-spacing:-.045em;line-height:1}
+.medium p{margin:0;font-size:16px;line-height:1.55}
+
+/* Big links + footer */
+.bigs{border-top:1px solid var(--line);margin-top:8px}
+.bigs a{display:block;padding:22px 0;border-bottom:1px solid var(--line)}
+.bigs span{display:block;font-size:17vw;font-weight:800;letter-spacing:-.06em;line-height:.9}
+.bigs small{display:block;margin-top:8px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.foot{display:flex;justify-content:space-between;padding:26px 0 0;font-size:12px;color:var(--soft)}
 
 /* Portfolio / About: pills top right first, then the bottom bar. */
 .top-pills{position:fixed;z-index:5;top:calc(14px + env(safe-area-inset-top, 34px));right:18px;display:flex;gap:8px;transition:opacity .35s}
@@ -99,11 +128,45 @@ body.scrolled .dock{transform:none}
     <a class="lab stone" href="#" data-photos="fashion-01,fashion-02,fashion-04"><h2><span class="flip-r">R</span>Rchive</h2><p class="cap">Clothing</p></a>
     <a class="lab" href="#" data-photos="photography-01,photography-02,photography-03"><h2><span class="flip-r">R</span>Rgraphy</h2><p class="cap">Photography</p></a>
   </div>
-  <div class="sec"><p class="cap">What I make</p>
-    <a class="it" href="#"><h3>Fashion &amp; Textiles</h3><span class="ar">→</span></a>
-    <a class="it" href="#"><h3>Photography</h3><span class="ar">→</span></a>
-    <a class="it" href="#"><h3>Conceptual Art</h3><span class="ar">→</span></a>
-  </div>
+  <section class="about">
+    <img class="me" src="../images/home/river.jpg" alt="River Manu Ruggeri wearing a reworked denim piece" loading="lazy">
+    <p class="cap eyebrow">About</p>
+    <h2>River Manu Ruggeri</h2>
+    <p>I’m an artist based in Florida whose work focuses on fashion, textiles, and photography. A large part of my process involves transforming used or discarded garments into new pieces through reconstruction, distressing, fabric manipulation, and experimentation with texture and material.</p>
+    <p>I aim to create work that feels raw, intentional, and honest rather than overly polished or perfect.</p>
+    <div class="row"><a class="btn dark" href="#">More about me <span>→</span></a><a class="btn line" href="#">Portfolio <span>→</span></a></div>
+  </section>
+
+  <section class="make">
+    <h2 class="big-title">What I make</h2>
+    <article class="medium">
+      <span class="num">01</span>
+      <div class="pic" data-photos="fashion-01,fashion-02,fashion-03,fashion-04,fashion-05,fashion-06,fashion-07,fashion-08" data-stone></div>
+      <h3>Fashion &amp; Textiles</h3>
+      <p>Used and discarded garments taken apart and rebuilt through reconstruction, distressing and fabric manipulation. One-of-one pieces are available through <span class="flip-r">R</span>Rchive.</p>
+      <div class="row"><a class="btn dark" href="#"><span><span class="flip-r">R</span>Rchive</span> <span>→</span></a><a class="btn line" href="#">Experimental Fashion <span>→</span></a></div>
+    </article>
+    <article class="medium">
+      <span class="num">02</span>
+      <div class="pic" data-photos="photography-01,photography-02,photography-03,photography-04,photography-05,photography-06,photography-07,photography-08"></div>
+      <h3>Photography</h3>
+      <p>Fashion, portrait and object photography built around atmosphere, emotion and feeling. Shoots and commissions through <span class="flip-r">R</span>Rgraphy.</p>
+      <div class="row"><a class="btn dark" href="#"><span><span class="flip-r">R</span>Rgraphy</span> <span>→</span></a><a class="btn line" href="#">Photography <span>→</span></a></div>
+    </article>
+    <article class="medium">
+      <span class="num">03</span>
+      <div class="pic" data-photos="conceptual-01,conceptual-02,conceptual-03,conceptual-04,conceptual-05,conceptual-06"></div>
+      <h3>Conceptual Art</h3>
+      <p>Projects that take clothing past wearing, where denim, layering and form become the idea itself.</p>
+      <div class="row"><a class="btn dark" href="#">View projects <span>→</span></a></div>
+    </article>
+  </section>
+
+  <nav class="bigs">
+    <a href="#"><span>Portfolio →</span><small>Fashion · Photography · Art</small></a>
+    <a href="#"><span>About →</span><small>Bio · Contact · Services</small></a>
+  </nav>
+  <footer class="foot"><span>© 2026 River Manu Ruggeri</span><a href="https://www.instagram.com/rrchive.manu/">@rrchive.manu</a></footer>
 </div>
 
 <nav class="dock"><a class="btn" href="#">Portfolio</a><a class="btn" href="#">About</a></nav>
@@ -153,6 +216,24 @@ measure();
 document.fonts && document.fonts.ready.then(measure);
 addEventListener("resize", measure);
 addEventListener("scroll", update, { passive: true });
+
+// "What I make" photos slide sideways (1s, even speed), one after another,
+// only while on screen, like the computer version.
+document.querySelectorAll(".pic").forEach((pic, n) => {
+  const names = pic.dataset.photos.split(",");
+  const track = document.createElement("div"); track.className = "track";
+  [...names, names[0]].forEach(p => { const d = document.createElement("div"); d.style.backgroundImage = `url(../images/home/${p}.jpg)`; track.append(d); });
+  pic.append(track);
+  let i = 0, timer, start;
+  const next = () => {
+    i++; track.style.transition = "transform 1s linear"; track.style.transform = `translateX(${-100 * i}%)`;
+    if (i === names.length) setTimeout(() => { track.style.transition = "none"; i = 0; track.style.transform = "translateX(0)"; }, 1050);
+  };
+  new IntersectionObserver(([e]) => {
+    clearTimeout(start); clearInterval(timer);
+    if (e.isIntersecting) start = setTimeout(() => { timer = setInterval(next, 3600); }, n * 1200);
+  }).observe(pic);
+});
 
 // The two label tiles fade through their photos, staggered.
 document.querySelectorAll(".lab").forEach((lab, n) => {

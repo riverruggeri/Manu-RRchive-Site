@@ -26,7 +26,7 @@ Start a new chat with: "Continue the Manu website. Read HANDOFF.md and CLAUDE.md
 - Store research: the Playbook doc (10 ranked changes, checkout/payments, drops, mobile fixes).
 
 ## In progress / decisions open
-1. **iPhone layout of the Manu homepage** feels clunky. Four mock options were shown (mock pages in `_mock/a.html`–`d.html`) (A cover + list, B split screen, C index + bottom bar, D photo + card). Claude recommended A (D second). **Waiting on River to pick one.**
+1. DONE 2026-11-17: **iPhone homepage** is now `home-phone.html` (River combined C + D + the warp photo; see CLAUDE.md "Latest status"). Old note: iPhone layout felt clunky. Four mock options were shown (mock pages in `_mock/a.html`–`d.html`) (A cover + list, B split screen, C index + bottom bar, D photo + card). Claude recommended A (D second). **Waiting on River to pick one.**
 2. **Payments:** River leaning to PayPal over Stripe. Fees are similar (Stripe card 2.9% + 30¢; PayPal card 2.99% + 49¢, PayPal/Venmo balance 3.49% + 49¢), no monthly fee either way. Option: offer both. **Waiting on River's choice**, then wire it into the Buy button (`buyLink` in assets/catalog.js) and update the Playbook.
 3. **Returns policy:** all sales final vs. final sale with measurements guaranteed (comment left in the Playbook).
 

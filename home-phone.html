@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manu</title>
+<meta name="description" content="Manu: River Manu Ruggeri, an artist working in fashion, textiles and photography. Home of the labels ЯRchive (clothing) and ЯRgraphy (photography).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-title" content="ЯRchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#111111">
+<!-- The Manu homepage for phones (River, 2026-11-17: "option E", idea 2).
+     index.html sends phones here; computers keep index.html.
+     Built from _mock/e.html; edit text and photos right here. -->
+<style>
+:root{--cream:#e7e5e0;--ink:#141414;--soft:rgba(20,20,20,.55);--line:rgba(20,20,20,.18)}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;background:var(--cream);color:var(--ink)}
+a{color:inherit;text-decoration:none}
+.flip-r{display:inline-block;transform:scaleX(-1);margin-right:-.035em}
+.cap{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.dots{display:flex;gap:4px}.dots i{width:5px;height:5px;border-radius:50%;background:currentColor;display:block}
+
+
+/* Option E (River chose idea 2, 2026-11-17):
+   - your warped photo fills the screen and stays still behind everything
+   - MANU + a short intro sit on the photo; the card slides up over them
+     and MANU moves onto the card, then rides with it
+   - only drags that start on the card (or the bar) move the page
+   - Portfolio / About: stone-white pills top right at first, then a bar rises from the bottom
+   Every light colour is the site's stone white (--cream #e7e5e0), never plain white.
+   How MANU stays smooth: nothing is moved by code while you scroll. The stone MANU
+   and the intro are fixed on the photo UNDER the card, so the card simply covers them;
+   a dark MANU, fixed in the same spot, lives INSIDE the card (which clips it), so it
+   appears exactly where the card covers. Once MANU reaches its place on the card,
+   the card's own MANU takes over and scrolls with it. */
+html,body{background:#111}
+#stage,#fallback{position:fixed;inset:0;width:100%;height:100%;display:block}
+#fallback{background:center 25%/cover no-repeat}
+.shade{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(10,10,10,.28) 0,transparent 16%,transparent 36%,rgba(10,10,10,.66) 100%)}
+
+/* Stone floor under the card: when you bounce past the bottom of the page you see
+   stone white, not the photo. Only switched on once the card covers it. */
+.floor{position:fixed;left:0;right:0;bottom:0;height:45vh;z-index:1;background:var(--cream);visibility:hidden;pointer-events:none}
+body.deep .floor{visibility:visible}
+body.deep .intro,body.deep .on-photo{visibility:hidden}
+body.deep .sheet{box-shadow:none}
+
+/* Stone-white buttons that turn grey while pressed. */
+.btn{display:flex;align-items:center;justify-content:center;background:var(--cream);color:var(--ink);border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;-webkit-tap-highlight-color:transparent;transition:background-color .12s,transform .12s;user-select:none;-webkit-user-select:none}
+.btn:active,.btn.pressed{background:color-mix(in srgb,var(--cream) 72%,#6e6a63);transform:scale(.97)}
+
+/* On the photo, under the card. */
+.wm{font-weight:800;font-size:22vw;letter-spacing:-.06em;line-height:.85;margin:0;white-space:nowrap}
+.fixed-name{position:fixed;left:18px;top:0;pointer-events:none}
+.on-photo{z-index:1;color:var(--cream);text-shadow:0 2px 24px rgba(0,0,0,.25)}
+.intro{position:fixed;z-index:1;left:18px;right:18px;top:0;margin:0;color:var(--cream);text-shadow:0 1px 16px rgba(0,0,0,.45)}
+.intro>*{margin:0}
+.intro .who{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid color-mix(in srgb,var(--cream) 55%,transparent)}
+.intro .lead{font-size:18px;font-weight:500;line-height:1.3;letter-spacing:-.01em;margin-top:12px}
+.intro .more{font-size:14px;line-height:1.45;margin-top:6px;color:color-mix(in srgb,var(--cream) 85%,transparent)}
+.intro .labels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;text-shadow:none}
+.intro .labels .btn{justify-content:space-between;padding:0 16px;height:52px;border-radius:16px;font-size:21px;font-weight:800;letter-spacing:-.04em;text-transform:none;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.intro .labels .btn .ar{font-size:18px;font-weight:500}
+
+/* The card: just a sliver at the bottom at first. */
+.sheet{position:relative;z-index:2;margin-top:calc(100svh - 42px - env(safe-area-inset-bottom));min-height:100svh;border-radius:26px 26px 0 0;padding:10px 18px 130px;box-shadow:0 -20px 40px rgba(0,0,0,.25)}
+.sheet>.paper{position:absolute;inset:0;z-index:-1;background:var(--cream);border-radius:inherit;clip-path:inset(0 round 26px 26px 0 0)}
+.on-card{color:var(--ink)}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 18px}
+.slot{visibility:hidden;margin-bottom:22px}
+body.riding .slot{visibility:visible}
+body.riding .fixed-name{visibility:hidden}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lab{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;color:var(--cream);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;background:var(--cream)}
+.lab .ph{position:absolute;inset:0;background:center/cover;opacity:0;transition:opacity 1s linear}
+.lab .ph.on{opacity:1}
+.lab.stone::before{content:"";position:absolute;inset:0;z-index:1;background:var(--cream);mix-blend-mode:multiply;pointer-events:none}
+.lab::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(transparent 40%,rgba(0,0,0,.65))}
+.lab>h2,.lab>p{position:relative;z-index:2}
+.lab h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.04em}
+.lab p{margin:4px 0 0}
+/* Buttons on the card: dark, or outlined. */
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.row .btn{gap:10px;padding:14px 18px;border-radius:99px;font-size:11px}
+.btn.dark{background:var(--ink);color:var(--cream)}
+.btn.dark:active,.btn.dark.pressed{background:#55524d}
+.btn.line{background:transparent;box-shadow:inset 0 0 0 1px var(--ink)}
+.btn.line:active,.btn.line.pressed{background:color-mix(in srgb,var(--cream) 72%,#6e6a63)}
+
+/* About */
+.about{margin-top:56px;padding-top:28px;border-top:1px solid var(--line)}
+.about .me{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block;margin-bottom:22px}
+.eyebrow{color:var(--soft);margin:0 0 8px}
+.about h2{margin:0 0 14px;font-size:34px;font-weight:800;letter-spacing:-.045em;line-height:1}
+.about p:not(.cap){font-size:16px;line-height:1.55;margin:0 0 12px}
+
+/* What I make */
+.make{margin-top:56px;padding-top:28px;border-top:1px solid var(--line)}
+.big-title{margin:0 0 26px;font-size:15vw;font-weight:800;letter-spacing:-.06em;line-height:.9}
+.medium{padding:0 0 40px}
+.medium+.medium{padding-top:28px;border-top:1px solid var(--line)}
+.num{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--soft);margin-bottom:10px}
+.pic{display:block;position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden;background:var(--cream)}
+.pic .track{display:flex;height:100%;will-change:transform}
+.pic .track div{flex:0 0 100%;height:100%;background:center/cover}
+.pic[data-stone]::after{content:"";position:absolute;inset:0;background:var(--cream);mix-blend-mode:multiply;pointer-events:none}
+.medium h3{margin:18px 0 8px;font-size:32px;font-weight:800;letter-spacing:-.045em;line-height:1}
+.medium p{margin:0;font-size:16px;line-height:1.55}
+
+/* Big links + footer */
+.bigs{border-top:1px solid var(--line);margin-top:8px}
+.bigs a{display:block;padding:22px 0;border-bottom:1px solid var(--line)}
+.bigs span{display:block;font-size:17vw;font-weight:800;letter-spacing:-.06em;line-height:.9}
+.bigs small{display:block;margin-top:8px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.foot{display:flex;justify-content:space-between;padding:26px 0 0;font-size:12px;color:var(--soft)}
+
+/* Portfolio / About: pills top right first, then the bottom bar. */
+.top-pills{position:fixed;z-index:5;top:calc(14px + env(safe-area-inset-top, 34px));right:18px;display:flex;gap:8px;transition:opacity .35s}
+.top-pills .btn{padding:9px 15px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+body.scrolled .top-pills{opacity:0;pointer-events:none}
+.dock{position:fixed;z-index:6;left:12px;right:12px;bottom:calc(22px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;border-radius:22px;background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:transform .45s cubic-bezier(.2,.8,.2,1);transform:translateY(160%)}
+body.scrolled .dock{transform:none}
+.dock .btn{padding:14px 0;border-radius:15px;font-size:12px}
+</style>
+</head>
+<body>
+<canvas id="stage" aria-hidden="true"></canvas>
+<div id="fallback" hidden></div>
+<div class="shade" id="shade" aria-hidden="true"></div>
+<div class="floor" aria-hidden="true"></div>
+<nav class="top-pills"><a class="btn" href="portfolio.html">Portfolio</a><a class="btn" href="about.html">About</a></nav>
+
+<div class="wm fixed-name on-photo" aria-hidden="true">MANU</div>
+<div class="intro" id="intro">
+  <p class="who">River Manu Ruggeri</p>
+  <p class="lead">Artist working in fashion, textiles and photography.</p>
+  <p class="more">Used and discarded garments, taken apart and rebuilt into one-of-one pieces.</p>
+  <p class="labels">
+    <a class="btn" href="shop.html"><span><span class="flip-r">R</span>Rchive</span><span class="ar">→</span></a>
+    <a class="btn" href="rrgraphy.html"><span><span class="flip-r">R</span>Rgraphy</span><span class="ar">→</span></a>
+  </p>
+</div>
+
+<div class="sheet" id="sheet">
+  <div class="paper"><div class="wm fixed-name on-card" aria-hidden="true">MANU</div></div>
+  <div class="grab"></div>
+  <h1 class="wm slot on-card" id="slot">MANU</h1>
+  <div class="big">
+    <a class="lab stone" href="shop.html" data-photos="fashion-01,fashion-02,fashion-04"><h2><span class="flip-r">R</span>Rchive</h2><p class="cap">Clothing</p></a>
+    <a class="lab" href="rrgraphy.html" data-photos="photography-01,photography-02,photography-03"><h2><span class="flip-r">R</span>Rgraphy</h2><p class="cap">Photography</p></a>
+  </div>
+  <section class="about">
+    <img class="me" src="images/home/river.jpg" alt="River Manu Ruggeri wearing a reworked denim piece" loading="lazy">
+    <p class="cap eyebrow">About</p>
+    <h2>River Manu Ruggeri</h2>
+    <p>I’m an artist based in Florida whose work focuses on fashion, textiles, and photography. A large part of my process involves transforming used or discarded garments into new pieces through reconstruction, distressing, fabric manipulation, and experimentation with texture and material.</p>
+    <p>I aim to create work that feels raw, intentional, and honest rather than overly polished or perfect.</p>
+    <div class="row"><a class="btn dark" href="about.html">More about me <span>→</span></a><a class="btn line" href="portfolio.html">Portfolio <span>→</span></a></div>
+  </section>
+
+  <section class="make">
+    <h2 class="big-title">What I make</h2>
+    <article class="medium">
+      <span class="num">01</span>
+      <a class="pic" href="fashion-works.html" data-photos="fashion-01,fashion-02,fashion-03,fashion-04,fashion-05,fashion-06,fashion-07,fashion-08" data-stone></a>
+      <h3>Fashion &amp; Textiles</h3>
+      <p>Used and discarded garments taken apart and rebuilt through reconstruction, distressing and fabric manipulation. One-of-one pieces are available through <span class="flip-r">R</span>Rchive.</p>
+      <div class="row"><a class="btn dark" href="shop.html"><span><span class="flip-r">R</span>Rchive</span> <span>→</span></a><a class="btn line" href="fashion-works.html">Experimental Fashion <span>→</span></a></div>
+    </article>
+    <article class="medium">
+      <span class="num">02</span>
+      <a class="pic" href="photography.html" data-photos="photography-01,photography-02,photography-03,photography-04,photography-05,photography-06,photography-07,photography-08"></a>
+      <h3>Photography</h3>
+      <p>Fashion, portrait and object photography built around atmosphere, emotion and feeling. Shoots and commissions through <span class="flip-r">R</span>Rgraphy.</p>
+      <div class="row"><a class="btn dark" href="rrgraphy.html"><span><span class="flip-r">R</span>Rgraphy</span> <span>→</span></a><a class="btn line" href="photography.html">Photography <span>→</span></a></div>
+    </article>
+    <article class="medium">
+      <span class="num">03</span>
+      <a class="pic" href="conceptual-art.html" data-photos="conceptual-01,conceptual-02,conceptual-03,conceptual-04,conceptual-05,conceptual-06"></a>
+      <h3>Conceptual Art</h3>
+      <p>Projects that take clothing past wearing, where denim, layering and form become the idea itself.</p>
+      <div class="row"><a class="btn dark" href="conceptual-art.html">View projects <span>→</span></a></div>
+    </article>
+  </section>
+
+  <nav class="bigs">
+    <a href="portfolio.html"><span>Portfolio →</span><small>Fashion · Photography · Art</small></a>
+    <a href="about.html"><span>About →</span><small>Bio · Contact · Services</small></a>
+  </nav>
+  <footer class="foot"><span>© 2026 River Manu Ruggeri</span><a href="https://www.instagram.com/rrchive.manu/" target="_blank" rel="noopener">@rrchive.manu</a></footer>
+</div>
+
+<nav class="dock"><a class="btn" href="portfolio.html">Portfolio</a><a class="btn" href="about.html">About</a></nav>
+
+<script src="assets/ripple.js?v=20261117214319"></script>
+<script>
+// Same warp settings as the real homepage (index.html PAGE.ripple).
+startRipple({ canvas: document.getElementById("stage"), fallback: document.getElementById("fallback"),
+  image: "images/home-bg.jpg", tallImage: "images/about/about-hero.jpg",
+  ripple: { distortionX: 2, distortionY: 2, scale: 4.3, speed: 4, direction: 270,
+            mouseInteraction: true, mouseSensitivity: 50, brightness: 1.15, phoneStrength: 2.2, phoneAutoMotion: true } });
+
+// Only the card and the bar move the page. A finger anywhere else stays on
+// the photo and just plays with the warp.
+let dragOK = false;
+addEventListener("touchstart", e => { dragOK = !!e.target.closest(".sheet, .dock"); }, { passive: true });
+addEventListener("touchmove", e => { if (!dragOK) e.preventDefault(); }, { passive: false });
+// Grey while pressed (also on iPhones, where :active can be unreliable).
+document.querySelectorAll(".btn").forEach(b => {
+  const off = () => b.classList.remove("pressed");
+  b.addEventListener("touchstart", () => b.classList.add("pressed"), { passive: true });
+  ["touchend", "touchcancel", "touchmove"].forEach(t => b.addEventListener(t, off, { passive: true }));
+});
+
+const sheet = document.getElementById("sheet"), slot = document.getElementById("slot");
+const intro = document.getElementById("intro"), shade = document.getElementById("shade");
+const names = document.querySelectorAll(".fixed-name");
+const GAP = 22;                       // space between the intro and the top of the card
+let handover = 0;                     // how far you slide before MANU sits in its place on the card
+function measure() {
+  const cardTop = sheet.offsetTop, h = slot.offsetHeight;
+  const introY = cardTop - intro.offsetHeight - GAP;
+  const nameY = introY - h - 14;
+  intro.style.top = introY + "px";
+  names.forEach(n => n.style.top = nameY + "px");
+  handover = cardTop + slot.offsetTop - nameY;
+  update();
+}
+// Only small switches happen while scrolling; nothing is moved by code.
+function update() {
+  document.body.classList.toggle("riding", scrollY >= handover);
+  document.body.classList.toggle("scrolled", scrollY > 30);
+  document.body.classList.toggle("deep", scrollY > innerHeight * 0.75);
+  shade.style.opacity = 1 - Math.max(0, Math.min(1, scrollY / 260));
+}
+measure();
+document.fonts && document.fonts.ready.then(measure);
+addEventListener("resize", measure);
+addEventListener("scroll", update, { passive: true });
+
+// "What I make" photos slide sideways (1s, even speed), one after another,
+// only while on screen, like the computer version.
+document.querySelectorAll(".pic").forEach((pic, n) => {
+  const names = pic.dataset.photos.split(",");
+  const track = document.createElement("div"); track.className = "track";
+  [...names, names[0]].forEach(p => { const d = document.createElement("div"); d.style.backgroundImage = `url(images/home/${p}.jpg)`; track.append(d); });
+  pic.append(track);
+  let i = 0, timer, start;
+  const next = () => {
+    i++; track.style.transition = "transform 1s linear"; track.style.transform = `translateX(${-100 * i}%)`;
+    if (i === names.length) setTimeout(() => { track.style.transition = "none"; i = 0; track.style.transform = "translateX(0)"; }, 1050);
+  };
+  new IntersectionObserver(([e]) => {
+    clearTimeout(start); clearInterval(timer);
+    if (e.isIntersecting) start = setTimeout(() => { timer = setInterval(next, 3600); }, n * 1200);
+  }).observe(pic);
+});
+
+// The two label tiles fade through their photos, staggered.
+document.querySelectorAll(".lab").forEach((lab, n) => {
+  const ph = lab.dataset.photos.split(",").map(p => {
+    const d = document.createElement("div"); d.className = "ph";
+    d.style.backgroundImage = `url(images/home/${p}.jpg)`; lab.prepend(d); return d; });
+  let i = 0; ph[0].classList.add("on");
+  setTimeout(() => setInterval(() => { ph[i].classList.remove("on"); i = (i + 1) % ph.length; ph[i].classList.add("on"); }, 3600), n * 1200);
+});
+</script>
+</body>
+</html>
