@@ -17,6 +17,7 @@ Start a new chat with: "Continue the Manu website. Read HANDOFF.md and CLAUDE.md
 - One colour: stone off-white `--cream #e7e5e0` everywhere (warmer creams tried and rejected).
 
 ## Done recently (Nov 11–17)
+- iPhone homepage built and live (`home-phone.html`, see below).
 - Manu homepage scrolls to an About section (photo, bio, "What I make" with three sliding photo boxes, big Portfolio / About links). Portfolio + About are pill buttons top right. Homepage always opens at the top.
 - Hover photos on the label names: 2.8 s per photo, 1 s even slide; phones press-and-hold.
 - About page: stone white, narrower photo, bigger portrait slot, bigger text, services fixed.
@@ -26,7 +27,7 @@ Start a new chat with: "Continue the Manu website. Read HANDOFF.md and CLAUDE.md
 - Store research: the Playbook doc (10 ranked changes, checkout/payments, drops, mobile fixes).
 
 ## In progress / decisions open
-1. DONE 2026-11-17: **iPhone homepage** is now `home-phone.html` (River combined C + D + the warp photo; see CLAUDE.md "Latest status"). Old note: iPhone layout felt clunky. Four mock options were shown (mock pages in `_mock/a.html`–`d.html`) (A cover + list, B split screen, C index + bottom bar, D photo + card). Claude recommended A (D second). **Waiting on River to pick one.**
+1. **iPhone homepage: DONE and live (2026-11-17).** Phones get `home-phone.html` (index.html sends them there; `?desktop` shows the computer version). Design River chose: the warped photo full screen, MANU + short intro + ЯRchive / ЯRgraphy buttons on it, a stone card that slides up from the bottom (MANU moves onto it), Portfolio / About pills top right then a bar at the bottom, and below: tiles, About, What I make, big links, footer. Only the card scrolls the page; fingers on the photo play with the warp. Mock/sandbox: `_mock/e.html`. Details in CLAUDE.md "Latest status".
 2. **Payments:** River leaning to PayPal over Stripe. Fees are similar (Stripe card 2.9% + 30¢; PayPal card 2.99% + 49¢, PayPal/Venmo balance 3.49% + 49¢), no monthly fee either way. Option: offer both. **Waiting on River's choice**, then wire it into the Buy button (`buyLink` in assets/catalog.js) and update the Playbook.
 3. **Returns policy:** all sales final vs. final sale with measurements guaranteed (comment left in the Playbook).
 
@@ -43,4 +44,4 @@ Start a new chat with: "Continue the Manu website. Read HANDOFF.md and CLAUDE.md
 10. Own domain (e.g. ManuCollective), then Google product data and Instagram product tags
 
 ## Still waiting on River
-Prices and measurements for the 4 pieces, shipping price, returns choice, payment choice, iPhone homepage option, worn photos, titles/years/overviews for the two Conceptual Art projects, About portrait (IMG_5331.jpg), real photo-commission details, Archive photos, a Manu home-screen icon.
+Prices and measurements for the 4 pieces, shipping price, returns choice, payment choice, worn photos, titles/years/overviews for the two Conceptual Art projects, About portrait (IMG_5331.jpg), real photo-commission details, Archive photos, a Manu home-screen icon.
