@@ -34,15 +34,41 @@ html,body{background:#111}
 .dock{position:fixed;z-index:6;left:12px;right:12px;bottom:calc(22px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;border-radius:22px;background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .dock a{text-align:center;padding:14px 0;border-radius:15px;color:var(--cream);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
 .dock a:first-child{background:var(--cream);color:var(--ink)}
+/* Text under MANU on the photo; fades away as the card slides over it. */
+.tag{position:fixed;z-index:3;left:18px;right:18px;top:0;color:var(--cream);font-size:15px;line-height:1.35;margin:0;pointer-events:none;text-shadow:0 1px 14px rgba(0,0,0,.35)}
+.top-pills{position:fixed;z-index:5;top:48px;right:18px;display:flex;gap:8px;transition:opacity .35s}
+.top-pills a{border:1px solid rgba(231,229,224,.8);color:var(--cream);border-radius:99px;padding:8px 14px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(20,20,20,.15);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.switch{position:fixed;z-index:7;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:4px;background:rgba(20,20,20,.7);border-radius:99px;padding:4px}
+.switch a{color:var(--cream);font-size:11px;font-weight:600;padding:5px 10px;border-radius:99px}
+.switch a.on{background:var(--cream);color:var(--ink)}
+/* 1: the bar sits on the card's top edge */
+body.v1 .sheet{margin-top:calc(100svh - 120px - env(safe-area-inset-bottom))}
+body.v1 .top-pills{display:none}
+/* 2: bar comes up once you slide; pills top right before that */
+body.v2 .sheet{margin-top:calc(100svh - 44px)}
+body.v2 .dock{transition:transform .45s cubic-bezier(.2,.8,.2,1);transform:translateY(160%)}
+body.v2.scrolled .dock{transform:none}
+body.v2.scrolled .top-pills{opacity:0;pointer-events:none}
+body.v2 .bar{display:none}
+/* 3: small pills bottom right, text to the left */
+body.v3 .sheet{margin-top:calc(100svh - 44px)}
+body.v3 .top-pills{display:none}
+body.v3 .dock{left:auto;right:14px;bottom:calc(58px + env(safe-area-inset-bottom));grid-template-columns:auto auto;gap:6px;padding:5px;border-radius:16px}
+body.v3 .dock a{padding:9px 13px;border-radius:11px;font-size:10px}
+body.v3 .tag{right:190px}
 </style>
 <canvas id="stage" aria-hidden="true"></canvas>
 <div id="fallback" hidden></div>
+<nav class="switch"><a href="?v=1">1 Bar on card</a><a href="?v=2">2 Bar on scroll</a><a href="?v=3">3 Small bar</a></nav>
+<nav class="top-pills"><a href="#">Portfolio</a><a href="#">About</a></nav>
 <div class="bar"><span class="dots"><i></i><i></i><i></i></span></div>
 
 <div class="name" id="name" aria-hidden="true">
   <div class="wm on-photo">MANU</div>
   <div class="wm on-card">MANU</div>
 </div>
+
+<p class="tag" id="tag">Artist working in fashion, textiles and photography.</p>
 
 <div class="sheet" id="sheet"><div class="grab"></div>
   <h1 class="wm slot" id="slot">MANU</h1>
@@ -60,6 +86,11 @@ html,body{background:#111}
 
 <nav class="dock"><a href="#">Portfolio</a><a href="#">About</a></nav>
 
+<script>
+const V = new URLSearchParams(location.search).get("v") || "1";
+document.body.classList.add("v" + V);
+document.querySelectorAll(".switch a")[V - 1].classList.add("on");
+</script>
 <script src="../assets/ripple.js"></script>
 <script>
 // Same warp settings as the real homepage (index.html PAGE.ripple).
@@ -73,11 +104,14 @@ startRipple({ canvas: document.getElementById("stage"), fallback: document.getEl
 const nameEl = document.getElementById("name"), sheet = document.getElementById("sheet"), slot = document.getElementById("slot");
 const [onPhoto, onCard] = nameEl.children;
 const rest = sheet.querySelectorAll(".line, .big, .sec");
-const GAP = 12;                       // space between MANU and the top of the card
-let restY = 0, h = 0;
+const tag = document.getElementById("tag");
+const GAP = 16;                       // space between the text and the top of the card
+let restY = 0, h = 0, tagY = 0, tagH = 0;
 function measure() {
-  h = slot.offsetHeight;
-  restY = sheet.offsetTop - h - GAP;  // where MANU sits on the photo
+  h = slot.offsetHeight; tagH = tag.offsetHeight;
+  // Option 3: the text sits beside the small bar, above the card's edge.
+  tagY = sheet.offsetTop - tagH - GAP - (V === "3" ? 14 : 0);
+  restY = tagY - h - 8;               // where MANU sits on the photo
 }
 function place() {
   const cardTop = sheet.getBoundingClientRect().top;
@@ -86,6 +120,10 @@ function place() {
   const covered = Math.max(0, Math.min(h, y + h - cardTop));   // px of MANU over the card
   onPhoto.style.clipPath = `inset(0 0 ${covered}px 0)`;
   onCard.style.clipPath = `inset(${h - covered}px 0 0 0)`;
+  // The text under MANU fades as the card reaches it.
+  tag.style.transform = `translateY(${tagY}px)`;
+  tag.style.opacity = Math.max(0, Math.min(1, (cardTop - tagY) / (tagH + GAP)));
+  document.body.classList.toggle("scrolled", scrollY > 30);
   // The card's contents fade in as it starts to slide up.
   const fade = Math.max(0, Math.min(1, (scrollY - 20) / 90));
   for (const el of rest) el.style.opacity = fade;
