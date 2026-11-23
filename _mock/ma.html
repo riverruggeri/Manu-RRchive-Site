@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tracy Ma ideas – mock-ups (computer)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap">
+<style>
+/* Six ideas taken from Tracy Ma's principles, shown on River's site (computer size).
+   Numbers, prices and the sample writing are placeholders, marked as such. */
+:root{--cream:#e7e5e0;--ink:#141414;--soft:rgba(20,20,20,.56);--line:rgba(20,20,20,.16);
+  --deep:color-mix(in srgb,var(--cream) 88%,#6b5a3e);--label:color-mix(in srgb,var(--cream) 55%,#ffffff)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:"Schibsted Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.flip-r{display:inline-block;transform:scaleX(-1);margin-right:-.035em}
+.cap{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.soft{color:var(--soft)}
+.sample{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:#141414;color:var(--cream);padding:3px 7px;border-radius:4px;vertical-align:middle}
+.denim{background:url(../images/denim-texture.jpg) center/420px;-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* Each idea is one computer screen. */
+section{position:relative;min-height:100vh;padding:96px 64px 56px;border-bottom:1px solid var(--line);overflow:hidden}
+.idea{position:absolute;left:24px;top:20px;display:flex;gap:10px;align-items:center;z-index:5}
+.idea b{background:var(--ink);color:var(--cream);border-radius:99px;padding:6px 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.idea span{font-size:13px;color:var(--soft)}
+.head{position:absolute;right:28px;top:22px;display:flex;gap:26px;font-size:13px;font-weight:500;z-index:5}
+.head .logo{font-weight:800;font-size:19px;letter-spacing:-.04em;margin-right:12px}
+.head .on{text-decoration:underline;text-underline-offset:5px}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--cream);border-radius:99px;padding:15px 22px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.btn.line{background:none;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+
+/* 1 — Care label + hang tag */
+.s1{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.s1 .figure{position:relative;height:78vh;display:flex;align-items:center;justify-content:center}
+.s1 .figure img{height:100%;filter:drop-shadow(0 30px 40px rgba(0,0,0,.18))}
+.tag{position:absolute;right:6%;top:16%;width:150px;background:#d9c9a8;color:#2a241a;border-radius:6px 6px 8px 8px;padding:34px 16px 18px;transform:rotate(8deg);box-shadow:0 14px 30px rgba(0,0,0,.18);clip-path:polygon(22% 0,78% 0,100% 12%,100% 100%,0 100%,0 12%)}
+.tag::before{content:"";position:absolute;left:50%;top:12px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--cream);box-shadow:inset 0 0 0 2px #b9a780}
+.tag::after{content:"";position:absolute;left:50%;top:-80px;width:1px;height:94px;background:#6a5f4b;transform:rotate(-14deg);transform-origin:bottom}
+.tag .no{font-size:44px;font-weight:800;letter-spacing:-.05em;line-height:1;margin:6px 0 2px}
+.tag .cap{font-size:9px}
+.tag hr{border:0;border-top:1px dashed rgba(42,36,26,.4);margin:10px 0}
+.s1 h1{margin:0 0 6px;font-size:52px;font-weight:800;letter-spacing:-.05em;line-height:.95}
+.s1 .meta{display:flex;gap:18px;margin:12px 0 22px}
+.s1 .price{font-size:26px;font-weight:600;margin:0 0 22px}
+.care{position:relative;width:360px;margin-top:30px;background:var(--label);padding:26px 26px 22px;border-radius:2px;box-shadow:0 1px 0 rgba(0,0,0,.05),0 12px 28px rgba(0,0,0,.08);font-size:12.5px}
+.care::before{content:"";position:absolute;inset:7px;border:1.5px dashed rgba(20,20,20,.35);pointer-events:none}
+.care::after{content:"";position:absolute;left:0;right:0;top:-10px;height:12px;background:linear-gradient(var(--label),color-mix(in srgb,var(--label) 80%,#000));clip-path:polygon(0 100%,4% 0,96% 0,100% 100%)}
+.care .brand{text-align:center;font-weight:800;font-size:22px;letter-spacing:-.04em;margin-bottom:2px}
+.care .one{text-align:center;margin-bottom:14px}
+.care table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.care td{padding:6px 0;border-top:1px solid rgba(20,20,20,.12)}
+.care td:not(:first-child){text-align:right}
+.care .fits{margin:14px 0 8px;font-size:14px;font-weight:600}
+.care .wash{display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid rgba(20,20,20,.12)}
+
+/* 2 — Stitched marks + needle back to top */
+.s2 h2{margin:0 0 8px;font-size:64px;font-weight:800;letter-spacing:-.055em}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:30px;max-width:1160px}
+.card .pic{position:relative;aspect-ratio:3/4;background:color-mix(in srgb,var(--cream) 94%,#000);border-radius:6px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.card .pic img{height:94%;max-width:100%;object-fit:contain}
+.card h3{margin:12px 0 2px;font-size:17px;font-weight:600;letter-spacing:-.02em}
+.seen{position:absolute;top:14px;right:14px;width:54px;height:54px}
+.seen-note{position:absolute;top:74px;right:14px;font-size:10px}
+.needle{position:absolute;right:60px;bottom:60px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.thread{position:absolute;right:79px;bottom:150px;width:2px;height:62vh;background:repeating-linear-gradient(to top,var(--ink) 0 8px,transparent 8px 13px)}
+.callout{position:absolute;max-width:240px;font-size:13px;line-height:1.45;background:var(--ink);color:var(--cream);padding:12px 14px;border-radius:10px}
+.callout::after{content:"";position:absolute;width:12px;height:12px;background:var(--ink);transform:rotate(45deg)}
+
+/* 3 — Drop as a small magazine */
+.s3{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:start}
+.drop-title{font-size:13.5vw;font-weight:800;letter-spacing:-.07em;line-height:.8;margin:6px 0 14px}
+.s3 .dek{font-size:20px;line-height:1.4;max-width:30em;margin:18px 0}
+.s3 .facts{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;font-size:14px;margin:18px 0 24px;padding-top:16px;border-top:1px solid var(--line)}
+.ba{position:relative;aspect-ratio:4/5;max-height:74vh;border-radius:10px;overflow:hidden}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba .before{filter:grayscale(1) contrast(.9) brightness(1.05);clip-path:inset(0 50% 0 0)}
+.ba .bar{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--cream)}
+.ba .knob{position:absolute;top:50%;left:50%;width:46px;height:46px;margin:-23px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.ba .lb{position:absolute;bottom:16px;color:var(--cream);text-shadow:0 1px 10px rgba(0,0,0,.6)}
+.strip{display:flex;gap:14px;margin-top:22px}
+.strip div{flex:1;text-align:center}
+.strip img{height:110px}
+.strip .cap{display:block;margin-top:6px;font-size:9.5px}
+
+/* 4 — Type as the picture */
+.s4{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:center}
+.typebox{aspect-ratio:4/5;max-height:78vh;border-radius:10px;background:var(--ink);display:flex;flex-direction:column;justify-content:space-between;padding:28px;overflow:hidden}
+.typebox .big{font-size:11.5vw;font-weight:800;letter-spacing:-.07em;line-height:.78}
+.typebox .cap{color:var(--cream)}
+.sold{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}
+.sold .pic{aspect-ratio:3/4;border-radius:6px;background:var(--deep);display:flex;align-items:center;justify-content:center;flex-direction:column}
+.sold .pic b{font-size:64px;letter-spacing:-.06em;line-height:.9}
+
+/* 5 — Your voice */
+.s5{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.s5 .photos{display:grid;grid-template-columns:1.3fr 1fr;gap:12px;height:76vh}
+.s5 .photos img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.s5 .photos .stack{display:grid;grid-template-rows:1fr 1fr;gap:12px;min-height:0}
+.voice{font-size:24px;line-height:1.42;letter-spacing:-.01em;max-width:24em}
+.voice p{margin:0 0 16px}
+.compare{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;line-height:1.5;color:var(--soft)}
+
+/* 6 — Plain mode switch */
+.s6{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.pane{position:relative;border-radius:12px;overflow:hidden;height:72vh;background:var(--deep)}
+.pane img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pane .label{position:absolute;left:18px;top:16px;color:var(--cream);text-shadow:0 1px 10px rgba(0,0,0,.7);z-index:2}
+.pane .wm{position:absolute;left:22px;bottom:18px;color:var(--cream);font-size:96px;font-weight:800;letter-spacing:-.06em;line-height:.8}
+.fx .tilted{transform:perspective(900px) rotateY(-8deg) rotateX(4deg) scale(.86);border-radius:10px;box-shadow:0 40px 60px rgba(0,0,0,.35)}
+.fx .ripple{position:absolute;inset:0;background:radial-gradient(circle at 60% 45%,transparent 0 60px,rgba(255,255,255,.08) 62px 64px,transparent 66px 100px,rgba(255,255,255,.07) 102px 104px,transparent 106px)}
+.switch{position:absolute;right:20px;bottom:20px;display:flex;align-items:center;gap:10px;background:var(--cream);color:var(--ink);border-radius:99px;padding:8px 8px 8px 16px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.switch i{width:44px;height:26px;border-radius:99px;background:var(--ink);position:relative}
+.switch i::after{content:"";position:absolute;top:3px;left:21px;width:20px;height:20px;border-radius:50%;background:var(--cream)}
+.plain .switch i{background:#b9b6b0}.plain .switch i::after{left:3px}
+.why{grid-column:1/-1;display:flex;gap:40px;font-size:15px;line-height:1.5}
+.why div{flex:1}
+</style></head><body>
+
+<!-- ============ 1 ============ -->
+<section class="s1" id="i1">
+  <div class="idea"><b>Idea 1</b><span>Measurements as a sewn-in care label, price and number on a hang tag</span></div>
+  <nav class="head"><span class="logo"><span class="flip-r">R</span>Rchive</span><span class="on">Current Catalog</span><span>Archive</span><span>Commissions</span></nav>
+  <div class="figure">
+    <img src="../images/shop/distressed-denim-jeans-01.webp" alt="">
+    <div class="tag"><div class="cap">Drop 01</div><div class="no">No.03</div><div class="cap">of 04 · One of one</div><hr><div class="cap">Price</div><div style="font-size:22px;font-weight:800;margin-top:2px">$ —</div></div>
+  </div>
+  <div>
+    <p class="cap soft">Bottoms · Drop 01 · No. 03</p>
+    <h1>Distressed Denim Jeans</h1>
+    <p class="price">$ — <span class="sample">your price</span></p>
+    <a class="btn" href="#">Buy · one available <span>→</span></a>
+    <div class="care">
+      <div class="brand"><span class="flip-r">R</span>Rchive</div>
+      <div class="one cap soft">Reworked by hand · One of one</div>
+      <div class="fits">Fits like a 32 waist, relaxed <span class="sample">sample</span></div>
+      <table>
+        <tr><td class="soft">Measured flat</td><td class="cap soft">in</td><td class="cap soft">cm</td></tr>
+        <tr><td>Waist</td><td>16.0</td><td>40.6</td></tr>
+        <tr><td>Rise</td><td>12.0</td><td>30.5</td></tr>
+        <tr><td>Inseam</td><td>31.5</td><td>80.0</td></tr>
+        <tr><td>Leg opening</td><td>11.0</td><td>27.9</td></tr>
+      </table>
+      <div class="wash cap soft"><span>Cold wash, inside out</span><span>Hang dry</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="s2" id="i2">
+  <div class="idea"><b>Idea 2</b><span>Pieces you've already looked at get a stitched mark · a needle and thread takes you back up</span></div>
+  <nav class="head"><span class="logo"><span class="flip-r">R</span>Rchive</span><span class="on">Current Catalog</span><span>Archive</span><span>Commissions</span></nav>
+  <p class="cap soft">Bottoms</p>
+  <h2 class="denim">Current Catalog</h2>
+  <div class="grid">
+    <a class="card" href="#"><div class="pic"><img src="../images/shop/distressed-denim-jeans-01.webp" alt="">
+      <svg class="seen" viewBox="0 0 54 54"><g fill="none" stroke="#141414" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="6 5"><path d="M10 10 L44 44"/><path d="M44 10 L10 44"/></g><circle cx="27" cy="27" r="25" fill="none" stroke="#141414" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/></svg>
+      <span class="seen-note cap soft">Seen</span></div><h3>Distressed Denim Jeans</h3><p class="soft" style="margin:0">$ —</p></a>
+    <a class="card" href="#"><div class="pic"><img src="../images/shop/reworked-denim-01.webp" alt="">
+      <svg class="seen" viewBox="0 0 54 54"><g fill="none" stroke="#141414" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="6 5"><path d="M10 10 L44 44"/><path d="M44 10 L10 44"/></g><circle cx="27" cy="27" r="25" fill="none" stroke="#141414" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/></svg>
+      <span class="seen-note cap soft">Seen</span></div><h3>Reworked Denim</h3><p class="soft" style="margin:0">$ —</p></a>
+    <a class="card" href="#"><div class="pic"><img src="../images/shop/reworked-denim-phase-01-01.webp" alt=""></div><h3>Reworked Denim (Phase 01/02)</h3><p class="soft" style="margin:0">$ —</p></a>
+    <a class="card" href="#"><div class="pic"><img src="../images/shop/denim-patchwork-vest-01.webp" alt=""></div><h3>Denim Patchwork Vest</h3><p class="soft" style="margin:0">$ —</p></a>
+  </div>
+  <div class="thread"></div>
+  <div class="needle">
+    <svg width="40" height="90" viewBox="0 0 40 90"><path d="M20 4 L24 70 Q20 88 16 70 Z" fill="#141414"/><ellipse cx="20" cy="18" rx="2.2" ry="6" fill="var(--cream)"/></svg>
+    <span class="cap">Back to top</span>
+  </div>
+  <div class="callout" style="left:64px;bottom:60px">Like Tracy Ma's draw-on marks for visited sections: the catalog remembers what you've opened and sews an X on it, stitch by stitch.</div>
+  <div class="callout" style="right:130px;bottom:150px">The needle pulls a dashed thread up the page as it takes you back to the top, like her squirrel that runs back up.</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="s3" id="i3">
+  <div class="idea"><b>Idea 3</b><span>Each drop gets its own page, like a small magazine, then moves into the Archive with its date</span></div>
+  <nav class="head"><span class="logo"><span class="flip-r">R</span>Rchive</span><span>Current Catalog</span><span class="on">Drop 01</span><span>Archive</span></nav>
+  <div>
+    <p class="cap soft">November 2026 · 4 pieces · Florida</p>
+    <div class="drop-title denim">DROP<br>01</div>
+    <p class="dek">Four pairs of jeans nobody wanted, taken apart and put back together as something else. <span class="sample">sample text</span></p>
+    <div class="facts">
+      <span class="soft">Material</span><span>Thrifted denim, 4 donor pairs <span class="sample">sample</span></span>
+      <span class="soft">Made</span><span>Sept – Nov 2026</span>
+      <span class="soft">Released</span><span>Nov 28 2026, 12pm ET</span>
+    </div>
+    <a class="btn" href="#">Shop Drop 01 <span>→</span></a>
+    <a class="btn line" href="#" style="margin-left:8px">Join the drop list</a>
+    <div class="strip">
+      <div><img src="../images/shop/distressed-denim-jeans-01.webp" alt=""><span class="cap soft">01 · Distressed</span></div>
+      <div><img src="../images/shop/reworked-denim-01.webp" alt=""><span class="cap soft">02 · Reworked</span></div>
+      <div><img src="../images/shop/reworked-denim-phase-01-01.webp" alt=""><span class="cap soft">03 · Phase 01/02</span></div>
+      <div><img src="../images/shop/denim-patchwork-vest-01.webp" alt=""><span class="cap soft">04 · Vest</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="ba">
+      <img src="../images/fashion-works/distressed-denim-jeans-02.jpg" alt="">
+      <img class="before" src="../images/fashion-works/distressed-denim-jeans-02.jpg" alt="">
+      <div class="bar"></div><div class="knob">↔</div>
+      <span class="lb cap" style="left:16px">Before <span class="sample" style="margin-left:6px">your before photo</span></span>
+      <span class="lb cap" style="right:16px">After</span>
+    </div>
+    <p class="soft" style="font-size:13px;margin-top:10px">Drag the line to see where each piece started. When the next drop comes out, this whole page moves into the Archive as “Drop 01 · November 2026”.</p>
+  </div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="s4" id="i4">
+  <div class="idea"><b>Idea 4</b><span>Where there's no photo yet, the title becomes the picture</span></div>
+  <nav class="head"><span class="logo">Manu</span><span>Portfolio</span><span class="on">Conceptual Art</span><span>About</span></nav>
+  <div class="typebox">
+    <span class="cap">Conceptual Art · 2026 · Photos coming</span>
+    <div class="big denim">LAY<br>ERED<br>DEN<br>IM</div>
+  </div>
+  <div>
+    <p class="cap soft">Project 02</p>
+    <h2 style="margin:0 0 14px;font-size:52px;font-weight:800;letter-spacing:-.05em;line-height:.95">Layered Denim</h2>
+    <p style="font-size:18px;line-height:1.5;max-width:28em">Instead of a grey empty box, the project's name fills the frame in your denim, in the same spot the photo will go. It's the trick Tracy Ma used on covers when there was no good image: the type <em>is</em> the image.</p>
+    <p class="cap soft" style="margin-top:30px">Same idea in the Archive, for sold pieces without photos</p>
+    <div class="sold">
+      <div class="pic"><b class="denim">SOLD</b><span class="cap soft" style="margin-top:10px">No. 01 · Drop 00</span></div>
+      <div class="pic" style="background:var(--ink);color:var(--cream)"><b>SOLD</b><span class="cap" style="margin-top:10px;opacity:.7">Vest · 2025</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="s5" id="i5">
+  <div class="idea"><b>Idea 5</b><span>Project write-ups in your own voice: short, plain, like telling a friend</span></div>
+  <nav class="head"><span class="logo">Manu</span><span>Portfolio</span><span class="on">Conceptual Art</span><span>About</span></nav>
+  <div class="photos">
+    <img src="../images/conceptual-art/trailing-denim-01.jpg" alt="">
+    <div class="stack"><img src="../images/conceptual-art/trailing-denim-02.jpg" alt=""><img src="../images/conceptual-art/trailing-denim-03.jpg" alt=""></div>
+  </div>
+  <div>
+    <p class="cap soft">Conceptual Art · Project 01 · 2026</p>
+    <h2 style="margin:0 0 20px;font-size:52px;font-weight:800;letter-spacing:-.05em;line-height:.95">Trailing Denim</h2>
+    <div class="voice">
+      <p>I wanted a pair of jeans that you couldn't really walk away from. The train is every scrap left over from the last year, sewn end to end until it ran out.</p>
+      <p>It drags, it picks things up, it gets heavier. That's the point. <span class="sample">sample, in your words</span></p>
+    </div>
+    <div class="compare"><b style="color:var(--ink)">Instead of:</b> “This project explores the relationship between garment and space through an extended textile train constructed from reclaimed denim.” Both work, but the first sounds like you and the second sounds like a wall label.</div>
+  </div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="s6" id="i6">
+  <div class="idea"><b>Idea 6</b><span>A small “Motion” switch: turn the moving effects off for a calm, plain version</span></div>
+  <div class="pane fx" style="margin-top:6px">
+    <svg width="0" height="0" style="position:absolute"><filter id="warp"><feTurbulence type="fractalNoise" baseFrequency="0.006 0.012" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="46"/></filter></svg>
+    <img src="../images/home-bg.jpg" alt="" style="filter:url(#warp);transform:scale(1.06)">
+    <span class="label cap">Motion on · warp, tilt, stitches, sliding words</span>
+    <span class="wm">MANU</span>
+    <span class="switch">Motion <i></i></span>
+  </div>
+  <div class="pane plain" style="margin-top:6px">
+    <img src="../images/home-bg.jpg" alt="">
+    <span class="label cap">Motion off · same site, everything still</span>
+    <span class="wm">MANU</span>
+    <span class="switch">Motion <i></i></span>
+  </div>
+  <div class="why">
+    <div><b>Why:</b> Tracy Ma's royal wedding page asked readers if they wanted to browse without the art direction, and let them switch it off. It's a little wink, and it doesn't take itself too seriously.</div>
+    <div><b>Also useful:</b> some people get dizzy from moving pages, and older phones run smoother without effects. The switch would sit in the footer and remember the choice.</div>
+  </div>
+</section>
+<script>
+// Drag the before/after line (idea 3).
+const ba = document.querySelector(".ba"), before = ba.querySelector(".before"), bar = ba.querySelector(".bar"), knob = ba.querySelector(".knob");
+const set = x => { const r = ba.getBoundingClientRect(), f = Math.min(1, Math.max(0, (x - r.left) / r.width));
+  before.style.clipPath = `inset(0 ${100 - f * 100}% 0 0)`; bar.style.left = knob.style.left = f * 100 + "%"; };
+let down = false;
+ba.addEventListener("pointerdown", e => { down = true; ba.setPointerCapture(e.pointerId); set(e.clientX); });
+ba.addEventListener("pointermove", e => down && set(e.clientX));
+ba.addEventListener("pointerup", () => down = false);
+ba.style.cursor = "ew-resize"; ba.style.touchAction = "pan-y";
+</script>
+</body></html>
