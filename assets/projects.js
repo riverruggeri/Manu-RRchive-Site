@@ -40,6 +40,8 @@
     const photos = p.photos || [];
     const el = document.createElement("article");
     el.className = "project";
+    // An id from the title, so links like fashion-works.html#denim-patchwork-vest land on it.
+    if (p.title) el.id = p.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     el.innerHTML = `
       <div class="info">
         <span class="year sq">${esc(p.year || "")}</span>
@@ -328,3 +330,9 @@
   }
   remeasure();
 })();
+
+// Arriving with #project-name: go straight to that project once the page is laid out.
+if (location.hash.length > 1) addEventListener("load", () => {
+  const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (el) setTimeout(() => el.scrollIntoView({ block: "center" }), 60);
+});

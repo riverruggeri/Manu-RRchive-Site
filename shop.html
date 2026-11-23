@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261122231242">
+<link rel="stylesheet" href="assets/site.css?v=20261122231943">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -17,7 +17,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#e7e5e0">
-<link rel="stylesheet" href="assets/shop.css?v=20261122231242">
+<link rel="stylesheet" href="assets/shop.css?v=20261122231943">
 </head>
 <body class="shop long over-hero">
 
@@ -40,8 +40,8 @@
   <p class="to-archive label"><a href="archive.html">See past pieces in the Archive →</a></p>
 </main>
 
-<script src="assets/site.js?v=20261122231242"></script>
-<script src="assets/catalog.js?v=20261122231242"></script>
+<script src="assets/site.js?v=20261122231943"></script>
+<script src="assets/catalog.js?v=20261122231943"></script>
 <script>
 const PAGE = {
   // Big words sliding sideways under the slideshow ("" row = none; SITE.effects.drift switches all off)
@@ -60,17 +60,25 @@ const PAGE = {
     { category: "accessories", title: "Accessories", empty: "More coming soon" }
   ],
   note: "One-of-one pieces, reworked from what already exists. Each piece is made once; when it sells, it's gone.",
-  emptyText: "Nothing in the catalog right now. New pieces are on the way."
+  emptyText: "Nothing in the catalog right now. New pieces are on the way.",
+  // Shown instead of the rows while nothing is for sale yet (River, 2026-11-22)
+  firstDrop: { title: "First drop coming soon", text: "One-of-one pieces, released a few at a time." },
+  // The row of past pieces that are NOT for sale (status "portfolio" in catalog.js)
+  portfolio: { title: "Fashion Portfolio", badge: "Not for sale",
+    text: "Past pieces, kept or gifted. They're here to show the work, not to sell.",
+    link: { label: "See the full portfolio", href: "fashion-works.html" } }
 };
 
 const statusText = { available: "1 of 1", reserved: "Reserved", sold: "Sold" };
 const priceOf = p => p.status === "sold" ? "Sold" : (p.price || "Price on request");
 const img = name => "images/shop/" + name;
 
-const avail = CATALOG.filter(p => p.status !== "sold");
+const avail = CATALOG.filter(p => p.status === "available" || p.status === "reserved");
 const sold = CATALOG.filter(p => p.status === "sold");
-document.getElementById("note").textContent =
-  `${avail.length} ${avail.length === 1 ? "piece" : "pieces"} available. ${PAGE.note}`;
+const portfolio = CATALOG.filter(p => p.status === "portfolio");
+document.getElementById("note").textContent = avail.length
+  ? `${avail.length} ${avail.length === 1 ? "piece" : "pieces"} available. ${PAGE.note}`
+  : `Nothing for sale yet. ${PAGE.note}`;
 
 function card(p) {
   const [a, b] = p.photos || [];
@@ -92,20 +100,65 @@ const known = PAGE.rows.map(r => r.category);
 const other = avail.filter(p => !known.includes(p.category));
 if (other.length) rows.push({ title: "More", items: other });
 
-document.getElementById("rails").innerHTML = rows.map((r, i) => `
+let railN = 0;   // rails are numbered in page order (the arrows use it)
+const arrowsHTML = title => {
+  const i = railN;
+  return `<div class="rail-arrows">
+        <button type="button" class="rail-arrow" data-rail="${i}" data-dir="-1" aria-label="Scroll ${esc(title)} left">←</button>
+        <button type="button" class="rail-arrow" data-rail="${i}" data-dir="1" aria-label="Scroll ${esc(title)} right">→</button>
+      </div>`;
+};
+const railBlock = r => {
+  const html = `
   <section class="rail-block">
     <header class="rail-head">
       <h2>${esc(r.title)} <span class="soft">${r.items.length || ""}</span></h2>
-      <div class="rail-arrows">
-        <button type="button" class="rail-arrow" data-rail="${i}" data-dir="-1" aria-label="Scroll ${esc(r.title)} left">←</button>
-        <button type="button" class="rail-arrow" data-rail="${i}" data-dir="1" aria-label="Scroll ${esc(r.title)} right">→</button>
-      </div>
+      ${arrowsHTML(r.title)}
     </header>
-    <div class="rail" id="rail-${i}">
+    <div class="rail" id="rail-${railN}">
       ${r.items.length ? r.items.map(card).join("") :
         `<div class="piece coming"><div class="pic"><span class="label soft">${esc(r.empty || "More coming soon")}</span></div></div>`}
     </div>
-  </section>`).join("");
+  </section>`;
+  railN++;
+  return html;
+};
+
+// Not for sale: a portfolio card opens its project, shows no price, and is stamped.
+function portfolioCard(p) {
+  const [a, b] = p.photos || [];
+  return `<a class="piece is-portfolio" href="${esc(p.portfolioLink || PAGE.portfolio.link.href)}">
+    <div class="pic" data-float="${40 + (p.id.length % 3) * 22}">
+      ${a ? `<img class="main" src="${esc(img(a))}" alt="${esc(p.name)}" loading="lazy">` : ""}
+      ${b ? `<img class="alt" src="${esc(img(b))}" alt="" loading="lazy">` : ""}
+      <span class="nfs-stamp label">${esc(PAGE.portfolio.badge)}</span>
+    </div>
+    <div class="meta label">
+      <span class="name">${esc(p.name)}</span>
+      <span class="soft">View project →</span>
+    </div>
+  </a>`;
+}
+const P = PAGE.portfolio;
+const portfolioHTML = portfolio.length ? (() => {
+  const html = `
+  <section class="rail-block portfolio-block" aria-label="${esc(P.title)}, not for sale">
+    <header class="rail-head">
+      <h2>${esc(P.title)} <span class="nfs-badge">${esc(P.badge)}</span></h2>
+      ${arrowsHTML(P.title)}
+    </header>
+    <p class="portfolio-note label soft">${esc(P.text)} <a href="${esc(P.link.href)}">${esc(P.link.label)} →</a></p>
+    <div class="rail" id="rail-${railN}">${portfolio.map(portfolioCard).join("")}</div>
+  </section>`;
+  railN++;
+  return html;
+})() : "";
+
+document.getElementById("rails").innerHTML =
+  (avail.length ? rows.map(railBlock).join("")
+    : `<div class="first-drop"><p class="fd-title">${esc(PAGE.firstDrop.title)}</p>
+         <p class="label soft">${esc(PAGE.firstDrop.text)} <a href="https://www.instagram.com/${esc(SITE.contact.instagram)}/" target="_blank" rel="noopener">Follow @${esc(SITE.contact.instagram)} for the date →</a></p></div>`)
+  + portfolioHTML;
 
 // Arrows: slide one card at a time; hide them when a row doesn't overflow.
 document.querySelectorAll(".rail").forEach((rail, i) => {

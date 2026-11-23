@@ -153,6 +153,38 @@ body.shop::before { transition: opacity 0.3s ease; }
   border: 1px dashed var(--line); border-radius: 2px;
 }
 
+/* While nothing is for sale (River, 2026-11-22) */
+.first-drop {
+  border: 1px dashed var(--line); border-radius: 4px;
+  padding: clamp(40px, 7vw, 90px) clamp(20px, 4vw, 48px); text-align: center;
+}
+.first-drop .fd-title { margin: 0 0 10px; font-size: clamp(28px, 4.2vw, 56px); font-weight: 800; letter-spacing: -0.045em; line-height: 1; }
+.first-drop p.label { margin: 0; }
+.first-drop a, .portfolio-note a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+.first-drop a:hover, .portfolio-note a:hover { border-color: var(--ink); }
+
+/* Fashion Portfolio row: past pieces, NOT for sale (River, 2026-11-22).
+   Set apart from the shop: its own panel, a "Not for sale" badge, a stamp
+   on every photo, and no prices. */
+.portfolio-block {
+  margin-top: clamp(56px, 7vw, 96px);
+  padding: clamp(20px, 2.6vw, 32px);
+  background: color-mix(in srgb, var(--cream) 92%, #6b5a3e);
+  border-radius: 6px;
+}
+.nfs-badge {
+  display: inline-block; margin-left: 10px; padding: 4px 9px; border-radius: 99px;
+  border: 1px solid var(--ink); font-size: 10px; letter-spacing: 0.14em; vertical-align: 2px;
+}
+.portfolio-note { margin: -6px 0 18px; max-width: 60ch; line-height: 1.5; }
+.nfs-stamp {
+  position: absolute; left: 10px; top: 10px; z-index: 2;
+  padding: 5px 9px; border-radius: 99px; font-size: 10px; letter-spacing: 0.12em;
+  background: color-mix(in srgb, var(--cream) 88%, transparent); color: var(--ink);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.portfolio-block .piece .pic { background: color-mix(in srgb, var(--cream) 82%, #6b5a3e); }
+
 /* Grid of pieces */
 .grid {
   display: grid;

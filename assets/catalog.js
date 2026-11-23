@@ -13,7 +13,7 @@
      name: "Piece Name",
      category: "bottoms",              // which row in the shop: "bottoms", "tops" or "accessories"
      price: "",                        // e.g. "$320". Leave "" to show "Price on request"
-     status: "available",              // "available", "reserved" or "sold"
+     status: "available",              // "available", "reserved", "sold" or "portfolio"
      size: "",                         // e.g. "Fits 30–32 waist"
      photos: ["piece-name-01.webp", "piece-name-02.webp"],
      description: `A few sentences about the piece.
@@ -24,6 +24,12 @@
      buyLink: ""                       // a Stripe payment link, once set up. Leave "" to have
                                        // the button email you about the piece instead.
    },
+
+   status "portfolio" = NOT for sale (River, 2026-11-22). The piece shows in
+   the "Fashion Portfolio" row under the catalog, marked "Not for sale",
+   and opens its project on the Experimental Fashion page (portfolioLink).
+   The four pieces below are placeholders from the portfolio until the
+   first real drop.
 
    When a piece sells, change its status to "sold". It leaves the
    Current Catalog and moves to the Archive (archive.html). You can
@@ -36,7 +42,8 @@ window.CATALOG = [
     name: "Distressed Denim Jeans",
     category: "bottoms",
     price: "",
-    status: "available",
+    status: "portfolio",
+    portfolioLink: "fashion-works.html#distressed-denim-jeans",
     size: "",
     photos: ["distressed-denim-jeans-01.webp", "distressed-denim-jeans-02.webp", "distressed-denim-jeans-03.webp", "distressed-denim-jeans-04.webp"],
     description: `One of one. Wide-leg denim reworked by hand, with heavy shredding across the front and down the side panels.`,
@@ -49,7 +56,8 @@ window.CATALOG = [
     name: "Reworked Denim",
     category: "bottoms",
     price: "",
-    status: "available",
+    status: "portfolio",
+    portfolioLink: "fashion-works.html#reworked-denim",
     size: "",
     photos: ["reworked-denim-01.webp", "reworked-denim-02.webp", "reworked-denim-03.webp", "reworked-denim-04.webp"],
     description: `One of one. Wide-leg jeans rebuilt with panels, pockets and patches cut from other pairs.`,
@@ -62,7 +70,8 @@ window.CATALOG = [
     name: "Reworked Denim (Phase 01/02)",
     category: "bottoms",
     price: "",
-    status: "available",
+    status: "portfolio",
+    portfolioLink: "fashion-works.html#reworked-denim-phase-01-02",
     size: "",
     photos: ["reworked-denim-phase-01-01.webp", "reworked-denim-phase-01-02.webp", "reworked-denim-phase-01-03.webp"],
     description: `One of one. Wide-leg jeans opened up with darker denim panels set into the sides.`,
@@ -75,7 +84,8 @@ window.CATALOG = [
     name: "Denim Patchwork Vest",
     category: "tops",
     price: "",
-    status: "available",
+    status: "portfolio",
+    portfolioLink: "fashion-works.html#denim-patchwork-vest",
     size: "",
     photos: ["denim-patchwork-vest-01.webp", "denim-patchwork-vest-02.webp", "denim-patchwork-vest-03.webp", "denim-patchwork-vest-04.webp"],
     description: `One of one. A cropped vest pieced together from pockets, flies and waistbands of old jeans, finished with vintage patches.`,
