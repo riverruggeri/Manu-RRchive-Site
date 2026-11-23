@@ -41,12 +41,18 @@
     const el = document.createElement("article");
     el.className = "project";
     // An id from the title, so links like fashion-works.html#denim-patchwork-vest land on it.
-    if (p.title) el.id = p.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const pid = p.id || (p.title ? p.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") : "");
+    if (pid) el.id = pid;
+    // Pages with their own project pages (PAGE.projectPage) get a clear link
+    // instead of the small "More" panel button (River, 2026-11-22).
+    const moreHTML = PAGE.projectPage && pid
+      ? `<a class="more more-page" href="${esc(PAGE.projectPage)}?p=${encodeURIComponent(pid)}">About the piece <span aria-hidden="true">→</span></a>`
+      : `<button class="more" data-i="${i}" aria-label="More about ${esc(p.title || p.medium || "this project")}">More <span aria-hidden="true">→</span></button>`;
     el.innerHTML = `
       <div class="info">
         <span class="year sq">${esc(p.year || "")}</span>
         <span class="name">${label(p)}</span>
-        <button class="more" data-i="${i}" aria-label="More about ${esc(p.title || p.medium || "this project")}">More <span aria-hidden="true">→</span></button>
+        ${moreHTML}
       </div>
       <div class="show">
         <div class="frame"></div>
@@ -194,7 +200,7 @@
     const b = e.target.closest("button");
     if (b && panel._project) panel._project._show(+b.dataset.n);
   });
-  document.addEventListener("click", e => { const b = e.target.closest(".more"); if (b) openPanel(+b.dataset.i); });
+  document.addEventListener("click", e => { const b = e.target.closest("button.more"); if (b) openPanel(+b.dataset.i); });
   panel.querySelector(".close").addEventListener("click", closePanel);
   scrim.addEventListener("click", closePanel);
   document.addEventListener("keydown", e => { if (e.key === "Escape" && panel.classList.contains("open")) closePanel(); });

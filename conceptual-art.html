@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261122231943">
+<link rel="stylesheet" href="assets/site.css?v=20261122233641">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -16,12 +16,12 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<link rel="stylesheet" href="assets/projects.css?v=20261122231943">
+<link rel="stylesheet" href="assets/projects.css?v=20261122233641">
 </head>
 <body class="long">
 <div class="page"></div>
 
-<script src="assets/site.js?v=20261122231943"></script>
+<script src="assets/site.js?v=20261122233641"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -30,48 +30,13 @@ window.PAGE = {
   title: "Conceptual Art",
   photoFolder: "images/conceptual-art/",   // where this page's photos live
   scrollWarp: 1,   // how much photos bend while scrolling (0 = off, 1 = normal, 2 = strong)
-  emptyText: "New conceptual work is on the way."   // shown while there are no projects
+  emptyText: "New conceptual work is on the way.",   // shown while there are no projects
+  projectPage: "conceptual-project.html"   // "About the piece →" opens each project's own page (River, 2026-11-22)
 };
 
-/* =========================================================
-   PROJECTS — one block per project, shown top to bottom.
-
-   TO ADD A NEW PROJECT: copy this template, paste it where you
-   want it in the list below, and fill it in.
-
-   {
-     year: "2026",
-     title: "Project Name",           // leave "" if it has no title
-     medium: "Conceptual Art",
-     photos: ["photo-1.jpg", "photo-2.jpg"],   // files in images/conceptual-art/
-     details: ["2026", "Conceptual Art"],   // lines shown under "Details"
-     overview: `Write about the project here.
-
-     A blank line starts a new paragraph.`
-   },
-   ========================================================= */
-window.PROJECTS = [
-  {
-    year: "2026",
-    title: "",                       // untitled for now
-    medium: "Conceptual Art",
-    photos: ["trailing-denim-01.jpg", "trailing-denim-02.jpg", "trailing-denim-03.jpg"],
-    details: ["2026", "Conceptual Art"],
-    overview: ``
-  },
-  {
-    year: "2026",
-    title: "",                       // untitled for now
-    medium: "Conceptual Art",
-    photos: [
-      "layered-denim-01.jpg", "layered-denim-02.jpg", "layered-denim-03.jpg", "layered-denim-04.jpg",
-      "layered-denim-05.jpg", "layered-denim-06.jpg", "layered-denim-07.jpg", "layered-denim-08.jpg"
-    ],
-    details: ["2026", "Conceptual Art"],
-    overview: ``
-  }
-];
+// The projects themselves are in assets/conceptual-art-projects.js
 </script>
-<script src="assets/projects.js?v=20261122231943"></script>
+<script src="assets/conceptual-art-projects.js?v=20261122233641"></script>
+<script src="assets/projects.js?v=20261122233641"></script>
 </body>
 </html>

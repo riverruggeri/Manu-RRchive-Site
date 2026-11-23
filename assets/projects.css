@@ -75,6 +75,14 @@ body { background: var(--bg); color: var(--ink); }
   display: inline-flex; align-items: center; gap: 6px;
 }
 .more:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* "About the piece →": a clear pill that opens the project's own page (River, 2026-11-22) */
+.more-page {
+  text-decoration: none; padding: 9px 16px; border-radius: 99px;
+  box-shadow: inset 0 0 0 1px var(--ink); white-space: nowrap;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  transition: background-color 0.2s, color 0.2s;
+}
+.more-page:hover, .more-page:focus-visible { background: var(--ink); color: var(--cream); text-decoration: none; outline: none; }
 
 .show { position: relative; width: 100%; display: flex; justify-content: center; }
 .frame { position: relative; cursor: pointer; will-change: transform; max-width: 100%; touch-action: pan-y; }
@@ -151,6 +159,7 @@ body { background: var(--bg); color: var(--ink); }
 @media (max-width: 600px) {
   .page-title { padding-top: max(32vh, calc(70px + env(safe-area-inset-top, 0px))); }
   .info { grid-template-columns: auto 1fr auto; font-size: 13px; }
+  .more-page { padding: 7px 11px; font-size: 10px; letter-spacing: 0.08em; }
   .arrow { opacity: 1; width: 26px; height: 26px; }
   .text { grid-template-columns: 1fr; }
 }

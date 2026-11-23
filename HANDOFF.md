@@ -28,7 +28,7 @@ Start a new chat with: "Continue the Manu website. Read HANDOFF.md and CLAUDE.md
 
 ## Tracy Ma ideas (2026-11-22)
 - Done: quiet "Motion: on/off" switch (bottom of the menu + homepage footers).
-- Next when River sends words: short, plain project write-ups in River's own voice (idea 5).
+- Idea 5 started: Conceptual Art projects have titles, River's write-ups and their own pages (`conceptual-project.html`). Next: same for other projects when River sends words.
 - Later: a magazine-style page per drop that moves into the Archive (idea 3, needs before photos). Mock-ups: `_mock/ma.html`.
 
 ## In progress / decisions open
@@ -49,4 +49,4 @@ Start a new chat with: "Continue the Manu website. Read HANDOFF.md and CLAUDE.md
 10. Own domain (e.g. ManuCollective), then Google product data and Instagram product tags
 
 ## Still waiting on River
-The real pieces for the first drop (the 4 in the shop now are placeholders, NOT for sale, River 2026-11-22), with their prices and measurements; shipping price, returns choice, payment choice, worn photos, titles/years/overviews for the two Conceptual Art projects, About portrait (IMG_5331.jpg), real photo-commission details, Archive photos, a Manu home-screen icon.
+The real pieces for the first drop (the 4 in the shop now are placeholders, NOT for sale, River 2026-11-22), with their prices and measurements; shipping price, returns choice, payment choice, worn photos, years for the two Conceptual Art projects (2026 is a guess), About portrait (IMG_5331.jpg), real photo-commission details, Archive photos, a Manu home-screen icon.
