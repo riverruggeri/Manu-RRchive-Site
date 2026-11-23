@@ -49,4 +49,4 @@ Start a new chat with: "Continue the Manu website. Read HANDOFF.md and CLAUDE.md
 10. Own domain (e.g. ManuCollective), then Google product data and Instagram product tags
 
 ## Still waiting on River
-Prices and measurements for the 4 pieces, shipping price, returns choice, payment choice, worn photos, titles/years/overviews for the two Conceptual Art projects, About portrait (IMG_5331.jpg), real photo-commission details, Archive photos, a Manu home-screen icon.
+The real pieces for the first drop (the 4 in the shop now are placeholders, NOT for sale, River 2026-11-22), with their prices and measurements; shipping price, returns choice, payment choice, worn photos, titles/years/overviews for the two Conceptual Art projects, About portrait (IMG_5331.jpg), real photo-commission details, Archive photos, a Manu home-screen icon.
