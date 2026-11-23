@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261117214319">
+<link rel="stylesheet" href="assets/site.css?v=20261122231242">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-title" content="ЯRchive">
@@ -303,6 +303,7 @@
     .foot { margin-top: -40px; }
     .big-links a { flex-direction: column; align-items: flex-start; gap: 8px; }
   }
+  .foot-right { display: flex; gap: 22px; align-items: baseline; }
 </style>
 </head>
 <body class="photo-page" data-no-menu data-grain-photo>
@@ -335,8 +336,8 @@
 
 <main class="studio" id="studio"></main>
 
-<script src="assets/site.js?v=20261117214319"></script>
-<script src="assets/ripple.js?v=20261117214319"></script>
+<script src="assets/site.js?v=20261122231242"></script>
+<script src="assets/ripple.js?v=20261122231242"></script>
 <script>
 /* =========================================================
    PAGE SETTINGS
@@ -434,7 +435,8 @@ document.getElementById("studio").innerHTML = `
     `<a href="${esc(b.link)}"><span data-push>${esc(b.label)} →</span><small>${esc(b.note)}</small></a>`).join("")}
   </nav>
   <footer class="foot"><span>© ${new Date().getFullYear()} River Manu Ruggeri</span>
-    <a href="https://www.instagram.com/${esc(SITE.contact.instagram)}/" target="_blank" rel="noopener">@${esc(SITE.contact.instagram)}</a></footer>`;
+    <span class="foot-right"><button type="button" class="motion-link" onclick="toggleMotion()">Motion: ${SITE.motionOff ? "off" : "on"}</button>
+    <a href="https://www.instagram.com/${esc(SITE.contact.instagram)}/" target="_blank" rel="noopener">@${esc(SITE.contact.instagram)}</a></span></footer>`;
 
 // "What I make" boxes: each slides through its photos while on screen,
 // one after another so they don't all move at once.

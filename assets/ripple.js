@@ -34,7 +34,9 @@ window.startRipple = function (opts) {
   fallback.style.filter = `brightness(${opts.ripple.brightness || 1})`;
   // Keep the still photo underneath the moving one, not on top of it.
   if (fallback.parentNode === canvas.parentNode) canvas.parentNode.insertBefore(fallback, canvas);
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let motionOff = false;
+  try { motionOff = localStorage.getItem("manu-motion") === "off"; } catch (e) {}
+  const reduceMotion = motionOff || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const gl = canvas.getContext("webgl2", { antialias: false, premultipliedAlpha: false });
 
   function useFallback() {

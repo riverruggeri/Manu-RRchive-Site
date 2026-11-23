@@ -119,6 +119,9 @@ body.riding .fixed-name{visibility:hidden}
 .bigs a{display:block;padding:22px 0;border-bottom:1px solid var(--line)}
 .bigs span{display:block;font-size:17vw;font-weight:800;letter-spacing:-.06em;line-height:.9}
 .bigs small{display:block;margin-top:8px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.foot-right{display:flex;gap:18px;align-items:baseline}
+/* Quiet motion switch (River, 2026-11-22): off keeps the photo still */
+.motion-link{background:none;border:0;padding:0;font:inherit;font-size:11px;letter-spacing:.08em;color:inherit;opacity:.6;cursor:pointer}
 .foot{display:flex;justify-content:space-between;padding:26px 0 0;font-size:12px;color:var(--soft)}
 
 /* Portfolio / About: pills top right first, then the bottom bar. */
@@ -194,12 +197,12 @@ body.scrolled .dock{transform:none}
     <a href="portfolio.html"><span>Portfolio →</span><small>Fashion · Photography · Art</small></a>
     <a href="about.html"><span>About →</span><small>Bio · Contact · Services</small></a>
   </nav>
-  <footer class="foot"><span>© 2026 River Manu Ruggeri</span><a href="https://www.instagram.com/rrchive.manu/" target="_blank" rel="noopener">@rrchive.manu</a></footer>
+  <footer class="foot"><span>© 2026 River Manu Ruggeri</span><span class="foot-right"><button type="button" class="motion-link" id="motion">Motion: on</button><a href="https://www.instagram.com/rrchive.manu/" target="_blank" rel="noopener">@rrchive.manu</a></span></footer>
 </div>
 
 <nav class="dock"><a class="btn" href="portfolio.html">Portfolio</a><a class="btn" href="about.html">About</a></nav>
 
-<script src="assets/ripple.js?v=20261117214319"></script>
+<script src="assets/ripple.js?v=20261122231242"></script>
 <script>
 // Same warp settings as the real homepage (index.html PAGE.ripple).
 startRipple({ canvas: document.getElementById("stage"), fallback: document.getElementById("fallback"),
@@ -244,6 +247,14 @@ measure();
 document.fonts && document.fonts.ready.then(measure);
 addEventListener("resize", measure);
 addEventListener("scroll", update, { passive: true });
+
+// Motion switch: remembered on this device, shared with the rest of the site.
+const motionOff = (() => { try { return localStorage.getItem("manu-motion") === "off"; } catch (e) { return false; } })();
+document.getElementById("motion").textContent = "Motion: " + (motionOff ? "off" : "on");
+document.getElementById("motion").addEventListener("click", () => {
+  try { localStorage.setItem("manu-motion", motionOff ? "on" : "off"); } catch (e) {}
+  location.reload();
+});
 
 // "What I make" photos slide sideways (1s, even speed), one after another,
 // only while on screen, like the computer version.

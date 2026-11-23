@@ -270,6 +270,15 @@ body.light .manu-word, body.shop .manu-word, .page ~ .manu-word { text-shadow: n
 .menu-sub a { font-size: 14px; padding: 7px 10px; }
 .menu a[aria-current="page"]::before { content: "■ "; font-size: 10px; vertical-align: 2px; }
 
+/* Quiet "Motion: on / off" switch (River, 2026-11-22): small, faint, last in the menu */
+.menu-motion, .motion-link {
+  background: none; border: 0; cursor: pointer; font: inherit;
+  font-size: 11px; letter-spacing: 0.08em; color: var(--ink-soft); opacity: 0.6;
+  padding: 0; transition: opacity 0.2s;
+}
+.menu-motion { text-align: left; margin-top: 6px; padding: 10px 12px 6px; border-top: 1px solid var(--line); }
+.menu-motion:hover, .menu-motion:focus-visible, .motion-link:hover, .motion-link:focus-visible { opacity: 1; outline: none; }
+
 /* Small note at the bottom of the screen */
 .toast {
   position: fixed;

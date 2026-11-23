@@ -142,6 +142,20 @@ window.SITE = {
   ]
 };
 
+// Motion switch (River, 2026-11-22, from the Tracy Ma ideas): a quiet
+// "Motion: on / off" line at the bottom of the menu (and in the homepage
+// footers). Off turns every moving effect off and keeps the homepage photo
+// still; the choice is remembered on that device. Slideshows still change photos.
+SITE.motionOff = (() => { try { return localStorage.getItem("manu-motion") === "off"; } catch (e) { return false; } })();
+if (SITE.motionOff) {
+  for (const k in SITE.effects) if (k !== "denimText") SITE.effects[k] = false;   // denim titles are part of the look, so they stay
+  document.documentElement.classList.add("motion-off");
+}
+window.toggleMotion = function () {
+  try { localStorage.setItem("manu-motion", SITE.motionOff ? "on" : "off"); } catch (e) {}
+  location.reload();
+};
+
 /* ---------- Shared behaviour (no need to edit below) ---------- */
 (function () {
   const S = window.SITE;
@@ -219,6 +233,14 @@ window.SITE = {
     });
     menu.append(toggle, sub);
   });
+  // Quiet motion switch at the very bottom of the menu.
+  const motion = document.createElement("button");
+  motion.type = "button";
+  motion.className = "menu-motion";
+  motion.textContent = "Motion: " + (S.motionOff ? "off" : "on");
+  motion.title = "Turn the moving effects " + (S.motionOff ? "back on" : "off");
+  motion.addEventListener("click", e => { e.stopPropagation(); window.toggleMotion(); });
+  menu.append(motion);
 
   function setOpen(open) {
     menu.hidden = !open;

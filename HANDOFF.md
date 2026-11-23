@@ -26,6 +26,11 @@ Start a new chat with: "Continue the Manu website. Read HANDOFF.md and CLAUDE.md
   - OFF (tried, River didn't want): grain, fog, falling threads, layered photo, custom cursor, fabric ripple, pushed letters, zoom-open photo, pinned "What I make", photo morph, magnetic buttons. River might like zoom-open and pinned sections later, but done differently.
 - Store research: the Playbook doc (10 ranked changes, checkout/payments, drops, mobile fixes).
 
+## Tracy Ma ideas (2026-11-22)
+- Done: quiet "Motion: on/off" switch (bottom of the menu + homepage footers).
+- Next when River sends words: short, plain project write-ups in River's own voice (idea 5).
+- Later: a magazine-style page per drop that moves into the Archive (idea 3, needs before photos). Mock-ups: `_mock/ma.html`.
+
 ## In progress / decisions open
 1. **iPhone homepage: DONE and live (2026-11-17).** Phones get `home-phone.html` (index.html sends them there; `?desktop` shows the computer version). Design River chose: the warped photo full screen, MANU + short intro + ЯRchive / ЯRgraphy buttons on it, a stone card that slides up from the bottom (MANU moves onto it), Portfolio / About pills top right then a bar at the bottom, and below: tiles, About, What I make, big links, footer. Only the card scrolls the page; fingers on the photo play with the warp. Mock/sandbox: `_mock/e.html`. Details in CLAUDE.md "Latest status".
 2. **Payments:** River leaning to PayPal over Stripe. Fees are similar (Stripe card 2.9% + 30¢; PayPal card 2.99% + 49¢, PayPal/Venmo balance 3.49% + 49¢), no monthly fee either way. Option: offer both. **Waiting on River's choice**, then wire it into the Buy button (`buyLink` in assets/catalog.js) and update the Playbook.
